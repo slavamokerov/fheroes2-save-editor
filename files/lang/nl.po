@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — maand %2, week %3, dag %4 (formaat %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "Artefacten niet beschikbaar (heldrecord niet herkend)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Cheatcode geactiveerd: +5 Zwarte Draken (plaats %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Kies de map met de spelgegevens (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Lengte van de standaardnaam verschilt — resetten niet beschikbaar"
+
+msgid "Failed to load game resources"
+msgstr "Kon de spelbronnen niet laden"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "fheroes2 opslagen (*.sav *.savc *.savm *.savh);;Alle bestanden (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Vul eerst de vorige artefactplaatsen"
+
+msgid "Fill the previous skill slots first"
+msgstr "Vul eerst de vorige vaardigheidsplaatsen"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "Spelgrafiek niet gevonden — druk op SPELGEGEVENS en kies de map met HEROES2.AGG."
+
+msgid "Game resources loaded from %1"
+msgstr "Spelbronnen geladen uit %1"
+
+msgid "Hero #%1"
+msgstr "Held #%1"
+
+msgid "Hero name"
+msgstr "Naam van de held"
+
+msgid "Open fheroes2 save"
+msgstr "fheroes2 opslag openen"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Primaire vaardigheden niet beschikbaar (heldrecord niet herkend)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Opgeslagen: %1 (back-up: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Kies de secundaire vaardigheden van de held. Rechterklik — vaardigheid verwijderen."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "Spreukenboek niet beschikbaar (heldrecord niet herkend)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "Spreukpunten niet beschikbaar (heldrecord niet herkend)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "De gekozen map bevat geen HEROES2.AGG"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "De laatste troep van de held kan niet worden verwijderd"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "De naam moet dezelfde lengte hebben (%1 tekens) om de opslaggegevens niet te verschuiven."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Er zijn niet-opgeslagen wijzigingen. Een ander bestand openen zonder op te slaan?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "Deze opslag heeft geen helden met een toegewezen kleur."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Waarschuwing: fheroes2 draait — AUTOSAVE kan je wijzigingen overschrijven!"
+
+msgid "OPEN SAVE..."
+msgstr "OPSLAG OPENEN..."
+
+msgid "GAME DATA..."
+msgstr "SPELGEGEVENS..."
+
+msgid "Very Slow"
+msgstr "Zeer langzaam"
+
+msgid "Average"
+msgstr "Gemiddeld"
+
+msgid "Ultra Fast"
+msgstr "Ultra snel"
+

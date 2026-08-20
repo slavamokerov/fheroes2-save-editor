@@ -1,0 +1,90 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-13
+            platform: macos
+            arch: intel
+          - os: macos-latest
+            platform: macos
+            arch: arm64
+          - os: windows-latest
+            platform: windows
+            arch: x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Qt (macOS)
+        if: matrix.platform == 'macos'
+        run: brew install qt cmake ninja
+
+      - name: Install Qt (Windows)
+        if: matrix.platform == 'windows'
+        shell: bash
+        run: |
+          python -m pip install aqtinstall
+          python -m aqt install-qt windows desktop 6.8.2 win64_msvc2022_64 -O "${{ runner.tool_cache }}/Qt"
+
+      - name: Configure (macOS)
+        if: matrix.platform == 'macos'
+        shell: bash
+        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DCMAKE_BUILD_TYPE=Release
+
+      - name: Configure (Windows)
+        if: matrix.platform == 'windows'
+        shell: bash
+        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/msvc2022_64" -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release -j 4
+
+      - name: Test
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Package (macOS)
+        if: matrix.platform == 'macos'
+        shell: bash
+        run: |
+          "$(brew --prefix qt)/bin/macdeployqt" build/fheroes2-save-editor.app
+          # Ad-hoc sign so that the bundle passes Gatekeeper checks locally.
+          codesign --force --deep --sign - build/fheroes2-save-editor.app
+          hdiutil create -volname "fheroes2 Save Editor" -srcfolder build/fheroes2-save-editor.app -ov -format UDZO \
+            "fheroes2-save-editor-macos-${{ matrix.arch }}.dmg"
+
+      - name: Package (Windows)
+        if: matrix.platform == 'windows'
+        shell: bash
+        run: |
+          QTDIR="${{ runner.tool_cache }}/Qt/6.8.2/msvc2022_64"
+          "$QTDIR/bin/windeployqt.exe" --release build/Release/fheroes2-save-editor.exe
+          powershell -Command "Compress-Archive -Path build/Release/* -DestinationPath fheroes2-save-editor-windows-x64.zip"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fheroes2-save-editor-${{ matrix.platform }}-${{ matrix.arch }}
+          path: |
+            *.dmg
+            *.zip
+          if-no-files-found: error
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            *.dmg
+            *.zip
+          generate_release_notes: true

@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — месец %2, седмица %3, ден %4 (формат %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "Артефактите са недостъпни (записът на героя не е разпознат)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Кодът е активиран: +5 черни дракона (слот %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Изберете папката с данните на играта (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Дължината на името по подразбиране не съвпада — нулирането е недостъпно"
+
+msgid "Failed to load game resources"
+msgstr "Неуспешно зареждане на ресурсите на играта"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "Записи на fheroes2 (*.sav *.savc *.savm *.savh);;Всички файлове (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Първо попълнете предишните слотове за артефакти"
+
+msgid "Fill the previous skill slots first"
+msgstr "Първо попълнете предишните слотове за умения"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "Графиката на играта не е намерена — натиснете ДАННИ НА ИГРАТА и изберете папката с HEROES2.AGG."
+
+msgid "Game resources loaded from %1"
+msgstr "Ресурсите на играта са заредени от %1"
+
+msgid "Hero #%1"
+msgstr "Герой #%1"
+
+msgid "Hero name"
+msgstr "Име на героя"
+
+msgid "Open fheroes2 save"
+msgstr "Отваряне на запис на fheroes2"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Основните умения са недостъпни (записът на героя не е разпознат)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Записано: %1 (резервно копие: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Задайте вторичните умения на героя. Десен бутон — премахване на умение."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "Книгата със заклинания е недостъпна (записът на героя не е разпознат)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "Точките за заклинания са недостъпни (записът на героя не е разпознат)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "В избраната папка няма HEROES2.AGG"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "Последният отряд на героя не може да бъде премахнат"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "Името трябва да е със същата дължина (%1 знака), за да не се размести записът."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Има незаписани промени. Да се отвори друг файл без записване?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "В този запис няма герои с назначен цвят."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Внимание: fheroes2 работи — AUTOSAVE може да презапише промените ви!"
+
+msgid "OPEN SAVE..."
+msgstr "ОТВОРИ ЗАПИС..."
+
+msgid "GAME DATA..."
+msgstr "ДАННИ НА ИГРАТА..."
+
+msgid "Very Slow"
+msgstr "Много бавна"
+
+msgid "Average"
+msgstr "Средна"
+
+msgid "Ultra Fast"
+msgstr "Свръхбърза"
+

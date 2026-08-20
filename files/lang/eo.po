@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — monato %2, semajno %3, tago %4 (formato %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "Artefaktoj ne disponeblaj (heroa registro ne rekonita)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Trompkodo aktivigita: +5 Nigraj Drakoj (fako %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Elektu la dosierujon kun la luddatumoj (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Defaŭlta nomlongo malkongruas — restarigo ne disponeblas"
+
+msgid "Failed to load game resources"
+msgstr "Ne eblis ŝargi la ludrimedojn"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "fheroes2 konservoj (*.sav *.savc *.savm *.savh);;Ĉiuj dosieroj (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Unue plenigu la antaŭajn artefaktajn fakojn"
+
+msgid "Fill the previous skill slots first"
+msgstr "Unue plenigu la antaŭajn lerteco-fakojn"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "Ludgrafiko ne trovita — premu LUDDATUMOJ kaj elektu la dosierujon kun HEROES2.AGG."
+
+msgid "Game resources loaded from %1"
+msgstr "Ludrimedoj ŝargitaj el %1"
+
+msgid "Hero #%1"
+msgstr "Heroo #%1"
+
+msgid "Hero name"
+msgstr "Nomo de la heroo"
+
+msgid "Open fheroes2 save"
+msgstr "Malfermi fheroes2 konservon"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Ĉefaj lertecoj ne disponeblaj (heroa registro ne rekonita)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Konservite: %1 (rezervkopio: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Elektu la duagradajn lertecojn de la heroo. Dekstra klako — forigi lertecon."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "Sorĉlibro ne disponebla (heroa registro ne rekonita)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "Sorĉpoentoj ne disponeblaj (heroa registro ne rekonita)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "La elektita dosierujo ne enhavas HEROES2.AGG"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "La lasta taĉmento de la heroo ne povas esti forigita"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "La nomo devas havi la saman longon (%1 signo(j)) por ne ŝovi la datumojn."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Estas nekonservitaj ŝanĝoj. Malfermi alian dosieron sen konservi?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "Ĉi tiu konservo havas neniun heroon kun asignita koloro."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Averto: fheroes2 funkcias — AUTOSAVE povas superskribi viajn ŝanĝojn!"
+
+msgid "OPEN SAVE..."
+msgstr "MALFERMI KONSERVON..."
+
+msgid "GAME DATA..."
+msgstr "LUDDATUMOJ..."
+
+msgid "Very Slow"
+msgstr "Tre malrapida"
+
+msgid "Average"
+msgstr "Meza"
+
+msgid "Ultra Fast"
+msgstr "Ultra rapida"
+

@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — ay %2, hafta %3, gün %4 (biçim %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "Eserler kullanılamıyor (kahraman kaydı tanınamadı)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Hile etkinleştirildi: +5 Kara Ejderha (yuva %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Oyun verilerinin bulunduğu klasörü seçin (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Varsayılan ad uzunluğu eşleşmiyor — sıfırlama kullanılamıyor"
+
+msgid "Failed to load game resources"
+msgstr "Oyun kaynakları yüklenemedi"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "fheroes2 kayıtları (*.sav *.savc *.savm *.savh);;Tüm dosyalar (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Önce önceki eser yuvalarını doldurun"
+
+msgid "Fill the previous skill slots first"
+msgstr "Önce önceki beceri yuvalarını doldurun"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "Oyun grafikleri bulunamadı — OYUN VERİLERİ'ne basın ve HEROES2.AGG klasörünü seçin."
+
+msgid "Game resources loaded from %1"
+msgstr "Oyun kaynakları şuradan yüklendi: %1"
+
+msgid "Hero #%1"
+msgstr "Kahraman #%1"
+
+msgid "Hero name"
+msgstr "Kahramanın adı"
+
+msgid "Open fheroes2 save"
+msgstr "fheroes2 kaydını aç"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Birincil beceriler kullanılamıyor (kahraman kaydı tanınamadı)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Kaydedildi: %1 (yedek: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Kahramanın ikincil becerilerini seçin. Sağ tık — beceriyi kaldır."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "Büyü kitabı kullanılamıyor (kahraman kaydı tanınamadı)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "Büyü puanları kullanılamıyor (kahraman kaydı tanınamadı)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "Seçilen klasörde HEROES2.AGG yok"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "Kahramanın son birliği kaldırılamaz"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "Ad aynı uzunlukta olmalı (%1 karakter), aksi halde kayıt verileri kayar."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Kaydedilmemiş değişiklikler var. Kaydetmeden başka bir dosya açılsın mı?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "Bu kayıtta renk atanmış kahraman yok."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Uyarı: fheroes2 çalışıyor — AUTOSAVE değişikliklerinizin üzerine yazabilir!"
+
+msgid "OPEN SAVE..."
+msgstr "KAYDI AÇ..."
+
+msgid "GAME DATA..."
+msgstr "OYUN VERİLERİ..."
+
+msgid "Very Slow"
+msgstr "Çok yavaş"
+
+msgid "Average"
+msgstr "Ortalama"
+
+msgid "Ultra Fast"
+msgstr "Ultra hızlı"
+

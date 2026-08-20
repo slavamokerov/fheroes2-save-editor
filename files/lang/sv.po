@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — månad %2, vecka %3, dag %4 (format %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "Artefakter otillgängliga (hjältens post kändes inte igen)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Fusk aktiverat: +5 svarta drakar (plats %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Välj mappen med speldata (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Standardnamnets längd stämmer inte — återställning otillgänglig"
+
+msgid "Failed to load game resources"
+msgstr "Kunde inte ladda spelets resurser"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "fheroes2-sparningar (*.sav *.savc *.savm *.savh);;Alla filer (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Fyll de föregående artefaktplatserna först"
+
+msgid "Fill the previous skill slots first"
+msgstr "Fyll de föregående färdighetsplatserna först"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "Spelets grafik hittades inte — tryck på SPELDATA och välj mappen med HEROES2.AGG."
+
+msgid "Game resources loaded from %1"
+msgstr "Spelets resurser laddade från %1"
+
+msgid "Hero #%1"
+msgstr "Hjälte #%1"
+
+msgid "Hero name"
+msgstr "Hjältens namn"
+
+msgid "Open fheroes2 save"
+msgstr "Öppna fheroes2-sparning"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Primära färdigheter otillgängliga (hjältens post kändes inte igen)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Sparat: %1 (säkerhetskopia: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Välj hjältens sekundära färdigheter. Högerklick — ta bort färdighet."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "Trollboken otillgänglig (hjältens post kändes inte igen)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "Trollformelpoäng otillgängliga (hjältens post kändes inte igen)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "Den valda mappen har ingen HEROES2.AGG"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "Hjältens sista trupp kan inte tas bort"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "Namnet måste ha samma längd (%1 tecken) för att inte förskjuta spardata."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Det finns osparade ändringar. Öppna en annan fil utan att spara?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "Denna sparning har inga hjältar med tilldelad färg."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Varning: fheroes2 körs — AUTOSAVE kan skriva över dina ändringar!"
+
+msgid "OPEN SAVE..."
+msgstr "ÖPPNA SPARNING..."
+
+msgid "GAME DATA..."
+msgstr "SPELDATA..."
+
+msgid "Very Slow"
+msgstr "Mycket långsam"
+
+msgid "Average"
+msgstr "Medel"
+
+msgid "Ultra Fast"
+msgstr "Ultra snabb"
+

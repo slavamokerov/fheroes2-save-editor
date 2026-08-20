@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — tháng %2, tuần %3, ngày %4 (định dạng %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "Không thể dùng bảo vật (không nhận dạng được bản ghi anh hùng)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Đã kích hoạt mã: +5 Rồng Đen (ô %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Chọn thư mục chứa dữ liệu trò chơi (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Độ dài tên mặc định không khớp — không thể đặt lại"
+
+msgid "Failed to load game resources"
+msgstr "Không tải được tài nguyên trò chơi"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "Bản lưu fheroes2 (*.sav *.savc *.savm *.savh);;Mọi tệp (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Hãy điền các ô bảo vật phía trước trước"
+
+msgid "Fill the previous skill slots first"
+msgstr "Hãy điền các ô kỹ năng phía trước trước"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "Không tìm thấy đồ họa trò chơi — nhấn DỮ LIỆU TRÒ CHƠI và chọn thư mục chứa HEROES2.AGG."
+
+msgid "Game resources loaded from %1"
+msgstr "Đã tải tài nguyên trò chơi từ %1"
+
+msgid "Hero #%1"
+msgstr "Anh hùng #%1"
+
+msgid "Hero name"
+msgstr "Tên anh hùng"
+
+msgid "Open fheroes2 save"
+msgstr "Mở bản lưu fheroes2"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Không thể dùng kỹ năng chính (không nhận dạng được bản ghi anh hùng)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Đã lưu: %1 (bản sao lưu: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Chọn kỹ năng phụ của anh hùng. Nhấp phải — bỏ kỹ năng."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "Không thể mở sách phép (không nhận dạng được bản ghi anh hùng)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "Không thể dùng điểm phép (không nhận dạng được bản ghi anh hùng)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "Thư mục đã chọn không có HEROES2.AGG"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "Không thể bỏ đội quân cuối cùng của anh hùng"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "Tên phải có cùng độ dài (%1 ký tự) để không làm lệch dữ liệu bản lưu."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Có thay đổi chưa lưu. Mở tệp khác mà không lưu?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "Bản lưu này không có anh hùng nào được gán màu."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Cảnh báo: fheroes2 đang chạy — AUTOSAVE có thể ghi đè thay đổi của bạn!"
+
+msgid "OPEN SAVE..."
+msgstr "MỞ BẢN LƯU..."
+
+msgid "GAME DATA..."
+msgstr "DỮ LIỆU TRÒ CHƠI..."
+
+msgid "Very Slow"
+msgstr "Rất chậm"
+
+msgid "Average"
+msgstr "Trung bình"
+
+msgid "Ultra Fast"
+msgstr "Cực nhanh"
+

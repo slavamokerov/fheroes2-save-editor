@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — luna %2, săptămâna %3, ziua %4 (format %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "Artefacte indisponibile (înregistrarea eroului nu a fost recunoscută)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Cod activat: +5 Dragoni Negri (slotul %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Alegeți folderul cu datele jocului (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Lungimea numelui implicit nu se potrivește — resetare indisponibilă"
+
+msgid "Failed to load game resources"
+msgstr "Nu s-au putut încărca resursele jocului"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "Salvări fheroes2 (*.sav *.savc *.savm *.savh);;Toate fișierele (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Completați mai întâi sloturile anterioare de artefacte"
+
+msgid "Fill the previous skill slots first"
+msgstr "Completați mai întâi sloturile anterioare de abilități"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "Grafica jocului nu a fost găsită — apăsați DATELE JOCULUI și alegeți folderul cu HEROES2.AGG."
+
+msgid "Game resources loaded from %1"
+msgstr "Resursele jocului încărcate din %1"
+
+msgid "Hero #%1"
+msgstr "Eroul #%1"
+
+msgid "Hero name"
+msgstr "Numele eroului"
+
+msgid "Open fheroes2 save"
+msgstr "Deschide o salvare fheroes2"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Abilitățile primare indisponibile (înregistrarea eroului nu a fost recunoscută)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Salvat: %1 (copie de rezervă: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Alegeți abilitățile secundare ale eroului. Clic dreapta — eliminați abilitatea."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "Cartea de vrăji indisponibilă (înregistrarea eroului nu a fost recunoscută)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "Punctele de vrăji indisponibile (înregistrarea eroului nu a fost recunoscută)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "Folderul ales nu conține HEROES2.AGG"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "Ultima trupă a eroului nu poate fi eliminată"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "Numele trebuie să aibă aceeași lungime (%1 caractere) pentru a nu deplasa datele salvării."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Există modificări nesalvate. Deschideți alt fișier fără salvare?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "Această salvare nu are eroi cu o culoare atribuită."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Atenție: fheroes2 rulează — AUTOSAVE vă poate suprascrie modificările!"
+
+msgid "OPEN SAVE..."
+msgstr "DESCHIDE SALVAREA..."
+
+msgid "GAME DATA..."
+msgstr "DATELE JOCULUI..."
+
+msgid "Very Slow"
+msgstr "Foarte lentă"
+
+msgid "Average"
+msgstr "Medie"
+
+msgid "Ultra Fast"
+msgstr "Ultra rapidă"
+

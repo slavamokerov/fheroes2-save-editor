@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — %2 mėnuo, %3 savaitė, %4 diena (formatas %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "Artefaktai nepasiekiami (herojaus įrašas neatpažintas)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Kodas aktyvuotas: +5 juodųjų drakonų (langelis %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Pasirinkite aplanką su žaidimo duomenimis (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Numatytojo vardo ilgis nesutampa — atstatymas nepasiekiamas"
+
+msgid "Failed to load game resources"
+msgstr "Nepavyko įkelti žaidimo išteklių"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "fheroes2 išsaugojimai (*.sav *.savc *.savm *.savh);;Visi failai (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Pirmiausia užpildykite ankstesnius artefaktų langelius"
+
+msgid "Fill the previous skill slots first"
+msgstr "Pirmiausia užpildykite ankstesnius įgūdžių langelius"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "Žaidimo grafika nerasta — paspauskite ŽAIDIMO DUOMENYS ir pasirinkite aplanką su HEROES2.AGG."
+
+msgid "Game resources loaded from %1"
+msgstr "Žaidimo ištekliai įkelti iš %1"
+
+msgid "Hero #%1"
+msgstr "Herojus #%1"
+
+msgid "Hero name"
+msgstr "Herojaus vardas"
+
+msgid "Open fheroes2 save"
+msgstr "Atidaryti fheroes2 išsaugojimą"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Pagrindiniai įgūdžiai nepasiekiami (herojaus įrašas neatpažintas)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Išsaugota: %1 (atsarginė kopija: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Pasirinkite herojaus antrinius įgūdžius. Dešiniuoju pelės mygtuku — pašalinti įgūdį."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "Kerų knyga nepasiekiama (herojaus įrašas neatpažintas)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "Kerų taškai nepasiekiami (herojaus įrašas neatpažintas)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "Pasirinktame aplanke nėra HEROES2.AGG"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "Paskutinio herojaus būrio pašalinti negalima"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "Vardas turi būti tokio pat ilgio (%1 simbolis(-iai)), kad nepaslinktų duomenys."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Yra neišsaugotų pakeitimų. Atidaryti kitą failą neišsaugojus?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "Šiame išsaugojime nėra herojų su priskirta spalva."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Dėmesio: fheroes2 veikia — AUTOSAVE gali perrašyti jūsų pakeitimus!"
+
+msgid "OPEN SAVE..."
+msgstr "ATIDARYTI IŠSAUGOJIMĄ..."
+
+msgid "GAME DATA..."
+msgstr "ŽAIDIMO DUOMENYS..."
+
+msgid "Very Slow"
+msgstr "Labai lėtas"
+
+msgid "Average"
+msgstr "Vidutinis"
+
+msgid "Ultra Fast"
+msgstr "Ultra greitas"
+

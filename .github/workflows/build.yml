@@ -1,0 +1,58 @@
+name: Build and test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            qt: apt
+          - os: macos-latest
+            qt: brew
+          - os: windows-latest
+            qt: aqt
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Qt (Linux)
+        if: matrix.qt == 'apt'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qt6-base-dev cmake ninja-build
+
+      - name: Install Qt (macOS)
+        if: matrix.qt == 'brew'
+        run: brew install qt cmake ninja
+
+      - name: Install Qt (Windows)
+        if: matrix.qt == 'aqt'
+        shell: bash
+        run: |
+          python -m pip install aqtinstall
+          python -m aqt install-qt windows desktop 6.8.2 win64_msvc2022_64 -O "${{ runner.tool_cache }}/Qt"
+
+      - name: Configure
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" = "macos-latest" ]; then
+            cmake -S . -B build -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DCMAKE_BUILD_TYPE=Release
+          elif [ "${{ matrix.os }}" = "windows-latest" ]; then
+            cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/msvc2022_64" -DCMAKE_BUILD_TYPE=Release
+          else
+            cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+          fi
+
+      - name: Build
+        run: cmake --build build --config Release -j 4
+
+      - name: Test
+        # Saves are not present in CI — core_test prints SKIP and exits with code 0.
+        run: ctest --test-dir build -C Release --output-on-failure

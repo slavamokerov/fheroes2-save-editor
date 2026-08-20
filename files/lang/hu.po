@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — %2. hónap, %3. hét, %4. nap (formátum: %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "A varázstárgyak nem érhetők el (a hős rekordja nem ismerhető fel)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Csalókód aktiválva: +5 fekete sárkány (hely %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Válassza ki a játék adatainak mappáját (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Az alapértelmezett név hossza nem egyezik — visszaállítás nem érhető el"
+
+msgid "Failed to load game resources"
+msgstr "Nem sikerült betölteni a játék erőforrásait"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "fheroes2 mentések (*.sav *.savc *.savm *.savh);;Minden fájl (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Előbb töltse ki az előző varázstárgy-helyeket"
+
+msgid "Fill the previous skill slots first"
+msgstr "Előbb töltse ki az előző képességhelyeket"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "A játék grafikája nem található — nyomja meg a JÁTÉKADATOK gombot, és válassza ki a HEROES2.AGG mappáját."
+
+msgid "Game resources loaded from %1"
+msgstr "A játék erőforrásai betöltve innen: %1"
+
+msgid "Hero #%1"
+msgstr "Hős #%1"
+
+msgid "Hero name"
+msgstr "A hős neve"
+
+msgid "Open fheroes2 save"
+msgstr "fheroes2 mentés megnyitása"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Az elsődleges képességek nem érhetők el (a hős rekordja nem ismerhető fel)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Mentve: %1 (biztonsági másolat: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Válassza ki a hős másodlagos képességeit. Jobb kattintás — képesség eltávolítása."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "A varázskönyv nem érhető el (a hős rekordja nem ismerhető fel)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "A varázspontok nem érhetők el (a hős rekordja nem ismerhető fel)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "A kiválasztott mappa nem tartalmaz HEROES2.AGG fájlt"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "A hős utolsó csapata nem távolítható el"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "A névnek ugyanolyan hosszúnak kell lennie (%1 karakter), különben eltolódnak a mentés adatai."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Vannak nem mentett módosítások. Megnyit egy másik fájlt mentés nélkül?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "Ebben a mentésben nincs színnel rendelkező hős."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Figyelem: a fheroes2 fut — az AUTOSAVE felülírhatja a módosításait!"
+
+msgid "OPEN SAVE..."
+msgstr "MENTÉS MEGNYITÁSA..."
+
+msgid "GAME DATA..."
+msgstr "JÁTÉKADATOK..."
+
+msgid "Very Slow"
+msgstr "Nagyon lassú"
+
+msgid "Average"
+msgstr "Átlagos"
+
+msgid "Ultra Fast"
+msgstr "Ultra gyors"
+

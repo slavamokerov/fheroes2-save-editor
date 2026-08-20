@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — måned %2, uge %3, dag %4 (format %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "Artefakter utilgængelige (heltens post blev ikke genkendt)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Snydekode aktiveret: +5 sorte drager (plads %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Vælg mappen med spildata (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Standardnavnets længde stemmer ikke overens — nulstilling utilgængelig"
+
+msgid "Failed to load game resources"
+msgstr "Kunne ikke indlæse spillets ressourcer"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "fheroes2 gemte spil (*.sav *.savc *.savm *.savh);;Alle filer (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Udfyld først de foregående artefaktpladser"
+
+msgid "Fill the previous skill slots first"
+msgstr "Udfyld først de foregående færdighedspladser"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "Spillets grafik ikke fundet — tryk på SPILDATA og vælg mappen med HEROES2.AGG."
+
+msgid "Game resources loaded from %1"
+msgstr "Spillets ressourcer indlæst fra %1"
+
+msgid "Hero #%1"
+msgstr "Helt #%1"
+
+msgid "Hero name"
+msgstr "Heltens navn"
+
+msgid "Open fheroes2 save"
+msgstr "Åbn fheroes2 gemt spil"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Primære færdigheder utilgængelige (heltens post blev ikke genkendt)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Gemt: %1 (sikkerhedskopi: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Vælg heltens sekundære færdigheder. Højreklik — fjern færdighed."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "Tryllebogen utilgængelig (heltens post blev ikke genkendt)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "Tryllepoint utilgængelige (heltens post blev ikke genkendt)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "Den valgte mappe indeholder ikke HEROES2.AGG"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "Heltens sidste tropper kan ikke fjernes"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "Navnet skal have samme længde (%1 tegn) for ikke at forskubbe gemmedataene."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Der er ugemte ændringer. Åbn en anden fil uden at gemme?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "Dette gemte spil har ingen helte med tildelt farve."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Advarsel: fheroes2 kører — AUTOSAVE kan overskrive dine ændringer!"
+
+msgid "OPEN SAVE..."
+msgstr "ÅBN GEMT SPIL..."
+
+msgid "GAME DATA..."
+msgstr "SPILDATA..."
+
+msgid "Very Slow"
+msgstr "Meget langsom"
+
+msgid "Average"
+msgstr "Middel"
+
+msgid "Ultra Fast"
+msgstr "Ekstrem hurtig"
+

@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — mesiac %2, týždeň %3, deň %4 (formát %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "Artefakty nie sú dostupné (záznam hrdinu nebol rozpoznaný)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Cheat aktivovaný: +5 čiernych drakov (miesto %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Vyberte priečinok s dátami hry (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Dĺžka predvoleného mena nesedí — reset nie je dostupný"
+
+msgid "Failed to load game resources"
+msgstr "Nepodarilo sa načítať zdroje hry"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "Uložené hry fheroes2 (*.sav *.savc *.savm *.savh);;Všetky súbory (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Najprv vyplňte predchádzajúce miesta na artefakty"
+
+msgid "Fill the previous skill slots first"
+msgstr "Najprv vyplňte predchádzajúce miesta zručností"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "Grafika hry sa nenašla — stlačte DÁTA HRY a vyberte priečinok s HEROES2.AGG."
+
+msgid "Game resources loaded from %1"
+msgstr "Zdroje hry načítané z %1"
+
+msgid "Hero #%1"
+msgstr "Hrdina #%1"
+
+msgid "Hero name"
+msgstr "Meno hrdinu"
+
+msgid "Open fheroes2 save"
+msgstr "Otvoriť uloženú hru fheroes2"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Primárne zručnosti nie sú dostupné (záznam hrdinu nebol rozpoznaný)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Uložené: %1 (záloha: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Vyberte sekundárne zručnosti hrdinu. Pravé tlačidlo — odstrániť zručnosť."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "Kniha kúziel nie je dostupná (záznam hrdinu nebol rozpoznaný)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "Body kúziel nie sú dostupné (záznam hrdinu nebol rozpoznaný)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "Vybraný priečinok neobsahuje HEROES2.AGG"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "Posledný oddiel hrdinu nemožno odstrániť"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "Meno musí mať rovnakú dĺžku (%1 znakov), aby sa neposunuli dáta uloženej hry."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Existujú neuložené zmeny. Otvoriť iný súbor bez uloženia?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "Táto uložená hra nemá hrdinov s priradenou farbou."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Pozor: fheroes2 beží — AUTOSAVE môže prepísať vaše zmeny!"
+
+msgid "OPEN SAVE..."
+msgstr "OTVORIŤ ULOŽENÚ HRU..."
+
+msgid "GAME DATA..."
+msgstr "DÁTA HRY..."
+
+msgid "Very Slow"
+msgstr "Veľmi pomalá"
+
+msgid "Average"
+msgstr "Priemerná"
+
+msgid "Ultra Fast"
+msgstr "Ultra rýchla"
+

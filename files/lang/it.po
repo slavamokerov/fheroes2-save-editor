@@ -1,0 +1,96 @@
+# Translations for the fheroes2 Save Editor itself (not the game texts).
+# The game texts come from fheroes2's own <lang>.mo files.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "%1  —  month %2, week %3, day %4  (format %5)"
+msgstr "%1 — mese %2, settimana %3, giorno %4 (formato %5)"
+
+msgid "Artifacts unavailable (hero record not recognized)"
+msgstr "Artefatti non disponibili (record dell'eroe non riconosciuto)"
+
+msgid "Cheat activated: +5 Black Dragons (slot %1)."
+msgstr "Trucco attivato: +5 Draghi Neri (slot %1)."
+
+msgid "Choose the game data folder (HEROES2.AGG)"
+msgstr "Scegli la cartella con i dati del gioco (HEROES2.AGG)"
+
+msgid "Default name length mismatch — reset unavailable"
+msgstr "Lunghezza del nome predefinito diversa — ripristino non disponibile"
+
+msgid "Failed to load game resources"
+msgstr "Impossibile caricare le risorse del gioco"
+
+msgid "fheroes2 saves (*.sav *.savc *.savm *.savh);;All files (*)"
+msgstr "Salvataggi di fheroes2 (*.sav *.savc *.savm *.savh);;Tutti i file (*)"
+
+msgid "Fill the previous artifact slots first"
+msgstr "Riempi prima gli slot di artefatti precedenti"
+
+msgid "Fill the previous skill slots first"
+msgstr "Riempi prima gli slot di abilità precedenti"
+
+msgid "Game graphics not found — press GAME DATA and choose the folder with HEROES2.AGG."
+msgstr "Grafica del gioco non trovata — premi DATI DI GIOCO e scegli la cartella con HEROES2.AGG."
+
+msgid "Game resources loaded from %1"
+msgstr "Risorse del gioco caricate da %1"
+
+msgid "Hero #%1"
+msgstr "Eroe #%1"
+
+msgid "Hero name"
+msgstr "Nome dell'eroe"
+
+msgid "Open fheroes2 save"
+msgstr "Apri un salvataggio di fheroes2"
+
+msgid "Primary skills unavailable (hero record not recognized)"
+msgstr "Abilità primarie non disponibili (record dell'eroe non riconosciuto)"
+
+msgid "Saved: %1 (backup: .bak)"
+msgstr "Salvato: %1 (backup: .bak)"
+
+msgid "Set hero's Secondary Skills. Right-click to remove skill."
+msgstr "Scegli le abilità secondarie dell'eroe. Clic destro — rimuovi abilità."
+
+msgid "Spell book unavailable (hero record not recognized)"
+msgstr "Libro degli incantesimi non disponibile (record dell'eroe non riconosciuto)"
+
+msgid "Spell points unavailable (hero record not recognized)"
+msgstr "Punti incantesimo non disponibili (record dell'eroe non riconosciuto)"
+
+msgid "The chosen folder has no HEROES2.AGG"
+msgstr "La cartella scelta non contiene HEROES2.AGG"
+
+msgid "The last hero's troop cannot be removed"
+msgstr "L'ultima truppa dell'eroe non può essere rimossa"
+
+msgid "The name must be the same length (%1 character(s)) to avoid shifting the save data."
+msgstr "Il nome deve avere la stessa lunghezza (%1 caratteri) per non spostare i dati del salvataggio."
+
+msgid "There are unsaved changes. Open another file without saving?"
+msgstr "Ci sono modifiche non salvate. Aprire un altro file senza salvare?"
+
+msgid "This save has no heroes with an assigned color."
+msgstr "Questo salvataggio non ha eroi con un colore assegnato."
+
+msgid "Warning: fheroes2 is running — AUTOSAVE may overwrite your changes!"
+msgstr "Attenzione: fheroes2 è in esecuzione — AUTOSAVE può sovrascrivere le modifiche!"
+
+msgid "OPEN SAVE..."
+msgstr "APRI SALVATAGGIO..."
+
+msgid "GAME DATA..."
+msgstr "DATI DI GIOCO..."
+
+msgid "Very Slow"
+msgstr "Molto lenta"
+
+msgid "Average"
+msgstr "Media"
+
+msgid "Ultra Fast"
+msgstr "Ultra veloce"
+
