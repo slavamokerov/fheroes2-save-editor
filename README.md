@@ -98,17 +98,21 @@ backup is created before saving.
 
 Prebuilt binaries are attached to [GitHub Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases):
 
-[![Download for macOS (Apple Silicon)](https://img.shields.io/badge/macOS%20(Apple%20Silicon)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-arm64.dmg)
-[![Download for macOS (Intel)](https://img.shields.io/badge/macOS%20(Intel)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-intel.dmg)
-[![Download for Windows](https://img.shields.io/badge/Windows%20x64-Download-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-windows-x64.zip)
-[![Download for Linux](https://img.shields.io/badge/Linux%20x64%20(AppImage)-Download-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-linux-x64.AppImage)
+[![Download for macOS (Apple Silicon)](https://img.shields.io/badge/macOS%20(Apple%20Silicon)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-arm64.dmg)  
+`.dmg` for Apple Silicon. Ad-hoc signed: on first launch right-click → Open
+(or `xattr -dr com.apple.quarantine`).
 
-- **macOS** — `.dmg` for Apple Silicon and for Intel. The app is ad-hoc signed:
-  on first launch right-click → Open (or `xattr -dr com.apple.quarantine`).
-- **Windows** — `.zip` with the portable build; unpack it and run
-  `fheroes2-save-editor.exe`. SmartScreen may warn because the app is unsigned.
-- **Linux** — `.AppImage` (x86-64, built on Ubuntu 22.04 for wide glibc
-  compatibility): `chmod +x fheroes2-save-editor-linux-x64.AppImage`, then run it.
+[![Download for macOS (Intel)](https://img.shields.io/badge/macOS%20(Intel)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-intel.dmg)  
+`.dmg` for Intel Macs. Ad-hoc signed: on first launch right-click → Open
+(or `xattr -dr com.apple.quarantine`).
+
+[![Download for Windows](https://img.shields.io/badge/Windows%20x64-Download-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-windows-x64.zip)  
+`.zip` with the portable build; unpack it and run `fheroes2-save-editor.exe`.
+SmartScreen may warn because the app is unsigned.
+
+[![Download for Linux](https://img.shields.io/badge/Linux%20x64%20(AppImage)-Download-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-linux-x64.AppImage)  
+`.AppImage` (x86-64, built on Ubuntu 22.04 for wide glibc compatibility):
+`chmod +x fheroes2-save-editor-linux-x64.AppImage`, then run it.
 
 The buttons link straight to the latest release assets; older versions are on
 the [Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases) page.
