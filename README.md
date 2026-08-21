@@ -96,18 +96,15 @@ backup is created before saving.
 
 ## Download
 
-Prebuilt binaries are attached to [GitHub Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases)
-(all platforms are built by GitHub Actions on every release tag):
+Prebuilt binaries are attached to [GitHub Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases):
 
 [![Download for macOS (Apple Silicon)](https://img.shields.io/badge/macOS%20(Apple%20Silicon)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-arm64.dmg)
+[![Download for macOS (Intel)](https://img.shields.io/badge/macOS%20(Intel)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-intel.dmg)
 [![Download for Windows](https://img.shields.io/badge/Windows%20x64-Download-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-windows-x64.zip)
 [![Download for Linux](https://img.shields.io/badge/Linux%20x64%20(AppImage)-Download-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-linux-x64.AppImage)
 
-- **macOS (Apple Silicon)** — `.dmg`, ad-hoc signed: on first launch right-click
-  → Open (or `xattr -dr com.apple.quarantine`).
-- **macOS (Intel)** — no prebuilt binary yet: build from source on an Intel Mac
-  ([Building from source](#building-from-source)). A CI build would be a welcome
-  contribution.
+- **macOS** — `.dmg` for Apple Silicon and for Intel. The app is ad-hoc signed:
+  on first launch right-click → Open (or `xattr -dr com.apple.quarantine`).
 - **Windows** — `.zip` with the portable build; unpack it and run
   `fheroes2-save-editor.exe`. SmartScreen may warn because the app is unsigned.
 - **Linux** — `.AppImage` (x86-64, built on Ubuntu 22.04 for wide glibc
