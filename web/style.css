@@ -268,7 +268,7 @@ header h2 {
 }
 .image-showcase .row {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   gap: 1em;
 }
