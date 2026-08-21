@@ -66,30 +66,8 @@
     </header>
 
     <section id="main_content">
-      <div class="image-showcase">
-        <div class="row">
-          <img loading="lazy" src="screenshots/hero-screen.png" class="full-image game-screenshot" alt="The hero screen of the editor: portrait, primary and secondary skills, army, artifacts">
-        </div>
-        <div class="row">
-          <img loading="lazy" src="screenshots/spellbook.png" class="half-image game-screenshot" alt="The spell book dialog with all 65 spells">
-          <img loading="lazy" src="screenshots/count-ghosts.png" class="half-image game-screenshot" alt="Setting the number of creatures in an army slot">
-        </div>
-      </div>
-
-      <h2 id="download">Download</h2>
-      <p>Prebuilt desktop builds for every platform — or just use the web editor below, it works entirely in your browser and never uploads your files anywhere:</p>
-
-      <div class="download-buttons">
-        <a class="btn dl-btn dl-mac" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-arm64.dmg">Download for macOS (Apple Silicon)</a>
-        <a class="btn dl-btn dl-mac" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-intel.dmg">Download for macOS (Intel)</a>
-        <a class="btn dl-btn dl-win" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-windows-x64.zip">Download for Windows x64</a>
-        <a class="btn dl-btn dl-linux" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-linux-x64.AppImage">Download for Linux x64 (AppImage)</a>
-      </div>
-
-      <p class="note">The desktop editor reads <code>HEROES2.AGG</code> from your fheroes2 data folder — no game files are distributed with this project. Sources and older releases are on <a href="https://github.com/slavamokerov/fheroes2-save-editor">GitHub</a>.</p>
-
       <h2 id="web-editor">Web Editor</h2>
-      <p>Open an fheroes2 save (<code>*.sav</code>, <code>*.savc</code>, <code>*.savm</code>, <code>*.savh</code>), edit your heroes and download the result. The file never leaves your computer — everything runs locally in the browser via WebAssembly.</p>
+      <p>Open an fheroes2 save (<code>*.sav</code>, <code>*.savc</code>, <code>*.savm</code>, <code>*.savh</code>), edit your heroes and download the result.</p>
 
       <div id="editor-app">
         <div class="editor-toolbar">
@@ -102,6 +80,29 @@
         <div id="main" class="editor-main hidden">
           <aside id="hero-list" class="hero-list"></aside>
           <section id="hero-panel" class="hero-panel"></section>
+        </div>
+      </div>
+
+      <h2 id="download">Download</h2>
+      <p>Prebuilt desktop builds for every platform:</p>
+
+      <div class="download-buttons">
+        <a class="btn dl-btn dl-mac" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-arm64.dmg">Download for macOS (Apple Silicon)</a>
+        <a class="btn dl-btn dl-mac" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-intel.dmg">Download for macOS (Intel)</a>
+        <a class="btn dl-btn dl-win" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-windows-x64.zip">Download for Windows x64</a>
+        <a class="btn dl-btn dl-linux" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-linux-x64.AppImage">Download for Linux x64 (AppImage)</a>
+      </div>
+
+      <p class="note">The desktop editor reads <code>HEROES2.AGG</code> from your fheroes2 data folder — no game files are distributed with this project. Sources and older releases are on <a href="https://github.com/slavamokerov/fheroes2-save-editor">GitHub</a>.</p>
+
+      <h2 id="screenshots">Screenshots</h2>
+      <div class="image-showcase">
+        <div class="row">
+          <img loading="lazy" src="screenshots/hero-screen.png" class="full-image game-screenshot" alt="The hero screen of the editor: portrait, primary and secondary skills, army, artifacts">
+        </div>
+        <div class="row">
+          <img loading="lazy" src="screenshots/spellbook.png" class="half-image game-screenshot" alt="The spell book dialog with all 65 spells">
+          <img loading="lazy" src="screenshots/count-ghosts.png" class="half-image game-screenshot" alt="Setting the number of creatures in an army slot">
         </div>
       </div>
     </section>

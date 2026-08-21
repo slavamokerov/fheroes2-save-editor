@@ -232,7 +232,13 @@ header h2 {
 
 .btn:disabled, .btn.disabled { opacity: 0.6; cursor: not-allowed; pointer-events: none; }
 
-.download-buttons { display: flex; flex-wrap: wrap; gap: 0.8em; margin: 1em 0; }
+.download-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8em;
+  margin: 1em 0;
+}
 .download-buttons .dl-btn {
   padding: 0.45em 1.1em;
   font-family: "Asul", sans-serif;
@@ -266,8 +272,8 @@ header h2 {
   width: 100%;
   gap: 1em;
 }
-.image-showcase img.full-image { aspect-ratio: 16/9; width: 100%; height: auto; }
-.image-showcase img.half-image { aspect-ratio: 4/3; width: calc(50% - 0.5em); height: auto; }
+.image-showcase img.full-image { width: 100%; height: auto; }
+.image-showcase img.half-image { width: calc(50% - 0.5em); height: auto; }
 
 #main_content img { max-width: 100%; height: auto; }
 #main_content img.game-screenshot { border: 0.125em solid var(--border); border-radius: 5px; }
