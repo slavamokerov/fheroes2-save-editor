@@ -73,8 +73,6 @@ public:
     // Returns false if the name is unknown or no resources are loaded.
     bool openDebugDialog( const QString & name );
 
-    bool eventFilter( QObject * watched, QEvent * event ) override;
-
 private Q_SLOTS:
     void openDialog();
     void saveFile();
@@ -92,6 +90,8 @@ private:
     void selectNextHero();
     bool pickGameDataDir( bool force );
     void showError( const QString & message );
+    void showEvent( QShowEvent * event ) override;
+    void keyPressEvent( QKeyEvent * event ) override;
     void closeEvent( QCloseEvent * event ) override;
     // Classic cheat code typed anywhere in the window: adds 5 Black Dragons
     // to the current hero's army.

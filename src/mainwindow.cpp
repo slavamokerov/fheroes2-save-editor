@@ -199,12 +199,12 @@ MainWindow::MainWindow( QWidget * parent )
     : QMainWindow( parent )
 {
     setWindowTitle( tr( "fheroes2 Save Editor" ) );
+    // Without a focused widget Qt does not deliver KeyPress events at all,
+    // so the 32167 cheat code (keyPressEvent below) never fired.
+    setFocusPolicy( Qt::StrongFocus );
 
     _central = new CentralWidget( this );
     setCentralWidget( _central );
-
-    // Classic cheat code tracking (typed anywhere in the window).
-    QApplication::instance()->installEventFilter( this );
 
     connect( _central, &CentralWidget::openClicked, this, &MainWindow::openDialog );
     connect( _central, &CentralWidget::saveClicked, this, &MainWindow::saveFile );
@@ -611,30 +611,39 @@ bool MainWindow::openDebugDialog( const QString & name )
     return false;
 }
 
+void MainWindow::showEvent( QShowEvent * event )
+{
+    QMainWindow::showEvent( event );
+    // Keep the keyboard focus on the window (game widgets do not take focus),
+    // so key events — including the cheat code — are always delivered.
+    setFocus( Qt::OtherFocusReason );
+}
+
+void MainWindow::keyPressEvent( QKeyEvent * event )
+{
+    // Classic cheat code (adds 5 Black Dragons). The application-level event
+    // filter fires TWICE per event on this Qt/macOS combination, so the code
+    // lives here: keyPressEvent receives each key exactly once. Modal dialogs
+    // have their own focus, so the cheat is naturally ignored while one is open.
+    const QString text = event->text();
+    if ( !text.isEmpty() && text.at( 0 ).isDigit() ) {
+        _cheatBuf += text.at( 0 );
+        if ( _cheatBuf.size() > 5 )
+            _cheatBuf = _cheatBuf.right( 5 );
+        if ( _cheatBuf == QLatin1String( "32167" ) ) {
+            _cheatBuf.clear();
+            applyCheatCode();
+        }
+    }
+    QMainWindow::keyPressEvent( event );
+}
+
 void MainWindow::closeEvent( QCloseEvent * event )
 {
     event->accept();
 }
 
-bool MainWindow::eventFilter( QObject * watched, QEvent * event )
-{
-    if ( event->type() == QEvent::KeyPress ) {
-        const QKeyEvent * keyEvent = static_cast<QKeyEvent *>( event );
-        const QString text = keyEvent->text();
-        if ( !text.isEmpty() && text.at( 0 ).isDigit() ) {
-            _cheatBuf += text.at( 0 );
-            if ( _cheatBuf.size() > 5 )
-                _cheatBuf = _cheatBuf.right( 5 );
-            if ( _cheatBuf == QLatin1String( "32167" ) ) {
-                _cheatBuf.clear();
-                // Ignore while a modal dialog is open.
-                if ( QApplication::activeModalWidget() == nullptr )
-                    applyCheatCode();
-            }
-        }
-    }
-    return QMainWindow::eventFilter( watched, event );
-}
+MainWindow::~MainWindow() = default;
 
 void MainWindow::applyCheatCode()
 {
@@ -646,15 +655,6 @@ void MainWindow::applyCheatCode()
     _central->heroPanel()->setStatusMessage(
         editorText( "Cheat activated: +5 Black Dragons (slot %1)." ).arg( slot + 1 ) );
     markDirty();
-}
-
-} // namespace fh2
-
-namespace fh2 {
-
-MainWindow::~MainWindow()
-{
-    QApplication::instance()->removeEventFilter( this );
 }
 
 } // namespace fh2
