@@ -41,6 +41,7 @@ add_executable(fheroes2-save-editor
     src/mainwindow.cpp
     src/heropanel.cpp
     src/translations.cpp
+    resources.qrc
 )
 
 target_link_libraries(fheroes2-save-editor PRIVATE Qt6::Widgets fh2core)
@@ -52,10 +53,14 @@ if(APPLE)
         MACOSX_BUNDLE_BUNDLE_NAME "fheroes2 Save Editor"
         MACOSX_BUNDLE_GUI_IDENTIFIER "com.fheroes2.saveeditor"
     )
+    target_sources(fheroes2-save-editor PRIVATE packaging/icon.icns)
+    set_source_files_properties(packaging/icon.icns PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+    set_target_properties(fheroes2-save-editor PROPERTIES MACOSX_BUNDLE_ICON_FILE "icon.icns")
 endif()
 
 if(WIN32)
     set_target_properties(fheroes2-save-editor PROPERTIES WIN32_EXECUTABLE TRUE)
+    target_sources(fheroes2-save-editor PRIVATE packaging/win/icon.rc)
 endif()
 
 qt_finalize_executable(fheroes2-save-editor)

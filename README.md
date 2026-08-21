@@ -15,7 +15,8 @@ the in-game hero screen. All graphics (portraits, monsters, icons, fonts) are
 extracted directly from the game's `HEROES2.AGG` archive at runtime.
 
 The project is **independent of the fheroes2 codebase**: resources (AGG/ICN/KB.PAL)
-are read by its own loader (`src/aggicn.*`), and the save format is documented in
+are read by its own loader ([src/aggicn.cpp](src/aggicn.cpp), [src/aggicn.h](src/aggicn.h)),
+and the save format is documented in
 [`FH2_SAVE_FORMAT.md`](FH2_SAVE_FORMAT.md). It relies on the save structure
 changing rarely, which has held true for years.
 
@@ -56,18 +57,62 @@ changing rarely, which has held true for years.
   warning appears if fheroes2 is running, because AUTOSAVE may overwrite your
   changes.
 - **Command line** — `fheroes2-save-editor --add <file.sav> <hero_name> <monster_id> <count>`
-  adds a troop to a hero without opening the interface.
+  adds a troop to a hero without opening the interface (see
+  [Command line](#command-line)).
+
+## Command line
+
+Adds a troop to a hero without opening the interface — handy for scripts:
+
+```
+fheroes2-save-editor --add <file.sav> <hero_name> <monster_id> [count]
+```
+
+```bash
+# 10 Black Dragons for Gem
+fheroes2-save-editor --add AUTOSAVE.sav Gem 38 10
+
+# 5 Titans for Sandro
+fheroes2-save-editor --add AUTOSAVE.sav Sandro 47 5
+
+# 1 Phoenix for Solmyr (count defaults to 1)
+fheroes2-save-editor --add AUTOSAVE.sav Solmyr 29
+```
+
+The hero name is a single argument — quote it only when it contains spaces,
+otherwise the shell splits it into two arguments:
+
+```bash
+# 50 Crusaders for Crag Hack
+fheroes2-save-editor --add AUTOSAVE.sav "Crag Hack" 11 50
+```
+
+The hero is matched by its name in the save or by the default hero name
+([§12.3](FH2_SAVE_FORMAT.md#123-hero-id-int32-heroes-enum-heroesh)); monster IDs
+are listed in [§12.1](FH2_SAVE_FORMAT.md#121-monster-id-int32-monstermonstertype-monsterh)
+of the format doc. The troop goes into a slot that already holds the same
+monster, otherwise into an empty slot, otherwise into the first slot. A `.bak`
+backup is created before saving.
 
 ## Download
 
-Prebuilt binaries are attached to [GitHub Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases):
+Prebuilt binaries are attached to [GitHub Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases)
+(all platforms are built by GitHub Actions on every release tag):
 
-- **macOS** — `fheroes2-save-editor-macos.dmg`. The build targets Intel Macs
-  and works on Apple Silicon through Rosetta 2. The app is ad-hoc signed: on
-  first launch right-click → Open (or `xattr -dr com.apple.quarantine`).
-- **Windows** — not prebuilt yet; use `build-win.ps1` to build from source
-  (see below).
-- **Linux** — build from source (see below).
+[![Download for macOS (Apple Silicon)](https://img.shields.io/badge/macOS%20(Apple%20Silicon)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-arm64.dmg)
+[![Download for macOS (Intel)](https://img.shields.io/badge/macOS%20(Intel)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-intel.dmg)
+[![Download for Windows](https://img.shields.io/badge/Windows%20x64-Download-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-windows-x64.zip)
+[![Download for Linux](https://img.shields.io/badge/Linux%20x64%20(AppImage)-Download-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-linux-x64.AppImage)
+
+- **macOS** — `.dmg` for Apple Silicon and for Intel. The app is ad-hoc signed:
+  on first launch right-click → Open (or `xattr -dr com.apple.quarantine`).
+- **Windows** — `.zip` with the portable build; unpack it and run
+  `fheroes2-save-editor.exe`. SmartScreen may warn because the app is unsigned.
+- **Linux** — `.AppImage` (x86-64, built on Ubuntu 22.04 for wide glibc
+  compatibility): `chmod +x fheroes2-save-editor-linux-x64.AppImage`, then run it.
+
+The buttons link straight to the latest release assets; older versions are on
+the [Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases) page.
 
 You need the game data of Heroes of Might and Magic II: the editor reads
 `HEROES2.AGG` from the fheroes2 data folder (usually
@@ -95,7 +140,7 @@ open build/fheroes2-save-editor.app        # macOS
 ./build/fheroes2-save-editor               # Linux
 ```
 
-**Windows** — `build-win.ps1` (PowerShell; requires Visual Studio 2022 and
+**Windows** — [build-win.ps1](build-win.ps1) (PowerShell; requires Visual Studio 2022 and
 Qt6, pass the Qt path with `-QtDir`).
 
 ### Opening a save
@@ -120,8 +165,8 @@ MainWindow
  └─ Assets → AggContainer / ICN decoder (own implementation, no fheroes2 code)
 ```
 
-- **SaveFile** (`src/savefile.*`, Qt-free core) — reads the header, inflates the
-  zlib block (big-endian serialization, see `FH2_SAVE_FORMAT.md`), scans hero
+- **SaveFile** ([src/savefile.cpp](src/savefile.cpp), [src/savefile.h](src/savefile.h), Qt-free core) — reads the header, inflates the
+  zlib block (big-endian serialization, see [FH2_SAVE_FORMAT.md](FH2_SAVE_FORMAT.md)), scans hero
   records and recovers HeroBase (primary skills, mana, artifacts) by backward
   scanning. All edits write values **at the same offsets** — the stream size
   never changes; `save()` recompresses the stream and rewrites the whole file.
@@ -148,7 +193,7 @@ MainWindow
 - If fheroes2 is running, AUTOSAVE will overwrite your edits — the editor
   warns in the status line (pgrep check, macOS only).
 - `hero.portrait` and `hero.heroId` are indexes into PORT00xx (id−1), see
-  `constants.cpp`.
+  [constants.cpp](src/constants.cpp).
 
 ## Tests
 
@@ -164,12 +209,28 @@ Tests write only to temporary files and never modify the original saves.
 
 ## Debugging
 
-- `FH2_DEBUG_SHOT=<file.png> fheroes2-save-editor <save.sav>` — the app saves
-  a snapshot of the main window to PNG and exits (useful for checking rendering
-  without running the game).
-- `FH2_DEBUG_DIALOG=<book|monster|artifact|hero|spell|skill|count|message|numpad|...>`
-  opens a dialog to snapshot it; `FH2_DEBUG_HERO=<name>` selects a hero after
-  open; `FH2_UI_LANG=<lang code>` overrides the UI language.
+Debug environment variables for snapshots and UI checks (all of them need a
+save to open):
+
+```bash
+# snapshot the main window and exit
+FH2_DEBUG_SHOT=hero.png fheroes2-save-editor "AUTOSAVE.sav"
+
+# open the spell book dialog and snapshot it
+FH2_DEBUG_DIALOG=book FH2_DEBUG_SHOT=spellbook.png fheroes2-save-editor "AUTOSAVE.sav"
+
+# show a specific hero, force the UI language, snapshot
+FH2_DEBUG_HERO="Crag Hack" FH2_UI_LANG=ru FH2_DEBUG_SHOT=hero-ru.png fheroes2-save-editor "AUTOSAVE.sav"
+```
+
+- `FH2_DEBUG_SHOT=<file.png>` — the app saves a snapshot of the main window to
+  PNG and exits (useful for checking rendering without running the game).
+- `FH2_DEBUG_DIALOG=<name>` — opens a dialog to snapshot it:
+  `book`, `monster`, `artifact`, `hero`, `spell`, `skill`, `count`, `message`,
+  `numpad`, `armyinfo`, `spellinfo`, `skillinfo`, `artifactinfo`, `primcount`,
+  `expcount`, `monstercount`.
+- `FH2_DEBUG_HERO=<name>` — selects a hero right after opening the save.
+- `FH2_UI_LANG=<lang code>` — overrides the UI language.
 
 ## Credits
 
@@ -179,10 +240,12 @@ Tests write only to temporary files and never modify the original saves.
   geometry, status-bar texts).
 - Heroes of Might and Magic II © Ubisoft — all graphics are extracted from the
   game's own archives at runtime and are not distributed here.
+- App icon — “Equestrian” from the [Chikin 365](https://sergeychikin.ru/365/)
+  icon set by [Sergey Chikin](https://sergeychikin.ru/).
 
 ## License
 
-GPL-2.0 (see `LICENSE`). A significant part of the code is ported from
+GPL-2.0 (see [LICENSE](LICENSE)). A significant part of the code is ported from
 fheroes2 (GPL-2.0); no fheroes2 sources are included in this project.
 
 32167

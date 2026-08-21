@@ -14,6 +14,7 @@
 #include <QTimer>
 #include <QFile>
 #include <QFileInfo>
+#include <QIcon>
 #include <QStandardPaths>
 
 #include "constants.h"
@@ -213,6 +214,7 @@ int main( int argc, char * argv[] )
     QApplication app( argc, argv );
     QApplication::setApplicationName( "fheroes2 Save Editor" );
     QApplication::setOrganizationName( "fh2editor" );
+    app.setWindowIcon( QIcon( QStringLiteral( ":/icon.png" ) ) );
 
     // UI language — the same as selected in fheroes2 (fheroes2.cfg, "lang").
     // No config — English. FH2_UI_LANG overrides the config (dev/testing/screenshots).

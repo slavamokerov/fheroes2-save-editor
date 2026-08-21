@@ -22,10 +22,13 @@ jobs:
           - os: windows-latest
             platform: windows
             arch: x64
+          - os: ubuntu-22.04
+            platform: linux
+            arch: x64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Qt (macOS)
         if: matrix.platform == 'macos'
@@ -38,6 +41,17 @@ jobs:
           python -m pip install aqtinstall
           python -m aqt install-qt windows desktop 6.8.2 win64_msvc2022_64 -O "${{ runner.tool_cache }}/Qt"
 
+      - name: Install Qt (Linux)
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgl1-mesa-dev libxkbcommon-x11-0 \
+            libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 \
+            libxcb-xinerama0 libxcb-cursor0 libxkbcommon0 libx11-xcb1 \
+            fontconfig libdbus-1-3 libegl1
+          python -m pip install aqtinstall
+          python -m aqt install-qt linux desktop 6.8.2 gcc_64 -O "${{ runner.tool_cache }}/Qt"
+
       - name: Configure (macOS)
         if: matrix.platform == 'macos'
         shell: bash
@@ -47,6 +61,10 @@ jobs:
         if: matrix.platform == 'windows'
         shell: bash
         run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/msvc2022_64" -DCMAKE_BUILD_TYPE=Release
+
+      - name: Configure (Linux)
+        if: matrix.platform == 'linux'
+        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/gcc_64" -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         run: cmake --build build --config Release -j 4
@@ -72,19 +90,43 @@ jobs:
           "$QTDIR/bin/windeployqt.exe" --release build/Release/fheroes2-save-editor.exe
           powershell -Command "Compress-Archive -Path build/Release/* -DestinationPath fheroes2-save-editor-windows-x64.zip"
 
+      - name: Package (Linux AppImage)
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: |
+          set -e
+          # Assemble the AppDir: binary + editor translations (the app looks for
+          # files/lang next to the binary) + desktop entry + icon.
+          mkdir -p AppDir/usr/bin AppDir/usr/share/applications AppDir/usr/share/icons/hicolor/256x256/apps
+          cp build/fheroes2-save-editor AppDir/usr/bin/
+          cp -r files/lang AppDir/usr/bin/files/lang
+          cp packaging/linux/fheroes2-save-editor.desktop AppDir/usr/share/applications/
+          cp packaging/linux/icon-256.png AppDir/usr/share/icons/hicolor/256x256/apps/fheroes2-save-editor.png
+
+          wget -c https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          wget -c https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+          chmod +x linuxdeploy-x86_64.AppImage linuxdeploy-plugin-qt-x86_64.AppImage
+
+          export QMAKE="${{ runner.tool_cache }}/Qt/6.8.2/gcc_64/bin/qmake"
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          ./linuxdeploy-x86_64.AppImage --appdir AppDir --plugin qt --output appimage
+          mv fheroes2-save-editor*.AppImage fheroes2-save-editor-linux-x64.AppImage
+
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: fheroes2-save-editor-${{ matrix.platform }}-${{ matrix.arch }}
           path: |
             *.dmg
             *.zip
+            *.AppImage
           if-no-files-found: error
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             *.dmg
             *.zip
+            *.AppImage
           generate_release_notes: true

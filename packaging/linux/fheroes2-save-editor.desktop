@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=fheroes2 Save Editor
+Comment=Save-file editor for fheroes2 (Heroes of Might and Magic II)
+Exec=fheroes2-save-editor
+Icon=fheroes2-save-editor
+Categories=Utility;
+Terminal=false

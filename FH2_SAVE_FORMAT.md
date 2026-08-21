@@ -1,7 +1,8 @@
 # fheroes2 save file format (.sav / .savc / .savh / .savm)
 
 A complete description of the format, verified on real saves and cross-checked against the sources at
-https://github.com/ihhub/fheroes2 (master branch, format versions 10032–10034, game 1.1.11–1.1.8x).
+https://github.com/ihhub/fheroes2 (master branch, format versions 10032–10034 — see
+[§12.6](#126-format-versions-save_format_versionh), game 1.1.11–1.1.8x).
 
 Purpose of this document: to provide everything needed to write an fheroes2 save editor.
 
@@ -59,7 +60,8 @@ rules from this document apply.
 
 - `u16 magic = 0xFF03` — the same for all saves.
 - `std::string versionString` — ASCII string representation of the format number (u32 length + bytes).
-- `u16 formatVersion` — the same number as an integer. For existing saves: 10032 (1.1.11), 10033 (1.1.15), 10034 (1.1.80).
+- `u16 formatVersion` — the same number as an integer. For existing saves: 10032 (1.1.11), 10033 (1.1.15), 10034 (1.1.80)
+  (the full version table is in [§12.6](#126-format-versions-save_format_versionh)).
 - `u16 requirements` — bit flags. `0x4000` = REQUIRES_POL_RESOURCES (the game requires "The Price of Loyalty" resources).
 
 Example from a real save:
@@ -222,7 +224,8 @@ Troop: `monsterId = 0` (UNKNOWN) + `count = 0` means an **empty slot**.
 ### 6.4 How to find a specific hero (scanning algorithm)
 
 Heroes are not indexed — linear scanning with validation is required.
-The algorithm is implemented in `src/savefile.cpp` (`tryParseHero` + `tryParseHeroBase`):
+The algorithm is implemented in [src/savefile.cpp](src/savefile.cpp)
+(`tryParseHero` + `tryParseHeroBase`):
 
 1. Iterate position `p` over all bytes of the uncompressed stream.
 2. Read u32 len; if `1 ≤ len ≤ 64` and the name bytes are printable — a candidate.
@@ -452,8 +455,8 @@ In the file the version is stored twice: as a string and as a u16.
 
 ## 14. Practical recipes (C++)
 
-The whole core lives in the `fh2core` library (no Qt; `src/savefile.cpp/.h`,
-`src/constants.cpp`, `src/gettextmo.cpp`). Recipes:
+The whole core lives in the `fh2core` library (no Qt; [src/savefile.cpp](src/savefile.cpp)/[src/savefile.h](src/savefile.h),
+[src/constants.cpp](src/constants.cpp), [src/gettextmo.cpp](src/gettextmo.cpp)). Recipes:
 
 - **Reading/decompressing**: `SaveFile::load(path)` — parses the header, finds the
   zlib block (`findZlibBlock`), scans heroes and players.
@@ -466,7 +469,10 @@ The whole core lives in the `fh2core` library (no Qt; `src/savefile.cpp/.h`,
 - **CLI without GUI**:
   `fheroes2-save-editor --add <file.sav> <hero_name> <monster_id> <count>` —
   writes a troop into a slot with the same monster, otherwise into an empty slot,
-  otherwise into the first one; creates a `.bak` backup.
+  otherwise into the first one; creates a `.bak` backup. Hero names are matched
+  by the default names of [§12.3](#123-hero-id-int32-heroes-enum-heroesh), monster IDs are in
+  [§12.1](#121-monster-id-int32-monstermonstertype-monsterh). Example:
+  `fheroes2-save-editor --add AUTOSAVE.sav Gem 38 10` adds 10 Black Dragons to Gem.
 - **Tests**: `FH2_SAVE_DIR=<folder with saves> ctest --test-dir build` — core_test
   runs a round-trip of all setters on real saves (the test suite itself is
   developer-local and runs against your own save files).
@@ -502,7 +508,7 @@ The reference is the fheroes2 repository. The paths below are relative to its ro
 ## 16. Resource formats (AGG / ICN / KB.PAL)
 
 The project does not depend on the fheroes2 code: game resources are read by the
-project's own loader (`src/aggicn.cpp`). The formats below were verified by
+project's own loader ([src/aggicn.cpp](src/aggicn.cpp)). The formats below were verified by
 pixel-by-pixel comparison of the render with a build on the fheroes2 engine
 (100% match).
 
@@ -547,7 +553,7 @@ Frame data (RLE opcodes, as decodeICNSprite in image_tool.cpp):
   the already drawn background using the `transformTable` rows (image.cpp:43).
   This is how frame shadows (BUYBUILD/SURDRBKG/WINLOSE) and letter shadows in
   FONT.ICN are made.
-- Our decoder (`src/aggicn.cpp`) stores three planes: RGBA (`image`), palette
+- Our decoder ([src/aggicn.cpp](src/aggicn.cpp)) stores three planes: RGBA (`image`), palette
   indices (`idx`) and **transform (`tf`)**. In RGBA, transform pixels become
   semi-transparent black (2..5) or white (6..9) with alpha `255·(1 − k)`,
   `k = 1.15 − 0.17·t` — visually these are the same shadows. Index assemblies
