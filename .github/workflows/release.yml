@@ -40,8 +40,9 @@ jobs:
         if: matrix.platform == 'macos' && matrix.arch == 'intel'
         run: |
           brew install cmake ninja
-          python3 -m pip install aqtinstall
-          python3 -m aqt install-qt mac desktop 6.8.2 clang_64 -O "${{ runner.tool_cache }}/Qt"
+          python3 -m venv /tmp/venv
+          /tmp/venv/bin/pip install aqtinstall
+          /tmp/venv/bin/python -m aqt install-qt mac desktop 6.8.2 clang_64 -O "${{ runner.tool_cache }}/Qt"
 
       - name: Install Qt (Windows)
         if: matrix.platform == 'windows'
@@ -138,7 +139,8 @@ jobs:
           export QMAKE="${{ runner.tool_cache }}/Qt/6.8.2/gcc_64/bin/qmake"
           export APPIMAGE_EXTRACT_AND_RUN=1
           ./linuxdeploy-x86_64.AppImage --appdir AppDir --plugin qt --output appimage
-          mv fheroes2-save-editor*.AppImage fheroes2-save-editor-linux-x64.AppImage
+          # appimagetool derives the file name from the desktop entry Name.
+          mv fheroes2_Save_Editor-x86_64.AppImage fheroes2-save-editor-linux-x64.AppImage
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v6
