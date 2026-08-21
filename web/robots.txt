@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://slavamokerov.github.io/fheroes2-save-editor/sitemap.xml

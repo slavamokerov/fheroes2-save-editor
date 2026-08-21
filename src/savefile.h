@@ -138,6 +138,9 @@ class SaveFile
 {
 public:
     static SaveFile load( const std::string & path );
+    // Loads a save from memory (bytes of the original .sav file). name is
+    // kept for diagnostics only. Used by the web (WASM) build.
+    static SaveFile loadFromBytes( const std::string & name, const std::vector<uint8_t> & data );
 
     const std::string & path() const { return _path; }
     int formatVersion() const { return _formatVersion; }
@@ -189,6 +192,9 @@ public:
 
     void save( const std::string & outPath ) const;
     void save() const { save( _path ); }
+    // Serializes the (possibly edited) save to bytes. Used by the web (WASM)
+    // build, where there is no filesystem access.
+    std::vector<uint8_t> saveToBytes() const;
 
     bool isDirty() const { return _dirty; }
     void markClean() { _dirty = false; }

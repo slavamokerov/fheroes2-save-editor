@@ -96,7 +96,10 @@ backup is created before saving.
 
 ## Download
 
-Prebuilt binaries are attached to [GitHub Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases):
+**Web editor** — no installation, runs entirely in your browser (the file
+never leaves your computer): <https://slavamokerov.github.io/fheroes2-save-editor/>
+
+Prebuilt desktop binaries are attached to [GitHub Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases):
 
 [![Download for macOS (Apple Silicon)](https://img.shields.io/badge/macOS%20(Apple%20Silicon)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-arm64.dmg)  
 `.dmg` for Apple Silicon. Ad-hoc signed: on first launch right-click → Open

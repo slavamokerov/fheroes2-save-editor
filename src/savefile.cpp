@@ -486,9 +486,14 @@ bool findPlayers( const std::vector<uint8_t> & raw, const MapInfo & headerMapInf
 
 SaveFile SaveFile::load( const std::string & path )
 {
+    return loadFromBytes( path, readFileBytes( path ) );
+}
+
+SaveFile SaveFile::loadFromBytes( const std::string & name, const std::vector<uint8_t> & data )
+{
     SaveFile sv;
-    sv._path = path;
-    sv._data = readFileBytes( path );
+    sv._path = name;
+    sv._data = data;
     if ( sv._data.size() < 12 || sv._data[0] != 0xFF || sv._data[1] != 0x03 )
         throw SaveError( "Does not look like an fheroes2 save file" );
 
@@ -949,6 +954,16 @@ void SaveFile::setName( HeroRecord & hero, const std::string & cp1251Name )
 
 void SaveFile::save( const std::string & outPath ) const
 {
+    const std::vector<uint8_t> out = saveToBytes();
+
+    std::ofstream f( outPath, std::ios::binary | std::ios::trunc );
+    if ( !f )
+        throw SaveError( "Could not write file: " + outPath );
+    f.write( reinterpret_cast<const char *>( out.data() ), static_cast<std::streamsize>( out.size() ) );
+}
+
+std::vector<uint8_t> SaveFile::saveToBytes() const
+{
     uLongf zipBound = compressBound( static_cast<uLong>( _raw.size() ) );
     std::vector<uint8_t> zipped( zipBound );
     uLongf zippedLen = zipBound;
@@ -964,11 +979,7 @@ void SaveFile::save( const std::string & outPath ) const
     writeBe16( out, 0 );
     writeBe16( out, 0 );
     out.insert( out.end(), zipped.begin(), zipped.end() );
-
-    std::ofstream f( outPath, std::ios::binary | std::ios::trunc );
-    if ( !f )
-        throw SaveError( "Could not write file: " + outPath );
-    f.write( reinterpret_cast<const char *>( out.data() ), static_cast<std::streamsize>( out.size() ) );
+    return out;
 }
 
 } // namespace fh2

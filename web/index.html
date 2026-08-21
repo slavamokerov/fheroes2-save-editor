@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>fheroes2 Save Editor — edit Heroes of Might and Magic II saves in your browser</title>
+  <meta name="description" content="A free graphical save-file editor for fheroes2, the open-source Heroes of Might and Magic II engine. Edit hero armies, skills, artifacts and spells right in your browser — no installation required. Desktop builds for macOS, Windows and Linux.">
+  <meta name="author" content="slavamokerov">
+  <meta name="keywords" content="fheroes2, Heroes of Might and Magic II, HoMM2, save editor, save file editor, browser editor, web editor">
+  <meta name="robots" content="index, follow">
+
+  <link rel="canonical" href="https://slavamokerov.github.io/fheroes2-save-editor/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="fheroes2 Save Editor">
+  <meta property="og:title" content="fheroes2 Save Editor — edit Heroes of Might and Magic II saves in your browser">
+  <meta property="og:description" content="A free graphical save-file editor for fheroes2. Edit hero armies, skills, artifacts and spells right in your browser — no installation required.">
+  <meta property="og:url" content="https://slavamokerov.github.io/fheroes2-save-editor/">
+  <meta property="og:image" content="https://slavamokerov.github.io/fheroes2-save-editor/screenshots/hero-screen.png">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="fheroes2 Save Editor — edit HoMM2 saves in your browser">
+  <meta name="twitter:description" content="A free graphical save-file editor for fheroes2. Edit hero armies, skills, artifacts and spells right in your browser.">
+  <meta name="twitter:image" content="https://slavamokerov.github.io/fheroes2-save-editor/screenshots/hero-screen.png">
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "fheroes2 Save Editor",
+    "applicationCategory": "GameApplication",
+    "applicationSubCategory": "Save Editor",
+    "operatingSystem": "macOS, Windows, Linux, Web",
+    "description": "A free graphical save-file editor for fheroes2, the open-source reimplementation of Heroes of Might and Magic II. Edit hero armies, skills, artifacts and spells in the browser or with a desktop build.",
+    "url": "https://slavamokerov.github.io/fheroes2-save-editor/",
+    "downloadUrl": "https://github.com/slavamokerov/fheroes2-save-editor/releases",
+    "license": "https://github.com/slavamokerov/fheroes2-save-editor/blob/main/LICENSE",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "softwareVersion": "1.0",
+    "author": { "@type": "Person", "name": "slavamokerov" },
+    "publisher": { "@type": "Person", "name": "slavamokerov" }
+  }
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="preload" href="style.css" as="style">
+  <link rel="preload" href="fh2core.js" as="script">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="shell">
+    <div class="theme-toggle-container">
+      <button id="theme-toggle" class="btn btn-primary" aria-label="Toggle dark mode" aria-pressed="true">
+        <span id="theme-toggle-label">☀️ Light Mode</span>
+      </button>
+    </div>
+
+    <header>
+      <h1><a href="/fheroes2-save-editor/" data-text="fheroes2 Save Editor">fheroes2 Save Editor</a></h1>
+      <h2>A graphical save-file editor for the <strong>fheroes2</strong> engine — the open-source reimplementation of Heroes of Might and Magic II. Runs right in your browser, no installation required.</h2>
+    </header>
+
+    <section id="main_content">
+      <div class="image-showcase">
+        <div class="row">
+          <img loading="lazy" src="screenshots/hero-screen.png" class="full-image game-screenshot" alt="The hero screen of the editor: portrait, primary and secondary skills, army, artifacts">
+        </div>
+        <div class="row">
+          <img loading="lazy" src="screenshots/spellbook.png" class="half-image game-screenshot" alt="The spell book dialog with all 65 spells">
+          <img loading="lazy" src="screenshots/count-ghosts.png" class="half-image game-screenshot" alt="Setting the number of creatures in an army slot">
+        </div>
+      </div>
+
+      <h2 id="download">Download</h2>
+      <p>Prebuilt desktop builds for every platform — or just use the web editor below, it works entirely in your browser and never uploads your files anywhere:</p>
+
+      <div class="download-buttons">
+        <a class="btn dl-btn dl-mac" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-arm64.dmg">Download for macOS (Apple Silicon)</a>
+        <a class="btn dl-btn dl-mac" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-intel.dmg">Download for macOS (Intel)</a>
+        <a class="btn dl-btn dl-win" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-windows-x64.zip">Download for Windows x64</a>
+        <a class="btn dl-btn dl-linux" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-linux-x64.AppImage">Download for Linux x64 (AppImage)</a>
+      </div>
+
+      <p class="note">The desktop editor reads <code>HEROES2.AGG</code> from your fheroes2 data folder — no game files are distributed with this project. Sources and older releases are on <a href="https://github.com/slavamokerov/fheroes2-save-editor">GitHub</a>.</p>
+
+      <h2 id="web-editor">Web Editor</h2>
+      <p>Open an fheroes2 save (<code>*.sav</code>, <code>*.savc</code>, <code>*.savm</code>, <code>*.savh</code>), edit your heroes and download the result. The file never leaves your computer — everything runs locally in the browser via WebAssembly.</p>
+
+      <div id="editor-app">
+        <div class="editor-toolbar">
+          <input type="file" id="file-input" accept=".sav,.savc,.savm,.savh" hidden>
+          <button id="btn-open" class="btn btn-primary" disabled>Open Save…</button>
+          <button id="btn-download" class="btn btn-secondary" disabled>Download Save</button>
+          <span id="status" class="status"></span>
+        </div>
+        <div id="map-line" class="map-line hidden"></div>
+        <div id="main" class="editor-main hidden">
+          <aside id="hero-list" class="hero-list"></aside>
+          <section id="hero-panel" class="hero-panel"></section>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        This project by
+        <a href="https://github.com/slavamokerov">slavamokerov</a>
+        can be found on <a href="https://github.com/slavamokerov/fheroes2-save-editor">GitHub</a>.
+        Licensed under <a href="https://github.com/slavamokerov/fheroes2-save-editor/blob/main/LICENSE">GPL-2.0</a>.
+      </p>
+      <p class="credits">Heroes of Might and Magic II © Ubisoft. The site design is modeled after the <a href="https://ihhub.github.io/fheroes2/">fheroes2</a> website. App icon by Sergey Chikin.</p>
+    </footer>
+  </div>
+
+  <script src="fh2core.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
