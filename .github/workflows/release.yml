@@ -13,7 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-13
+          # Intel builds run on the arm64 runner: Qt clang_64 (x86_64) + Rosetta 2,
+          # because the macos-13 (Intel) runner image is no longer reliably available.
+          - os: macos-latest
             platform: macos
             arch: intel
           - os: macos-latest
@@ -30,9 +32,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Install Qt (macOS)
-        if: matrix.platform == 'macos'
+      - name: Install Qt (macOS arm64)
+        if: matrix.platform == 'macos' && matrix.arch == 'arm64'
         run: brew install qt cmake ninja
+
+      - name: Install Qt (macOS Intel)
+        if: matrix.platform == 'macos' && matrix.arch == 'intel'
+        run: |
+          brew install cmake ninja
+          python3 -m pip install aqtinstall
+          python3 -m aqt install-qt mac desktop 6.8.2 clang_64 -O "${{ runner.tool_cache }}/Qt"
 
       - name: Install Qt (Windows)
         if: matrix.platform == 'windows'
@@ -47,16 +56,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ninja-build libgl1-mesa-dev libxkbcommon-x11-0 \
             libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 \
-            libxcb-xinerama0 libxcb-cursor0 libxkbcommon0 libx11-xcb1 \
-            fontconfig libdbus-1-3 libegl1
+            libxcb-shape0 libxcb-xfixes0 libxcb-randr0 libxcb-sync1 libxcb-xkb1 \
+            libxcb-glx0 libxcb-shm0 libxcb-xinerama0 libxcb-cursor0 libxkbcommon0 \
+            libx11-xcb1 fontconfig libdbus-1-3 libegl1
           python3 -m pip install aqtinstall
           # Qt 6.8+ uses the linux_gcc_64 architecture name; aqt unpacks it into 6.8.2/gcc_64.
           python3 -m aqt install-qt linux desktop 6.8.2 linux_gcc_64 -O "${{ runner.tool_cache }}/Qt"
 
-      - name: Configure (macOS)
-        if: matrix.platform == 'macos'
+      - name: Configure (macOS arm64)
+        if: matrix.platform == 'macos' && matrix.arch == 'arm64'
         shell: bash
         run: cmake -S . -B build -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DCMAKE_BUILD_TYPE=Release
+
+      - name: Configure (macOS Intel)
+        if: matrix.platform == 'macos' && matrix.arch == 'intel'
+        shell: bash
+        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/clang_64" -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_BUILD_TYPE=Release
 
       - name: Configure (Windows)
         if: matrix.platform == 'windows'
@@ -73,11 +88,21 @@ jobs:
       - name: Test
         run: ctest --test-dir build -C Release --output-on-failure
 
-      - name: Package (macOS)
-        if: matrix.platform == 'macos'
+      - name: Package (macOS arm64)
+        if: matrix.platform == 'macos' && matrix.arch == 'arm64'
         shell: bash
         run: |
           "$(brew --prefix qt)/bin/macdeployqt" build/fheroes2-save-editor.app
+          # Ad-hoc sign so that the bundle passes Gatekeeper checks locally.
+          codesign --force --deep --sign - build/fheroes2-save-editor.app
+          hdiutil create -volname "fheroes2 Save Editor" -srcfolder build/fheroes2-save-editor.app -ov -format UDZO \
+            "fheroes2-save-editor-macos-${{ matrix.arch }}.dmg"
+
+      - name: Package (macOS Intel)
+        if: matrix.platform == 'macos' && matrix.arch == 'intel'
+        shell: bash
+        run: |
+          "${{ runner.tool_cache }}/Qt/6.8.2/clang_64/bin/macdeployqt" build/fheroes2-save-editor.app
           # Ad-hoc sign so that the bundle passes Gatekeeper checks locally.
           codesign --force --deep --sign - build/fheroes2-save-editor.app
           hdiutil create -volname "fheroes2 Save Editor" -srcfolder build/fheroes2-save-editor.app -ov -format UDZO \
