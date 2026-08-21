@@ -7,8 +7,9 @@
   <title>fheroes2 Save Editor — edit Heroes of Might and Magic II saves in your browser</title>
   <meta name="description" content="A free graphical save-file editor for fheroes2, the open-source Heroes of Might and Magic II engine. Edit hero armies, skills, artifacts and spells right in your browser — no installation required. Desktop builds for macOS, Windows and Linux.">
   <meta name="author" content="slavamokerov">
-  <meta name="keywords" content="fheroes2, Heroes of Might and Magic II, HoMM2, save editor, save file editor, browser editor, web editor">
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#f5deb3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
 
   <link rel="canonical" href="https://slavamokerov.github.io/fheroes2-save-editor/">
 
@@ -18,14 +19,18 @@
   <meta property="og:title" content="fheroes2 Save Editor — edit Heroes of Might and Magic II saves in your browser">
   <meta property="og:description" content="A free graphical save-file editor for fheroes2. Edit hero armies, skills, artifacts and spells right in your browser — no installation required.">
   <meta property="og:url" content="https://slavamokerov.github.io/fheroes2-save-editor/">
-  <meta property="og:image" content="https://slavamokerov.github.io/fheroes2-save-editor/screenshots/hero-screen.png">
+  <meta property="og:image" content="https://slavamokerov.github.io/fheroes2-save-editor/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="fheroes2 Save Editor — edit Heroes of Might and Magic II saves">
   <meta property="og:locale" content="en_US">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="fheroes2 Save Editor — edit HoMM2 saves in your browser">
   <meta name="twitter:description" content="A free graphical save-file editor for fheroes2. Edit hero armies, skills, artifacts and spells right in your browser.">
-  <meta name="twitter:image" content="https://slavamokerov.github.io/fheroes2-save-editor/screenshots/hero-screen.png">
+  <meta name="twitter:image" content="https://slavamokerov.github.io/fheroes2-save-editor/og-image.png">
+  <meta name="twitter:image:alt" content="fheroes2 Save Editor — edit Heroes of Might and Magic II saves">
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -42,8 +47,44 @@
     "license": "https://github.com/slavamokerov/fheroes2-save-editor/blob/main/LICENSE",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "softwareVersion": "1.0",
+    "featureList": [
+      "Edit hero armies, primary and secondary skills, artifacts and spells",
+      "Change experience, spell points, portraits and hero names",
+      "Web version runs entirely in the browser — saves never leave your computer",
+      "Native builds for macOS, Windows and Linux",
+      "Automatic backup copy before saving"
+    ],
     "author": { "@type": "Person", "name": "slavamokerov" },
     "publisher": { "@type": "Person", "name": "slavamokerov" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is my save file uploaded anywhere?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. The web editor runs entirely in your browser and never sends the file anywhere." }
+      },
+      {
+        "@type": "Question",
+        "name": "Where are my fheroes2 saves?",
+        "acceptedAnswer": { "@type": "Answer", "text": "macOS: ~/Library/Application Support/fheroes2/files/save; Windows: %LOCALAPPDATA%\\fheroes2\\files\\save; Linux: ~/.local/share/fheroes2/files/save." }
+      },
+      {
+        "@type": "Question",
+        "name": "Why did my changes disappear?",
+        "acceptedAnswer": { "@type": "Answer", "text": "If fheroes2 is running, AUTOSAVE can overwrite your edits. Close fheroes2 or edit a copy of the save." }
+      },
+      {
+        "@type": "Question",
+        "name": "Which save formats are supported?",
+        "acceptedAnswer": { "@type": "Answer", "text": "*.sav, *.savc, *.savm, *.savh (fheroes2 save versions 10032–10034)." }
+      }
+    ]
   }
   </script>
 
@@ -98,23 +139,57 @@
       <h2 id="screenshots">Screenshots</h2>
       <div class="image-showcase">
         <div class="row">
-          <img loading="lazy" src="screenshots/hero-screen.png" class="full-image game-screenshot" alt="The hero screen of the editor: portrait, primary and secondary skills, army, artifacts">
+          <img src="screenshots/demo.gif" width="712" class="full-image game-screenshot" alt="Demo: opening a save, editing the army and artifacts, saving">
         </div>
-        <div class="row">
-          <img loading="lazy" src="screenshots/spellbook.png" class="half-image game-screenshot" alt="The spell book dialog with all 65 spells">
-          <img loading="lazy" src="screenshots/count-ghosts.png" class="half-image game-screenshot" alt="Setting the number of creatures in an army slot">
+        <div class="shot-grid">
+          <figure>
+            <img loading="lazy" src="screenshots/spellbook.png" class="game-screenshot" alt="The spell book dialog with all 65 spells">
+            <figcaption>The spell book</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="screenshots/count-ghosts.png" class="game-screenshot" alt="Setting the number of creatures in an army slot">
+            <figcaption>Setting the army count</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="screenshots/monster.png" class="game-screenshot" alt="Creature window with animation and stats">
+            <figcaption>Creature window</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="screenshots/artifact.png" class="game-screenshot" alt="Picking an artifact for the hero">
+            <figcaption>Artifact window</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="screenshots/skillinfo.png" class="game-screenshot" alt="Secondary skill description">
+            <figcaption>Secondary skill info</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="screenshots/armyinfo.png" class="game-screenshot" alt="Army summary of the selected hero">
+            <figcaption>Army info</figcaption>
+          </figure>
         </div>
       </div>
+
+      <h2 id="faq">FAQ</h2>
+
+      <h3>Is my save file uploaded anywhere?</h3>
+      <p>No. The web editor runs entirely in your browser and never sends the file anywhere.</p>
+
+      <h3>Where are my fheroes2 saves?</h3>
+      <p>macOS — <code>~/Library/Application Support/fheroes2/files/save</code>; Windows — <code>%LOCALAPPDATA%\fheroes2\files\save</code>; Linux — <code>~/.local/share/fheroes2/files/save</code>.</p>
+
+      <h3>Why did my changes disappear?</h3>
+      <p>If fheroes2 is running, AUTOSAVE can overwrite your edits. Close fheroes2 or edit a copy of the save.</p>
+
+      <h3>Which save formats are supported?</h3>
+      <p><code>*.sav</code>, <code>*.savc</code>, <code>*.savm</code>, <code>*.savh</code> (fheroes2 save versions 10032–10034).</p>
     </section>
 
     <footer>
       <p>
-        This project by
-        <a href="https://github.com/slavamokerov">slavamokerov</a>
-        can be found on <a href="https://github.com/slavamokerov/fheroes2-save-editor">GitHub</a>.
+        The project is hosted on <a href="https://github.com/slavamokerov/fheroes2-save-editor">GitHub</a>.
         Licensed under <a href="https://github.com/slavamokerov/fheroes2-save-editor/blob/main/LICENSE">GPL-2.0</a>.
       </p>
-      <p class="credits">Heroes of Might and Magic II © Ubisoft. The site design is modeled after the <a href="https://ihhub.github.io/fheroes2/">fheroes2</a> website. App icon by Sergey Chikin.</p>
+      <p class="credits">Heroes of Might and Magic II © Ubisoft. The site design is modeled after the <a href="https://ihhub.github.io/fheroes2/">fheroes2</a> website. App icon — “Equestrian” from the <a href="https://sergeychikin.ru/365/">Chikin 365</a> icon set by <a href="https://sergeychikin.ru/">Sergey Chikin</a>.</p>
     </footer>
   </div>
 

@@ -2,11 +2,12 @@
 
 [![Build and test](https://github.com/slavamokerov/fheroes2-save-editor/actions/workflows/build.yml/badge.svg)](https://github.com/slavamokerov/fheroes2-save-editor/actions/workflows/build.yml)
 [![License: GPL-2.0](https://img.shields.io/badge/License-GPL--2.0-blue.svg)](LICENSE)
+[![Web editor](https://img.shields.io/badge/Web%20editor-Try%20online-blue)](https://slavamokerov.github.io/fheroes2-save-editor/)
+
+**Try it online:** <https://slavamokerov.github.io/fheroes2-save-editor/>
 
 A graphical save-file editor for [fheroes2](https://github.com/ihhub/fheroes2)
 — an open-source reimplementation of Heroes of Might and Magic II.
-
-![Hero screen](screenshots/hero-screen.png)
 
 The editor opens `*.sav`, `*.savc`, `*.savm`, `*.savh` files (formats 10032–10034)
 and lets you change hero armies, primary and secondary skills, artifacts, spells,
@@ -20,11 +21,70 @@ and the save format is documented in
 [`FH2_SAVE_FORMAT.md`](FH2_SAVE_FORMAT.md). It relies on the save structure
 changing rarely, which has held true for years.
 
+## Contents
+
+- [Download](#download)
+- [Screenshots](#screenshots)
+- [Features](#features)
+- [Command line](#command-line)
+- [Building from source](#building-from-source)
+- [Architecture](#architecture)
+- [Tests](#tests)
+- [Debugging](#debugging)
+- [FAQ](#faq)
+- [Credits](#credits)
+- [License](#license)
+
+## Download
+
+**Web editor** — no installation, runs entirely in your browser (the file
+never leaves your computer): <https://slavamokerov.github.io/fheroes2-save-editor/>
+
+Prebuilt desktop binaries are attached to [GitHub Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases):
+
+[![Download for macOS (Apple Silicon)](https://img.shields.io/badge/macOS%20(Apple%20Silicon)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-arm64.dmg)  
+`.dmg` for Apple Silicon. Ad-hoc signed: on first launch right-click → Open
+(or `xattr -dr com.apple.quarantine`).
+
+[![Download for macOS (Intel)](https://img.shields.io/badge/macOS%20(Intel)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-intel.dmg)  
+`.dmg` for Intel Macs. Ad-hoc signed: on first launch right-click → Open
+(or `xattr -dr com.apple.quarantine`).
+
+[![Download for Windows](https://img.shields.io/badge/Windows%20x64-Download-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-windows-x64.zip)  
+`.zip` with the portable build; unpack it and run `fheroes2-save-editor.exe`.
+SmartScreen may warn because the app is unsigned.
+
+[![Download for Linux](https://img.shields.io/badge/Linux%20x64%20(AppImage)-Download-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-linux-x64.AppImage)  
+`.AppImage` (x86-64, built on Ubuntu 22.04 for wide glibc compatibility):
+`chmod +x fheroes2-save-editor-linux-x64.AppImage`, then run it.
+
+The buttons link straight to the latest release assets; older versions are on
+the [Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases) page.
+
+You need the game data of Heroes of Might and Magic II: the editor reads
+`HEROES2.AGG` from the fheroes2 data folder (usually
+`~/Library/Application Support/fheroes2/data` on macOS,
+`%LOCALAPPDATA%\fheroes2\data` on Windows). No game files are distributed
+with this project.
+
 ## Screenshots
 
-| Setting the army count | Spell book |
-|---|---|
-| ![Ghost count dialog](screenshots/count-ghosts.png) | ![Spell book](screenshots/spellbook.png) |
+<p align="center">
+  <img src="screenshots/demo.gif" width="712" alt="Demo: opening a save, editing the army and artifacts, saving">
+</p>
+
+<table>
+  <tr>
+    <td align="center"><img src="screenshots/spellbook.png" width="284" alt="The spell book"><br>The spell book</td>
+    <td align="center"><img src="screenshots/count-ghosts.png" width="284" alt="Setting the army count"><br>Setting the army count</td>
+    <td align="center"><img src="screenshots/monster.png" width="284" alt="Creature window"><br>Creature window</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="screenshots/artifact.png" width="284" alt="Artifact window"><br>Artifact window</td>
+    <td align="center"><img src="screenshots/skillinfo.png" width="284" alt="Secondary skill info"><br>Secondary skill info</td>
+    <td align="center"><img src="screenshots/armyinfo.png" width="284" alt="Army info"><br>Army info</td>
+  </tr>
+</table>
 
 ## Features
 
@@ -93,38 +153,6 @@ are listed in [§12.1](FH2_SAVE_FORMAT.md#121-monster-id-int32-monstermonstertyp
 of the format doc. The troop goes into a slot that already holds the same
 monster, otherwise into an empty slot, otherwise into the first slot. A `.bak`
 backup is created before saving.
-
-## Download
-
-**Web editor** — no installation, runs entirely in your browser (the file
-never leaves your computer): <https://slavamokerov.github.io/fheroes2-save-editor/>
-
-Prebuilt desktop binaries are attached to [GitHub Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases):
-
-[![Download for macOS (Apple Silicon)](https://img.shields.io/badge/macOS%20(Apple%20Silicon)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-arm64.dmg)  
-`.dmg` for Apple Silicon. Ad-hoc signed: on first launch right-click → Open
-(or `xattr -dr com.apple.quarantine`).
-
-[![Download for macOS (Intel)](https://img.shields.io/badge/macOS%20(Intel)-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-intel.dmg)  
-`.dmg` for Intel Macs. Ad-hoc signed: on first launch right-click → Open
-(or `xattr -dr com.apple.quarantine`).
-
-[![Download for Windows](https://img.shields.io/badge/Windows%20x64-Download-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-windows-x64.zip)  
-`.zip` with the portable build; unpack it and run `fheroes2-save-editor.exe`.
-SmartScreen may warn because the app is unsigned.
-
-[![Download for Linux](https://img.shields.io/badge/Linux%20x64%20(AppImage)-Download-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-linux-x64.AppImage)  
-`.AppImage` (x86-64, built on Ubuntu 22.04 for wide glibc compatibility):
-`chmod +x fheroes2-save-editor-linux-x64.AppImage`, then run it.
-
-The buttons link straight to the latest release assets; older versions are on
-the [Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases) page.
-
-You need the game data of Heroes of Might and Magic II: the editor reads
-`HEROES2.AGG` from the fheroes2 data folder (usually
-`~/Library/Application Support/fheroes2/data` on macOS,
-`%LOCALAPPDATA%\fheroes2\data` on Windows). No game files are distributed
-with this project.
 
 ## Building from source
 
@@ -237,6 +265,42 @@ FH2_DEBUG_HERO="Crag Hack" FH2_UI_LANG=ru FH2_DEBUG_SHOT=hero-ru.png fheroes2-sa
   `expcount`, `monstercount`.
 - `FH2_DEBUG_HERO=<name>` — selects a hero right after opening the save.
 - `FH2_UI_LANG=<lang code>` — overrides the UI language.
+
+The variables are compiled into the regular release builds on all platforms
+(macOS, Windows, Linux) — no separate debug build exists. Only the syntax
+differs on Windows:
+
+```bat
+:: cmd.exe
+set FH2_DEBUG_SHOT=hero.png && fheroes2-save-editor.exe "AUTOSAVE.sav"
+```
+
+```powershell
+# PowerShell
+$env:FH2_DEBUG_SHOT="hero.png"; .\fheroes2-save-editor.exe "AUTOSAVE.sav"
+```
+
+## FAQ
+
+**Is my save file uploaded anywhere?**
+
+No. The web editor runs entirely in your browser and never sends the file
+anywhere. The desktop editor does not use the network at all.
+
+**Where are my fheroes2 saves?**
+
+- macOS — `~/Library/Application Support/fheroes2/files/save`
+- Windows — `%LOCALAPPDATA%\fheroes2\files\save`
+- Linux — `~/.local/share/fheroes2/files/save`
+
+**Why did my changes disappear?**
+
+If fheroes2 is running, AUTOSAVE can overwrite your edits. The editor shows a
+warning in the status line — close fheroes2 or edit a copy of the save.
+
+**Which save formats are supported?**
+
+`*.sav`, `*.savc`, `*.savm`, `*.savh` (fheroes2 save versions 10032–10034).
 
 ## Credits
 
