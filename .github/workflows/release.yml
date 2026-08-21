@@ -98,11 +98,13 @@ jobs:
           set -e
           # Assemble the AppDir: binary + editor translations (the app looks for
           # files/lang next to the binary) + desktop entry + icon.
-          mkdir -p AppDir/usr/bin AppDir/usr/share/applications AppDir/usr/share/icons/hicolor/256x256/apps
-          cp build/fheroes2-save-editor AppDir/usr/bin/
-          cp -r files/lang AppDir/usr/bin/files/lang
-          cp packaging/linux/fheroes2-save-editor.desktop AppDir/usr/share/applications/
-          cp packaging/linux/icon-256.png AppDir/usr/share/icons/hicolor/256x256/apps/fheroes2-save-editor.png
+          mkdir -p AppDir/usr/bin/files/lang \
+                   AppDir/usr/share/applications \
+                   AppDir/usr/share/icons/hicolor/256x256/apps
+          install -m 755 build/fheroes2-save-editor AppDir/usr/bin/
+          install -m 644 files/lang/*.po AppDir/usr/bin/files/lang/
+          install -m 644 packaging/linux/fheroes2-save-editor.desktop AppDir/usr/share/applications/
+          install -m 644 packaging/linux/icon-256.png AppDir/usr/share/icons/hicolor/256x256/apps/fheroes2-save-editor.png
 
           wget -c https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
           wget -c https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
