@@ -13,11 +13,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Intel builds run on the arm64 runner: Qt clang_64 (x86_64) + Rosetta 2,
-          # because the macos-13 (Intel) runner image is no longer reliably available.
-          - os: macos-latest
-            platform: macos
-            arch: intel
           - os: macos-latest
             platform: macos
             arch: arm64
@@ -32,17 +27,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Install Qt (macOS arm64)
-        if: matrix.platform == 'macos' && matrix.arch == 'arm64'
+      - name: Install Qt (macOS)
+        if: matrix.platform == 'macos'
         run: brew install qt cmake ninja
-
-      - name: Install Qt (macOS Intel)
-        if: matrix.platform == 'macos' && matrix.arch == 'intel'
-        run: |
-          brew install cmake ninja
-          python3 -m venv /tmp/venv
-          /tmp/venv/bin/pip install aqtinstall
-          /tmp/venv/bin/python -m aqt install-qt mac desktop 6.8.2 clang_64 -O "${{ runner.tool_cache }}/Qt"
 
       - name: Install Qt (Windows)
         if: matrix.platform == 'windows'
@@ -64,15 +51,10 @@ jobs:
           # Qt 6.8+ uses the linux_gcc_64 architecture name; aqt unpacks it into 6.8.2/gcc_64.
           python3 -m aqt install-qt linux desktop 6.8.2 linux_gcc_64 -O "${{ runner.tool_cache }}/Qt"
 
-      - name: Configure (macOS arm64)
-        if: matrix.platform == 'macos' && matrix.arch == 'arm64'
+      - name: Configure (macOS)
+        if: matrix.platform == 'macos'
         shell: bash
         run: cmake -S . -B build -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DCMAKE_BUILD_TYPE=Release
-
-      - name: Configure (macOS Intel)
-        if: matrix.platform == 'macos' && matrix.arch == 'intel'
-        shell: bash
-        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/macos" -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_BUILD_TYPE=Release
 
       - name: Configure (Windows)
         if: matrix.platform == 'windows'
@@ -89,21 +71,11 @@ jobs:
       - name: Test
         run: ctest --test-dir build -C Release --output-on-failure
 
-      - name: Package (macOS arm64)
-        if: matrix.platform == 'macos' && matrix.arch == 'arm64'
+      - name: Package (macOS)
+        if: matrix.platform == 'macos'
         shell: bash
         run: |
           "$(brew --prefix qt)/bin/macdeployqt" build/fheroes2-save-editor.app
-          # Ad-hoc sign so that the bundle passes Gatekeeper checks locally.
-          codesign --force --deep --sign - build/fheroes2-save-editor.app
-          hdiutil create -volname "fheroes2 Save Editor" -srcfolder build/fheroes2-save-editor.app -ov -format UDZO \
-            "fheroes2-save-editor-macos-${{ matrix.arch }}.dmg"
-
-      - name: Package (macOS Intel)
-        if: matrix.platform == 'macos' && matrix.arch == 'intel'
-        shell: bash
-        run: |
-          "${{ runner.tool_cache }}/Qt/6.8.2/macos/bin/macdeployqt" build/fheroes2-save-editor.app
           # Ad-hoc sign so that the bundle passes Gatekeeper checks locally.
           codesign --force --deep --sign - build/fheroes2-save-editor.app
           hdiutil create -volname "fheroes2 Save Editor" -srcfolder build/fheroes2-save-editor.app -ov -format UDZO \
@@ -149,7 +121,7 @@ jobs:
           path: |
             *.dmg
             *.zip
-            *.AppImage
+            fheroes2-save-editor-linux-x64.AppImage
           if-no-files-found: error
 
       - name: Create GitHub release
@@ -158,5 +130,5 @@ jobs:
           files: |
             *.dmg
             *.zip
-            *.AppImage
+            fheroes2-save-editor-linux-x64.AppImage
           generate_release_notes: true
