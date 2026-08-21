@@ -527,7 +527,11 @@ bool MainWindow::openDebugDialog( const QString & name )
     }
     if ( name == QLatin1String( "count" ) ) {
         int value = 100;
-        selectCountDialog( this, *_assets, QStringLiteral( "Set Monster Count:" ), 1, 500000, value, 1 );
+        SelectCountElement element;
+        element.kind = SelectCountElement::MONSTER;
+        element.id = 21; // Sprite
+        selectCountDialog( this, *_assets, replaceName( gameText( "Set %{monster} Count:" ), "%{monster}", QString::fromStdString( monsterName( 21 ) ) ), 1,
+                           500000, value, 1, element );
         return true;
     }
     if ( name == QLatin1String( "message" ) ) {
