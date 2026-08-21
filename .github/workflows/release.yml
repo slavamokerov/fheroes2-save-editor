@@ -72,7 +72,7 @@ jobs:
       - name: Configure (macOS Intel)
         if: matrix.platform == 'macos' && matrix.arch == 'intel'
         shell: bash
-        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/clang_64" -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/macos" -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_BUILD_TYPE=Release
 
       - name: Configure (Windows)
         if: matrix.platform == 'windows'
@@ -103,7 +103,7 @@ jobs:
         if: matrix.platform == 'macos' && matrix.arch == 'intel'
         shell: bash
         run: |
-          "${{ runner.tool_cache }}/Qt/6.8.2/clang_64/bin/macdeployqt" build/fheroes2-save-editor.app
+          "${{ runner.tool_cache }}/Qt/6.8.2/macos/bin/macdeployqt" build/fheroes2-save-editor.app
           # Ad-hoc sign so that the bundle passes Gatekeeper checks locally.
           codesign --force --deep --sign - build/fheroes2-save-editor.app
           hdiutil create -volname "fheroes2 Save Editor" -srcfolder build/fheroes2-save-editor.app -ov -format UDZO \
