@@ -132,7 +132,7 @@ with this project.
 
 Adds a troop to a hero without opening the interface — handy for scripts:
 
-```
+```text
 fheroes2-save-editor --add <file.sav> <hero_name> <monster_id> [count]
 ```
 
@@ -170,7 +170,7 @@ automatically via FetchContent.
 **macOS / Linux** — one command (installs Qt via Homebrew on first run):
 
 ```bash
-./run.sh
+./scripts/run.sh
 ```
 
 Manually:
@@ -182,7 +182,7 @@ open build/fheroes2-save-editor.app        # macOS
 ./build/fheroes2-save-editor               # Linux
 ```
 
-**Windows** — [build-win.ps1](build-win.ps1) (PowerShell; requires Visual Studio 2022 and
+**Windows** — [build-win.ps1](scripts/build-win.ps1) (PowerShell; requires Visual Studio 2022 and
 Qt6, pass the Qt path with `-QtDir`).
 
 ### Opening a save
@@ -195,7 +195,7 @@ or just pass the file to the app, or use OPEN SAVE... in the toolbar.
 
 ## Architecture
 
-```
+```text
 MainWindow
  └─ CentralWidget (CLOF32.TIL background, game-style toolbar, map name/date)
       └─ HeroPanel (640×480 hero screen, scale ×1)
@@ -208,7 +208,7 @@ MainWindow
 ```
 
 - **SaveFile** ([src/savefile.cpp](src/savefile.cpp), [src/savefile.h](src/savefile.h), Qt-free core) — reads the header, inflates the
-  zlib block (big-endian serialization, see [FH2_SAVE_FORMAT.md](FH2_SAVE_FORMAT.md)), scans hero
+  zlib block (big-endian serialization, see [`FH2_SAVE_FORMAT.md`](FH2_SAVE_FORMAT.md)), scans hero
   records and recovers HeroBase (primary skills, mana, artifacts) by backward
   scanning. All edits write values **at the same offsets** — the stream size
   never changes; `save()` recompresses the stream and rewrites the whole file.
@@ -332,7 +332,7 @@ changes it, the editor will be updated.
 
 **Where is the save format documented? How do I build and test?**
 
-The format is described in [FH2_SAVE_FORMAT.md](FH2_SAVE_FORMAT.md). Building
+The format is described in [`FH2_SAVE_FORMAT.md`](FH2_SAVE_FORMAT.md). Building
 instructions are in [Building from source](#building-from-source); tests are
 described in [Tests](#tests).
 

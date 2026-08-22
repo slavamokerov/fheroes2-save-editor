@@ -6,6 +6,26 @@ https://github.com/ihhub/fheroes2 (master branch, format versions 10032–10034 
 
 Purpose of this document: to provide everything needed to write an fheroes2 save editor.
 
+## Contents
+
+- [Introduction](#introduction)
+- [§1 File overview](#1-file-overview)
+- [§2 Basic serialization rules](#2-basic-serialization-rules)
+- [§3 Header](#3-header)
+- [§4 Compressed block and uncompressed stream](#4-compressed-block-and-uncompressed-stream)
+- [§5 World](#5-world)
+- [§6 Heroes — the most important section for an army editor](#6-heroes-the-most-important-section-for-an-army-editor)
+- [§7 Kingdom](#7-kingdom)
+- [§8 Castle (briefly)](#8-castle-briefly)
+- [§9 Settings and Players](#9-settings-and-players)
+- [§10 GameOver::Result](#10-gameoverresult)
+- [§11 CampaignSaveData](#11-campaignsavedata)
+- [§12 Reference tables of constants](#12-reference-tables-of-constants)
+- [§13 Pitfalls (verified in practice)](#13-pitfalls-verified-in-practice)
+- [§14 Practical recipes (C++)](#14-practical-recipes-c)
+- [§15 Useful source files](#15-useful-source-files)
+- [§16 Resource formats (AGG / ICN / KB.PAL)](#16-resource-formats-agg-icn-kbpal)
+
 ---
 
 ## Introduction
@@ -24,7 +44,7 @@ AUTOSAVE.sav
 │ zlib block                         │
 │  ┌──────────────────────────────┐  │
 │  │ World                        │  │  map tiles, castles, kingdoms,
-│  │   └─ 73 hero records         │  │  and the 73 heroes (§6)
+│  │   └─ 73 hero records         │  │  and the 73 heroes (details in §6)
 │  │ Settings                     │  │
 │  │ GameOver::Result             │  │
 │  │ 0xFF03 (end marker)          │  │
@@ -32,8 +52,8 @@ AUTOSAVE.sav
 └────────────────────────────────────┘
 ```
 
-Everything is big-endian (§2). A hero's army is five slots of
-`monster ID` (i32) + `count` (u32), 8 bytes each (§6.3):
+Everything is big-endian ([§2](#2-basic-serialization-rules)). A hero's army is five slots of
+`monster ID` (i32) + `count` (u32), 8 bytes each ([§6.3](#63-army)):
 
 ```text
 slots:  00000001 0000000a     PEASANT × 10
@@ -43,8 +63,9 @@ slots:  00000001 0000000a     PEASANT × 10
 ```
 
 If you only want to edit saves, you don't need this document at all — that's
-what the editor is for. Curious about the layout? Read §1–§2. Writing your own
-editor? §6 (heroes) is the heart, §12 has the ID tables. The editor's core
+what the editor is for. Curious about the layout? Read [§1](#1-file-overview)–[§2](#2-basic-serialization-rules).
+Writing your own editor? [§6](#6-heroes-the-most-important-section-for-an-army-editor) (heroes) is the heart,
+[§12](#12-reference-tables-of-constants) has the ID tables. The editor's core
 ([src/savefile.cpp](src/savefile.cpp)) is a working reference implementation:
 
 ```cpp
@@ -116,7 +137,7 @@ rules from this document apply.
 - `u16 requirements` — bit flags. `0x4000` = REQUIRES_POL_RESOURCES (the game requires "The Price of Loyalty" resources).
 
 Example from a real save:
-```
+```text
 ff 03                      magic
 00 00 00 05                string length = 5
 31 30 30 33 32             "10032"
@@ -170,13 +191,16 @@ In the header it is usually: 1 (standard) or 2 (campaign), etc.
 
 The uncompressed stream has the following structure:
 
-```
-World                    ([§5](#5-world))
-Settings                 ([§9](#9-settings-and-players))
-GameOver::Result         ([§10](#10-gameoverresult))
-[CampaignSaveData]       (only if gameType is campaign, [§11](#11-campaignsavedata))
+```text
+World                    (details in §5)
+Settings                 (details in §9)
+GameOver::Result         (details in §10)
+[CampaignSaveData]       (only if gameType is campaign, details in §11)
 u16 0xFF03               end-of-data marker (integrity check)
 ```
+
+Section links: [§5 World](#5-world), [§9 Settings and Players](#9-settings-and-players),
+[§10 GameOver::Result](#10-gameoverresult), [§11 CampaignSaveData](#11-campaignsavedata).
 
 The `0xFF03` marker is a mandatory last element; it is convenient for verifying that the stream
 was decompressed correctly (last 2 bytes).
@@ -193,7 +217,7 @@ Field order:
 | 1 | width | u32 (in newer versions; in older < 10011 — u16) |
 | 2 | height | u32 |
 | 3 | vec_tiles | vector<Maps::Tile> — u32 count + tiles (each tile is complex; count = width×height) |
-| 4 | vec_heroes | AllHeroes — **all heroes of the game** ([§6](#6-heroes--the-most-important-section-for-an-army-editor)) |
+| 4 | vec_heroes | AllHeroes — **all heroes of the game** ([§6](#6-heroes-the-most-important-section-for-an-army-editor)) |
 | 5 | vec_castles | vector<Castle*> — castles |
 | 6 | vec_kingdoms | Kingdoms ([§7](#7-kingdom)) |
 | 7 | _customRumors | vector<string> |
@@ -208,7 +232,7 @@ Field order:
 | 16 | map_objects | MapObjects |
 | 17 | _seed | u32 |
 
-AllHeroes: `u32 count` (= HEROES_COUNT = 73) + 73 Heroes records back-to-back ([§6](#6-heroes--the-most-important-section-for-an-army-editor)).
+AllHeroes: `u32 count` (= HEROES_COUNT = 73) + 73 Heroes records back-to-back ([§6](#6-heroes-the-most-important-section-for-an-army-editor)).
 This is exactly the section where hero armies live.
 
 ## 6. Heroes — the most important section for an army editor
@@ -218,6 +242,19 @@ Source: `src/fheroes2/heroes/heroes.cpp` — `operator<<(OStreamBase&, const Her
 
 A hero record = HeroBase + the Heroes fields. The serialization order is exactly as follows
 (all numbers big-endian):
+
+```mermaid
+flowchart TB
+    subgraph HB["HeroBase — stored before the name (§6.1)"]
+        direction LR
+        A["attack · defense · knowledge · power<br/>(4 × i32)"] --> B["center (i16 × 2)<br/>modes · spell points · move points"] --> C["spell book<br/>(u32 count + spell ids)"] --> D["artifact bag<br/>(u32 count 0..14 + id/ext pairs)"]
+    end
+    subgraph HR["Heroes fields — after HeroBase (§6.2)"]
+        direction LR
+        E["_name<br/>(u32 length + bytes)"] --> F["color · experience<br/>secondary skills"] --> G["ARMY<br/>5 slots × 8 bytes + spread + color<br/>= 46 bytes (§6.3)"] --> I["_id · portrait · race<br/>path · direction · rest"]
+    end
+    D --> E
+```
 
 ### 6.1 HeroBase
 
@@ -295,6 +332,20 @@ The algorithm is implemented in [src/savefile.cpp](src/savefile.cpp)
 
 The algorithm is verified on real saves: it finds all AllHeroes records and
 recognizes HeroBase for every hero.
+
+```mermaid
+flowchart TD
+    S["Start: position p = 0"] --> N{"Read u32 length<br/>1 &le; len &le; 64<br/>printable bytes?"}
+    N -- "no" --> P["p = p + 1"]
+    P --> N
+    N -- "yes" --> V{"Validate the fields after the name:<br/>color mask, experience, skills,<br/>army size 5, ids in range?"}
+    V -- "fail" --> P
+    V -- "ok" --> H["Hero found — Heroes fields parsed"]
+    H --> B["Backward scan for HeroBase:<br/>artifact bag (count 14 down to 0),<br/>spell book, then the fixed fields"]
+    B --> W{"Values sane?<br/>skills &le; 99, center inside the map,<br/>mana &le; 9999"}
+    W -- "no" --> X["HeroBase not recognized"]
+    W -- "yes" --> Y["heroBaseParsed = true"]
+```
 
 ### 6.5 Important specifics
 

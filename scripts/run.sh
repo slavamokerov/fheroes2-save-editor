@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build and run the editor with a single command: ./run.sh
+# Build and run the editor with a single command: ./scripts/run.sh
 set -e
 cd "$(dirname "$0")"
 

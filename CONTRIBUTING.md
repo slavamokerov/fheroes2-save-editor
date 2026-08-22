@@ -36,7 +36,7 @@ Tests only write to temporary files and never modify the original saves.
 - `web/` — the WebAssembly build of the same core.
 
 The save format is documented in
-[FH2_SAVE_FORMAT.md](FH2_SAVE_FORMAT.md) — read it before touching the core.
+[`FH2_SAVE_FORMAT.md`](FH2_SAVE_FORMAT.md) — read it before touching the core.
 
 ## Conventions
 
