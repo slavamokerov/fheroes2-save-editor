@@ -264,8 +264,11 @@ header h2 {
   letter-spacing: 0.02em;
   color: var(--primary);
   text-decoration: underline;
+  border: 0.125em solid var(--primary);
+  border-radius: 4px;
+  background: transparent;
 }
-.build-link:hover { color: var(--highlight); text-decoration-thickness: 2px; }
+.build-link:hover { color: var(--highlight); border-color: var(--highlight); text-decoration-thickness: 2px; }
 
 .note { font-size: 0.85em; color: var(--highlight); }
 
