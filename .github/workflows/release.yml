@@ -16,6 +16,11 @@ jobs:
           - os: macos-latest
             platform: macos
             arch: arm64
+          # Native Intel runner (macOS 15 on x86_64 hardware). GitHub plans to
+          # retire it in August 2027; fallback then: local Intel build.
+          - os: macos-15-intel
+            platform: macos
+            arch: intel
           - os: windows-latest
             platform: windows
             arch: x64
