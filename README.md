@@ -40,10 +40,7 @@ the editor will be updated.
 
 ## Download
 
-**Web editor** — no installation, runs entirely in your browser:
-<https://slavamokerov.github.io/fheroes2-save-editor/>
-It edits everything the desktop app edits — just without the in-game
-graphics — and downloads the result as a new file.
+**[Web editor](https://slavamokerov.github.io/fheroes2-save-editor/)** — no installation, runs entirely in your browser. It edits everything the desktop app edits — just without the in-game graphics — and downloads the result as a new file.
 
 Prebuilt desktop binaries are attached to [GitHub Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases):
 
