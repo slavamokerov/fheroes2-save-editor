@@ -50,9 +50,9 @@
     "featureList": [
       "Edit hero armies, primary and secondary skills, artifacts and spells",
       "Change experience, spell points, portraits and hero names",
-      "Web version runs entirely in the browser — saves never leave your computer",
+      "Web version runs entirely in the browser and downloads the edited file",
       "Native builds for macOS, Windows and Linux",
-      "Automatic backup copy before saving"
+      "Automatic .bak backup before saving (desktop version)"
     ],
     "author": { "@type": "Person", "name": "slavamokerov" },
     "publisher": { "@type": "Person", "name": "slavamokerov" }
@@ -66,8 +66,18 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Is my save file uploaded anywhere?",
-        "acceptedAnswer": { "@type": "Answer", "text": "No. The web editor runs entirely in your browser and never sends the file anywhere." }
+        "name": "How does it work?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Open a save, edit your heroes, save it back. The web editor runs entirely in your browser and downloads the result as a new file; the desktop editor reads the file from disk and makes a .bak backup before the first save." }
+      },
+      {
+        "@type": "Question",
+        "name": "What's the difference between the web and the desktop version?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Both edit exactly the same things. The web version has no in-game graphics — the same fields on a plain page. The desktop version looks like the hero screen from the game and reads HEROES2.AGG from your fheroes2 data folder." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need the game files?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Web — no. Desktop — yes, the editor reads HEROES2.AGG from the fheroes2 data folder; no game files are distributed with this project." }
       },
       {
         "@type": "Question",
@@ -76,13 +86,28 @@
       },
       {
         "@type": "Question",
-        "name": "Why did my changes disappear?",
-        "acceptedAnswer": { "@type": "Answer", "text": "If fheroes2 is running, AUTOSAVE can overwrite your edits. Close fheroes2 or edit a copy of the save." }
+        "name": "Which save formats are supported?",
+        "acceptedAnswer": { "@type": "Answer", "text": "*.sav, *.savc, *.savm, *.savh (fheroes2 save versions 10032–10034). Saves of the original Heroes of Might and Magic II are not supported." }
       },
       {
         "@type": "Question",
-        "name": "Which save formats are supported?",
-        "acceptedAnswer": { "@type": "Answer", "text": "*.sav, *.savc, *.savm, *.savh (fheroes2 save versions 10032–10034)." }
+        "name": "Why did my changes disappear?",
+        "acceptedAnswer": { "@type": "Answer", "text": "If fheroes2 is running, AUTOSAVE can overwrite your edits. The desktop editor shows a warning in the status line — close fheroes2 or edit a copy of the save." }
+      },
+      {
+        "@type": "Question",
+        "name": "Will a fheroes2 update break the editor?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The save format has stayed stable for years. If a future fheroes2 release ever changes it, the editor will be updated." }
+      },
+      {
+        "@type": "Question",
+        "name": "Where is the save format documented? How do I build and test?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The format is described in FH2_SAVE_FORMAT.md; building instructions and tests are in the README on GitHub." }
+      },
+      {
+        "@type": "Question",
+        "name": "Something's broken or you have an idea?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Open an issue on GitHub." }
       }
     ]
   }
@@ -108,7 +133,7 @@
 
     <section id="main_content">
       <h2 id="web-editor">Web Editor</h2>
-      <p>Open an fheroes2 save (<code>*.sav</code>, <code>*.savc</code>, <code>*.savm</code>, <code>*.savh</code>), edit your heroes and download the result.</p>
+      <p>Open an fheroes2 save (<code>*.sav</code>, <code>*.savc</code>, <code>*.savm</code>, <code>*.savh</code>), edit your heroes and download the result. The web editor has no in-game graphics — it edits everything the desktop app edits, just without the portraits and sprites.</p>
 
       <div id="editor-app">
         <div class="editor-toolbar">
@@ -171,17 +196,32 @@
 
       <h2 id="faq">FAQ</h2>
 
-      <h3>Is my save file uploaded anywhere?</h3>
-      <p>No. The web editor runs entirely in your browser and never sends the file anywhere.</p>
+      <h3>How does it work?</h3>
+      <p>Open a save, edit your heroes, save it back. The web editor runs entirely in your browser and downloads the result as a new file; the desktop editor reads the file from disk and makes a <code>.bak</code> backup before the first save.</p>
+
+      <h3>What's the difference between the web and the desktop version?</h3>
+      <p>Both edit exactly the same things. The web version has no in-game graphics — the same fields on a plain page. The desktop version looks like the hero screen from the game (portraits, sprites, the spell book) and reads <code>HEROES2.AGG</code> from your fheroes2 data folder.</p>
+
+      <h3>Do I need the game files?</h3>
+      <p>Web — no, nothing to install or configure. Desktop — yes, the editor reads <code>HEROES2.AGG</code> from the fheroes2 data folder; no game files are distributed with this project.</p>
 
       <h3>Where are my fheroes2 saves?</h3>
       <p>macOS — <code>~/Library/Application Support/fheroes2/files/save</code>; Windows — <code>%LOCALAPPDATA%\fheroes2\files\save</code>; Linux — <code>~/.local/share/fheroes2/files/save</code>.</p>
 
-      <h3>Why did my changes disappear?</h3>
-      <p>If fheroes2 is running, AUTOSAVE can overwrite your edits. Close fheroes2 or edit a copy of the save.</p>
-
       <h3>Which save formats are supported?</h3>
-      <p><code>*.sav</code>, <code>*.savc</code>, <code>*.savm</code>, <code>*.savh</code> (fheroes2 save versions 10032–10034).</p>
+      <p><code>*.sav</code>, <code>*.savc</code>, <code>*.savm</code>, <code>*.savh</code> (fheroes2 save versions 10032–10034). Saves of the original Heroes of Might and Magic II are not supported.</p>
+
+      <h3>Why did my changes disappear?</h3>
+      <p>If fheroes2 is running, AUTOSAVE can overwrite your edits. The desktop editor shows a warning in the status line — close fheroes2 or edit a copy of the save.</p>
+
+      <h3>Will a fheroes2 update break the editor?</h3>
+      <p>The save format has stayed stable for years. If a future fheroes2 release ever changes it, the editor will be updated.</p>
+
+      <h3>Where is the save format documented? How do I build and test?</h3>
+      <p>The format is described in <a href="https://github.com/slavamokerov/fheroes2-save-editor/blob/main/FH2_SAVE_FORMAT.md">FH2_SAVE_FORMAT.md</a>. Building instructions and tests are in the <a href="https://github.com/slavamokerov/fheroes2-save-editor#readme">README</a>.</p>
+
+      <h3>Something's broken or you have an idea?</h3>
+      <p>Open an <a href="https://github.com/slavamokerov/fheroes2-save-editor/issues">issue</a> on GitHub.</p>
     </section>
 
     <footer>

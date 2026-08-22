@@ -12,14 +12,17 @@ A graphical save-file editor for [fheroes2](https://github.com/ihhub/fheroes2)
 The editor opens `*.sav`, `*.savc`, `*.savm`, `*.savh` files (formats 10032–10034)
 and lets you change hero armies, primary and secondary skills, artifacts, spells,
 experience, spell points, portraits and names — with the same look and feel as
-the in-game hero screen. All graphics (portraits, monsters, icons, fonts) are
-extracted directly from the game's `HEROES2.AGG` archive at runtime.
+the in-game hero screen. In the desktop version, all graphics (portraits,
+monsters, icons, fonts) are extracted directly from the game's `HEROES2.AGG`
+archive at runtime.
 
-The project is **independent of the fheroes2 codebase**: resources (AGG/ICN/KB.PAL)
-are read by its own loader ([src/aggicn.cpp](src/aggicn.cpp), [src/aggicn.h](src/aggicn.h)),
-and the save format is documented in
-[`FH2_SAVE_FORMAT.md`](FH2_SAVE_FORMAT.md). It relies on the save structure
-changing rarely, which has held true for years.
+The hero screen is a port of the window from [fheroes2](https://github.com/ihhub/fheroes2)'s
+map editor, and this project owes a lot to the engine's authors. Game resources
+(AGG/ICN/KB.PAL) are read by our own loader ([src/aggicn.cpp](src/aggicn.cpp),
+[src/aggicn.h](src/aggicn.h)), and the save layout is documented in
+[`FH2_SAVE_FORMAT.md`](FH2_SAVE_FORMAT.md). The save format rarely changes and
+has stayed stable for years — if a future fheroes2 release ever changes it,
+the editor will be updated.
 
 ## Contents
 
@@ -37,8 +40,10 @@ changing rarely, which has held true for years.
 
 ## Download
 
-**Web editor** — no installation, runs entirely in your browser (the file
-never leaves your computer): <https://slavamokerov.github.io/fheroes2-save-editor/>
+**Web editor** — no installation, runs entirely in your browser:
+<https://slavamokerov.github.io/fheroes2-save-editor/>
+It edits everything the desktop app edits — just without the in-game
+graphics — and downloads the result as a new file.
 
 Prebuilt desktop binaries are attached to [GitHub Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases):
 
@@ -113,9 +118,12 @@ with this project.
   installation. All game texts (monster, spell, artifact and skill names and
   descriptions) come from fheroes2's own translation files, so every language
   supported by the game works out of the box.
-- **Backup** — a `.bak` copy of the save is made before the first save; a
-  warning appears if fheroes2 is running, because AUTOSAVE may overwrite your
-  changes.
+- **Backup** — the desktop version makes a `.bak` copy of the save before
+  the first save; a warning appears if fheroes2 is running, because AUTOSAVE
+  may overwrite your changes.
+- **Web version** — the same editor compiled to WebAssembly: everything above
+  is editable in the browser, just without the game graphics. The edited file
+  is downloaded as a new file instead of overwriting the opened one.
 - **Command line** — `fheroes2-save-editor --add <file.sav> <hero_name> <monster_id> <count>`
   adds a troop to a hero without opening the interface (see
   [Command line](#command-line)).
@@ -282,10 +290,24 @@ $env:FH2_DEBUG_SHOT="hero.png"; .\fheroes2-save-editor.exe "AUTOSAVE.sav"
 
 ## FAQ
 
-**Is my save file uploaded anywhere?**
+**How does it work?**
 
-No. The web editor runs entirely in your browser and never sends the file
-anywhere. The desktop editor does not use the network at all.
+Open a save, edit your heroes, save it back. The web editor runs entirely in
+your browser and downloads the result as a new file; the desktop editor reads
+the file from disk and makes a `.bak` backup before the first save.
+
+**What's the difference between the web and the desktop version?**
+
+Both edit exactly the same things. The web version has no in-game graphics —
+the same fields on a plain page. The desktop version looks like the hero
+screen from the game (portraits, sprites, the spell book) and reads
+`HEROES2.AGG` from your fheroes2 data folder.
+
+**Do I need the game files?**
+
+Web — no, nothing to install or configure. Desktop — yes, the editor reads
+`HEROES2.AGG` from the fheroes2 data folder; no game files are distributed
+with this project.
 
 **Where are my fheroes2 saves?**
 
@@ -293,14 +315,30 @@ anywhere. The desktop editor does not use the network at all.
 - Windows — `%LOCALAPPDATA%\fheroes2\files\save`
 - Linux — `~/.local/share/fheroes2/files/save`
 
-**Why did my changes disappear?**
-
-If fheroes2 is running, AUTOSAVE can overwrite your edits. The editor shows a
-warning in the status line — close fheroes2 or edit a copy of the save.
-
 **Which save formats are supported?**
 
 `*.sav`, `*.savc`, `*.savm`, `*.savh` (fheroes2 save versions 10032–10034).
+Saves of the original Heroes of Might and Magic II are not supported.
+
+**Why did my changes disappear?**
+
+If fheroes2 is running, AUTOSAVE can overwrite your edits. The desktop editor
+shows a warning in the status line — close fheroes2 or edit a copy of the save.
+
+**Will a fheroes2 update break the editor?**
+
+The save format has stayed stable for years. If a future fheroes2 release ever
+changes it, the editor will be updated.
+
+**Where is the save format documented? How do I build and test?**
+
+The format is described in [FH2_SAVE_FORMAT.md](FH2_SAVE_FORMAT.md). Building
+instructions are in [Building from source](#building-from-source); tests are
+described in [Tests](#tests).
+
+**Something's broken or you have an idea?**
+
+Open an [issue](https://github.com/slavamokerov/fheroes2-save-editor/issues).
 
 ## Credits
 

@@ -8,6 +8,57 @@ Purpose of this document: to provide everything needed to write an fheroes2 save
 
 ---
 
+## Introduction
+
+A save file is a short uncompressed header followed by one zlib-compressed block
+that contains the whole game state. For an editor, the interesting part is the
+73 hero records inside it — every hero's army, skills, artifacts and spells are
+plain big-endian values sitting at predictable offsets.
+
+```text
+AUTOSAVE.sav
+┌────────────────────────────────────┐
+│ header (uncompressed)              │  magic 0xFF03, format version
+│  · magic, version, map info        │  (e.g. "10032"), map name, size…
+├────────────────────────────────────┤
+│ zlib block                         │
+│  ┌──────────────────────────────┐  │
+│  │ World                        │  │  map tiles, castles, kingdoms,
+│  │   └─ 73 hero records         │  │  and the 73 heroes (§6)
+│  │ Settings                     │  │
+│  │ GameOver::Result             │  │
+│  │ 0xFF03 (end marker)          │  │
+│  └──────────────────────────────┘  │
+└────────────────────────────────────┘
+```
+
+Everything is big-endian (§2). A hero's army is five slots of
+`monster ID` (i32) + `count` (u32), 8 bytes each (§6.3):
+
+```text
+slots:  00000001 0000000a     PEASANT × 10
+        00000024 000003e8     GREEN_DRAGON × 1000
+        00000000 00000000     (empty slot)
+        …
+```
+
+If you only want to edit saves, you don't need this document at all — that's
+what the editor is for. Curious about the layout? Read §1–§2. Writing your own
+editor? §6 (heroes) is the heart, §12 has the ID tables. The editor's core
+([src/savefile.cpp](src/savefile.cpp)) is a working reference implementation:
+
+```cpp
+fh2::SaveFile save = fh2::SaveFile::load( "AUTOSAVE.sav" );
+for ( fh2::HeroRecord & hero : save.heroes() ) {
+    if ( hero.name == "Gem" ) {
+        save.setSlot( hero, 2, 38, 10 );   // 10 Black Dragons into slot 2
+        save.save();                       // recompresses; offsets stay the same
+    }
+}
+```
+
+---
+
 ## 1. File overview
 
 A save file consists of two parts:
