@@ -4,7 +4,7 @@
 [![License: GPL-2.0](https://img.shields.io/badge/License-GPL--2.0-blue.svg)](LICENSE)
 [![Web editor](https://img.shields.io/badge/Web%20editor-Try%20online-blue)](https://slavamokerov.github.io/fheroes2-save-editor/)
 
-**Try it online:** <https://slavamokerov.github.io/fheroes2-save-editor/>
+**[Try it online](https://slavamokerov.github.io/fheroes2-save-editor/)**
 
 A graphical save-file editor for [fheroes2](https://github.com/ihhub/fheroes2)
 — an open-source reimplementation of Heroes of Might and Magic II.
