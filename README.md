@@ -161,10 +161,27 @@ backup is created before saving.
 
 ## Building from source
 
-Dependencies: CMake ≥ 3.21, Qt6 (Widgets), a C++17 compiler. zlib is fetched
-automatically via FetchContent.
+### Prerequisites
 
-**macOS / Linux** — one command (installs Qt via Homebrew on first run):
+fheroes2 itself is assumed to be already installed — the editor reads
+`HEROES2.AGG` from its data folder, so only the editor needs to be built.
+The build requires CMake ≥ 3.21, Qt6 (Widgets), and a C++17 compiler.
+zlib is fetched automatically via FetchContent.
+
+Install the build dependencies with your distribution's package manager:
+
+| Distro            | Command                                                                          |
+|-------------------|----------------------------------------------------------------------------------|
+| Debian / Ubuntu   | `sudo apt install cmake g++ git qt6-base-dev libgl1-mesa-dev`                    |
+| Fedora            | `sudo dnf install cmake gcc-c++ git qt6-qtbase-devel`                            |
+| Arch Linux        | `sudo pacman -S cmake git qt6-base`                                              |
+| openSUSE          | `sudo zypper install cmake gcc-c++ git qt6-base-devel`                           |
+
+(`libgl1-mesa-dev` is a Qt6 build requirement on Debian/Ubuntu.)
+
+### macOS
+
+One command (installs Qt via Homebrew on first run):
 
 ```bash
 ./scripts/run.sh
@@ -175,11 +192,32 @@ Manually:
 ```bash
 cmake -S . -B build -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
-open build/fheroes2-save-editor.app        # macOS
-./build/fheroes2-save-editor               # Linux
+open build/fheroes2-save-editor.app
 ```
 
-**Windows** — [build-win.ps1](scripts/build-win.ps1) (PowerShell; requires Visual Studio 2022 and
+### Linux
+
+One command — [build-linux.sh](scripts/build-linux.sh) only builds and runs;
+it deliberately does not install packages (see the script header):
+
+```bash
+./scripts/build-linux.sh
+```
+
+Manually:
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
+./build/fheroes2-save-editor
+```
+
+If Qt is not on the default search path, pass it with
+`-DCMAKE_PREFIX_PATH=/path/to/qt` (or set `QT_DIR` when using the script).
+
+### Windows
+
+[build-win.ps1](scripts/build-win.ps1) (PowerShell; requires Visual Studio 2022 and
 Qt6, pass the Qt path with `-QtDir`).
 
 ### Opening a save
