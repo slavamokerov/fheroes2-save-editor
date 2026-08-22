@@ -255,6 +255,18 @@ header h2 {
 .dl-linux { background: #fcc624; color: #000 !important; }
 .dl-linux:hover { background: #e3b31c; }
 
+.build-link {
+  display: inline-block;
+  margin: 0.4em 0 1em;
+  padding: 0.45em 1.1em;
+  font-family: "Asul", sans-serif;
+  font-size: 1.1em;
+  letter-spacing: 0.02em;
+  color: var(--primary);
+  text-decoration: underline;
+}
+.build-link:hover { color: var(--highlight); text-decoration-thickness: 2px; }
+
 .note { font-size: 0.85em; color: var(--highlight); }
 
 /* --- image showcase --- */
