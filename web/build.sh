@@ -24,6 +24,7 @@ em++ -O2 \
   --bind \
   -o "$OUT/fh2core.js" \
   "$ROOT/src/savefile.cpp" \
+  "$ROOT/src/worldparse.cpp" \
   "$ROOT/src/constants.cpp" \
   "$ROOT/src/gettextmo.cpp" \
   "$ROOT/web/wasm_api.cpp"
