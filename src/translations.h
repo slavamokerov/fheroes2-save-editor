@@ -32,6 +32,7 @@ enum class UiButton {
     Min,
     OpenSave,
     GameData,
+    ExportPoster,
 };
 
 // Button label in the current language (fallback — English).

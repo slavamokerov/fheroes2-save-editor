@@ -32,7 +32,7 @@ QString replaceName( QString text, const char * placeholder, const QString & nam
 QString uiButtonText( UiButton key )
 {
     static const char * const msgids[] = {
-        "OKAY", "CANCEL", "YES", "NO", "EXIT", "DISMISS", "MAX", "MIN", "OPEN SAVE...", "GAME DATA...",
+        "OKAY", "CANCEL", "YES", "NO", "EXIT", "DISMISS", "MAX", "MIN", "OPEN SAVE...", "GAME DATA...", "EXPORT POSTER...",
     };
     const int idx = static_cast<int>( key );
     if ( idx < 0 || idx >= static_cast<int>( sizeof( msgids ) / sizeof( msgids[0] ) ) )
@@ -42,7 +42,8 @@ QString uiButtonText( UiButton key )
     // The button font only contains ASCII and CP1251: labels with characters
     // outside these sets are replaced with English ones (like
     // getSupportedText in fheroes2).
-    const std::string translated = ( key == UiButton::OpenSave || key == UiButton::GameData ) ? trEditor( msgid ) : trGame( msgid );
+    const std::string translated
+        = ( key == UiButton::OpenSave || key == UiButton::GameData || key == UiButton::ExportPoster ) ? trEditor( msgid ) : trGame( msgid );
     const QString qs = transliterateLatin1( QString::fromUtf8( translated.c_str() ) );
     const std::string cp = encodeCp1251( qs );
     if ( cp.empty() || !buttonFontSupports( cp ) )
