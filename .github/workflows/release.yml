@@ -59,16 +59,16 @@ jobs:
       - name: Configure (macOS)
         if: matrix.platform == 'macos'
         shell: bash
-        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DCMAKE_BUILD_TYPE=Release -DFH2_WITH_POSTER=off
 
       - name: Configure (Windows)
         if: matrix.platform == 'windows'
         shell: bash
-        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/msvc2022_64" -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/msvc2022_64" -DCMAKE_BUILD_TYPE=Release -DFH2_WITH_POSTER=off
 
       - name: Configure (Linux)
         if: matrix.platform == 'linux'
-        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/gcc_64" -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S . -B build -DCMAKE_PREFIX_PATH="${{ runner.tool_cache }}/Qt/6.8.2/gcc_64" -DCMAKE_BUILD_TYPE=Release -DFH2_WITH_POSTER=off
 
       - name: Build
         run: cmake --build build --config Release -j 4
