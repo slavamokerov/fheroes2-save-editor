@@ -22,18 +22,53 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(zlib)
 
-# Core library (no Qt) — shared by the application and the tests.
-add_library(fh2core STATIC
+# === Shared core (consumed by other projects too, e.g. fheroes2-screenshot) ===
+#
+# These file lists are the single source of truth for the shared code. The
+# fheroes2-screenshot project syncs them into its vendor/ folder using its
+# scripts/sync-core.sh. If you move/rename/add core files, update the lists
+# here and re-sync there (see AGENTS.md).
+
+# fh2core — save parsing (no Qt).
+set(FH2CORE_SOURCES
     src/constants.cpp
     src/gettextmo.cpp
     src/savefile.cpp
+    src/worldparse.cpp
+)
+set(FH2CORE_HEADERS
+    src/constants.h
+    src/gettextmo.h
+    src/savefile.h
+    src/worldparse.h
+    src/codepages.h
 )
 
-add_executable(fheroes2-save-editor
-    src/main.cpp
+# fh2resources — game resource loading/rendering helpers (Qt6::Gui).
+set(FH2RESOURCES_SOURCES
     src/aggicn.cpp
     src/assets.cpp
     src/gamefont.cpp
+)
+set(FH2RESOURCES_HEADERS
+    src/aggicn.h
+    src/assets.h
+    src/gamefont.h
+    src/textutil.h
+)
+
+# Core library (no Qt) — shared by the application, the tests and external consumers.
+add_library(fh2core STATIC ${FH2CORE_SOURCES})
+target_include_directories(fh2core PUBLIC src)
+target_link_libraries(fh2core PUBLIC zlibstatic)
+
+# Resource library (Qt6::Gui) — shared by the application and external consumers.
+add_library(fh2resources STATIC ${FH2RESOURCES_SOURCES})
+target_include_directories(fh2resources PUBLIC src)
+target_link_libraries(fh2resources PUBLIC Qt6::Gui)
+
+add_executable(fheroes2-save-editor
+    src/main.cpp
     src/buttonfont.cpp
     src/gameui.cpp
     src/gamedata.cpp
@@ -44,8 +79,32 @@ add_executable(fheroes2-save-editor
     resources.qrc
 )
 
-target_link_libraries(fheroes2-save-editor PRIVATE Qt6::Widgets fh2core)
-target_link_libraries(fh2core PUBLIC zlibstatic)
+target_link_libraries(fheroes2-save-editor PRIVATE Qt6::Widgets fh2core fh2resources)
+
+# === Optional poster integration (fheroes2-screenshot's fh2poster library) ===
+# The "EXPORT POSTER..." toolbar button. Requires the sibling project
+# ~/Projects/fheroes2-screenshot; its fh2poster library reuses this project's
+# fh2core/fh2resources targets (the shared core, see AGENTS.md).
+#
+# OFF by default: the poster export is a development feature. Release builds
+# must stay off (release.yml passes the flag explicitly).
+set(FH2_WITH_POSTER "off" CACHE STRING "Build with the poster export: on | off")
+set_property(CACHE FH2_WITH_POSTER PROPERTY STRINGS on off)
+
+set(FH2_POSTER_DIR "${CMAKE_CURRENT_LIST_DIR}/../fheroes2-screenshot/libs/fh2poster"
+    CACHE PATH "Path to the fheroes2-screenshot fh2poster library")
+
+if(FH2_WITH_POSTER STREQUAL "on")
+    if(NOT EXISTS "${FH2_POSTER_DIR}/CMakeLists.txt")
+        message(FATAL_ERROR "FH2_WITH_POSTER=on but ${FH2_POSTER_DIR} is missing; set -DFH2_POSTER_DIR=... or -DFH2_WITH_POSTER=off")
+    endif()
+    add_subdirectory(${FH2_POSTER_DIR} fh2poster)
+    target_link_libraries(fheroes2-save-editor PRIVATE fh2poster)
+    target_compile_definitions(fheroes2-save-editor PRIVATE FH2_WITH_POSTER=1)
+    message(STATUS "poster export: enabled (fh2poster from ${FH2_POSTER_DIR})")
+else()
+    message(STATUS "poster export: disabled")
+endif()
 
 if(APPLE)
     set_target_properties(fheroes2-save-editor PROPERTIES

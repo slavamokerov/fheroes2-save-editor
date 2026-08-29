@@ -348,8 +348,7 @@ std::string skillNameWithLevel( int id, int level )
 }
 
 std::string raceName( int race )
-{
-    switch ( race ) {
+{    switch ( race ) {
     case 1:
         return trGame( "Knight" );
     case 2:
@@ -569,6 +568,48 @@ int crestIndexForColor( int colorMask )
     case 8: return 3;   // YELLOW
     case 16: return 4;  // ORANGE
     case 32: return 5;  // PURPLE
+    default: return 0;
+    }
+}
+
+std::string resourceName( int res )
+{
+    switch ( res ) {
+    case RESOURCE_WOOD: return trGame( "Wood" );
+    case RESOURCE_MERCURY: return trGame( "Mercury" );
+    case RESOURCE_ORE: return trGame( "Ore" );
+    case RESOURCE_SULFUR: return trGame( "Sulfur" );
+    case RESOURCE_CRYSTAL: return trGame( "Crystal" );
+    case RESOURCE_GEMS: return trGame( "Gems" );
+    case RESOURCE_GOLD: return trGame( "Gold" );
+    default: return "?";
+    }
+}
+
+int castleIconIndex( int race, bool castle )
+{
+    // LOCATORS.ICN indices (getCastleIcnIndex in castle.cpp).
+    switch ( race ) {
+    case 1: return castle ? 9 : 15;  // KNGT
+    case 2: return castle ? 10 : 16; // BARB
+    case 4: return castle ? 11 : 17; // SORC
+    case 8: return castle ? 12 : 18; // WRLK
+    case 16: return castle ? 13 : 19; // WZRD
+    case 32: return castle ? 14 : 20; // NECR
+    default: return 25;              // random (editor)
+    }
+}
+
+int flagIconIndex( int colorMask )
+{
+    // FLAG32.ICN: 8 animation frames per color, 19×20.
+    switch ( colorMask ) {
+    case 1: return 0;   // BLUE
+    case 2: return 8;   // GREEN
+    case 4: return 16;  // RED
+    case 8: return 24;  // YELLOW
+    case 16: return 32; // ORANGE
+    case 32: return 40; // PURPLE
     default: return 0;
     }
 }

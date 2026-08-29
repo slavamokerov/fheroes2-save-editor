@@ -85,7 +85,7 @@ bool tryReadString( const std::vector<uint8_t> & buf, size_t pos, size_t maxLen,
     return true;
 }
 
-MapInfo parseMapInfo( const std::vector<uint8_t> & buf, size_t pos, int formatVersion, size_t * endPos = nullptr )
+MapInfo parseMapInfo( const std::vector<uint8_t> & buf, size_t pos, int formatVersion, size_t * endPos = nullptr, size_t * dateOffset = nullptr )
 {
     MapInfo info;
     size_t p = pos;
@@ -142,6 +142,8 @@ MapInfo parseMapInfo( const std::vector<uint8_t> & buf, size_t pos, int formatVe
     if ( p + 12 > buf.size() )
         throw SaveError( "Invalid FileInfo (date)" );
     b = buf.data() + p;
+    if ( dateOffset )
+        *dateOffset = p;
     info.worldDay = readBe32( b );
     info.worldWeek = readBe32( b + 4 );
     info.worldMonth = readBe32( b + 8 );
@@ -223,10 +225,19 @@ void tryParseHeroBase( const std::vector<uint8_t> & buf, size_t namePos, HeroRec
         if ( !ok )
             continue;
 
-        // spellBook: u32 count + count×i32, adjacent to the bag.
+        // spellBook: u32 count + count×i32, adjacent to the bag. The count is
+        // scanned from 64 DOWN with full validation (count + spell ids + the
+        // fixed tail before it): an ascending scan used to accept a false
+        // match when a spell id in the middle of the book equals the
+        // candidate count (e.g. the spell id 3 at the 4th position).
         size_t spellBookStart = 0;
         std::vector<int> spellIds;
-        for ( int n = 0; n <= 64; ++n ) {
+        int attack = 0;
+        int defense = 0;
+        int knowledge = 0;
+        int power = 0;
+        uint32_t spellPoints = 0;
+        for ( int n = 64; n >= 0; --n ) {
             const size_t q = artifactsStart - 4 - static_cast<size_t>( n ) * 4;
             if ( q < 32 )
                 break;
@@ -242,32 +253,35 @@ void tryParseHeroBase( const std::vector<uint8_t> & buf, size_t namePos, HeroRec
                 else
                     ids.push_back( id );
             }
-            if ( spellsOk ) {
-                spellBookStart = q;
-                spellIds = std::move( ids );
-                break;
-            }
+            if ( !spellsOk )
+                continue;
+
+            // Fixed tail: movePoints, spellPoints, modes, center (i16×2),
+            // power, knowledge, defense, attack.
+            const size_t primaryOffset = q - 32;
+            attack = readBe32s( buf.data() + primaryOffset );
+            defense = readBe32s( buf.data() + primaryOffset + 4 );
+            knowledge = readBe32s( buf.data() + primaryOffset + 8 );
+            power = readBe32s( buf.data() + primaryOffset + 12 );
+            const int centerX = static_cast<int16_t>( readBe16( buf.data() + primaryOffset + 16 ) );
+            const int centerY = static_cast<int16_t>( readBe16( buf.data() + primaryOffset + 18 ) );
+            spellPoints = readBe32( buf.data() + primaryOffset + 24 );
+            const uint32_t movePoints = readBe32( buf.data() + primaryOffset + 28 );
+            if ( attack < 0 || attack > 99 || defense < 0 || defense > 99 || power < 0 || power > 99 || knowledge < 0 || knowledge > 99 )
+                continue;
+            if ( centerX < -10000 || centerX > 10000 || centerY < -10000 || centerY > 10000 )
+                continue;
+            if ( spellPoints > 9999 || movePoints > 999999 )
+                continue;
+
+            spellBookStart = q;
+            spellIds = std::move( ids );
+            break;
         }
         if ( spellBookStart == 0 )
             continue;
 
-        // Fixed tail: movePoints, spellPoints, modes, center (i16×2), power, knowledge, defense, attack.
         const size_t primaryOffset = spellBookStart - 32;
-        const int attack = readBe32s( buf.data() + primaryOffset );
-        const int defense = readBe32s( buf.data() + primaryOffset + 4 );
-        const int knowledge = readBe32s( buf.data() + primaryOffset + 8 );
-        const int power = readBe32s( buf.data() + primaryOffset + 12 );
-        const int centerX = static_cast<int16_t>( readBe16( buf.data() + primaryOffset + 16 ) );
-        const int centerY = static_cast<int16_t>( readBe16( buf.data() + primaryOffset + 18 ) );
-        const uint32_t spellPoints = readBe32( buf.data() + primaryOffset + 24 );
-        const uint32_t movePoints = readBe32( buf.data() + primaryOffset + 28 );
-        if ( attack < 0 || attack > 99 || defense < 0 || defense > 99 || power < 0 || power > 99 || knowledge < 0 || knowledge > 99 )
-            continue;
-        if ( centerX < -10000 || centerX > 10000 || centerY < -10000 || centerY > 10000 )
-            continue;
-        if ( spellPoints > 9999 || movePoints > 999999 )
-            continue;
-
         hero.heroBaseParsed = true;
         hero.primary = { attack, defense, power, knowledge };
         hero.spellPoints = static_cast<int>( spellPoints );
@@ -507,7 +521,7 @@ SaveFile SaveFile::loadFromBytes( const std::string & name, const std::vector<ui
     pos += 4;
     if ( sv._formatVersion < MIN_SUPPORTED_VERSION || sv._formatVersion > MAX_SUPPORTED_VERSION )
         throw SaveError( "Unsupported format version: " + std::to_string( sv._formatVersion ) );
-    sv._mapInfo = parseMapInfo( sv._data, pos, sv._formatVersion, &pos );
+    sv._mapInfo = parseMapInfo( sv._data, pos, sv._formatVersion, &pos, &sv._mapDateOffset );
     if ( pos + 4 > sv._data.size() )
         throw SaveError( "Invalid header (gameType)" );
     sv._gameType = readBe32s( sv._data.data() + pos );
@@ -538,6 +552,18 @@ SaveFile SaveFile::loadFromBytes( const std::string & name, const std::vector<ui
             sv._heroes.push_back( std::move( hero ) );
     }
 
+    // Parse the World section for the kingdoms (resources), castles and the
+    // world date. It is heavy and used by the poster too, so it is cached.
+    // A parse failure is not fatal: the save opens, only the kingdom/castle
+    // panels stay hidden.
+    try {
+        sv._world = fh2::parseWorld( sv._raw, sv._formatVersion );
+        sv._worldParsed = true;
+    }
+    catch ( const WorldParseError & ) {
+        sv._worldParsed = false;
+    }
+
     return sv;
 }
 
@@ -548,6 +574,106 @@ std::vector<int> SaveFile::humanColors() const
         if ( p.isHuman() && p.color != 0 )
             out.push_back( p.color );
     return out;
+}
+
+WorldData SaveFile::parseWorld() const
+{
+    // The cache is filled eagerly in load(); parse explicitly only if the
+    // eager parse failed (the same exception is rethrown on this retry).
+    if ( !_worldParsed )
+        _world = fh2::parseWorld( _raw, _formatVersion );
+    return _world;
+}
+
+std::vector<uint8_t> SaveFile::kingdomColors() const
+{
+    std::vector<uint8_t> out;
+    if ( _worldParsed ) {
+        for ( const WorldKingdom & k : _world.kingdoms )
+            out.push_back( k.color );
+    }
+    return out;
+}
+
+const WorldKingdom * findKingdom( const WorldData & world, uint8_t color )
+{
+    for ( const WorldKingdom & k : world.kingdoms ) {
+        if ( k.color == color )
+            return &k;
+    }
+    return nullptr;
+}
+
+uint32_t SaveFile::kingdomResource( uint8_t color, int res ) const
+{
+    if ( res < 0 || res > 6 )
+        throw SaveError( "Invalid resource index" );
+    if ( !_worldParsed )
+        throw SaveError( "Kingdom resources unavailable: World section not recognized" );
+    const WorldKingdom * k = findKingdom( _world, color );
+    if ( !k )
+        throw SaveError( "Kingdom with this color not found" );
+    return readBe32( _raw.data() + k->resourcesOffset + static_cast<size_t>( res ) * 4 );
+}
+
+void SaveFile::setKingdomResource( uint8_t color, int res, uint32_t value )
+{
+    if ( res < 0 || res > 6 )
+        throw SaveError( "Invalid resource index" );
+    if ( !_worldParsed )
+        throw SaveError( "Kingdom resources unavailable: World section not recognized" );
+    WorldKingdom * k = const_cast<WorldKingdom *>( findKingdom( _world, color ) );
+    if ( !k )
+        throw SaveError( "Kingdom with this color not found" );
+    const size_t off = k->resourcesOffset + static_cast<size_t>( res ) * 4;
+    putBe32( _raw, off, value );
+    k->resources[res] = value;
+    _dirty = true;
+}
+
+uint32_t SaveFile::worldDay() const
+{
+    if ( !_worldParsed )
+        throw SaveError( "World date unavailable: World section not recognized" );
+    return readBe32( _raw.data() + _world.dayOffset );
+}
+
+uint32_t SaveFile::worldWeek() const
+{
+    if ( !_worldParsed )
+        throw SaveError( "World date unavailable: World section not recognized" );
+    return readBe32( _raw.data() + _world.weekOffset );
+}
+
+uint32_t SaveFile::worldMonth() const
+{
+    if ( !_worldParsed )
+        throw SaveError( "World date unavailable: World section not recognized" );
+    return readBe32( _raw.data() + _world.monthOffset );
+}
+
+void SaveFile::setWorldDate( uint32_t day, uint32_t week, uint32_t month )
+{
+    if ( !_worldParsed )
+        throw SaveError( "World date unavailable: World section not recognized" );
+    if ( day < 1 || day > 9999 || week < 1 || week > 9999 || month < 1 || month > 9999 )
+        throw SaveError( "Invalid world date" );
+    putBe32( _raw, _world.dayOffset, day );
+    putBe32( _raw, _world.weekOffset, week );
+    putBe32( _raw, _world.monthOffset, month );
+    _world.day = day;
+    _world.week = week;
+    _world.month = month;
+    // The map info in the file header keeps its own copy (for the load screen).
+    if ( _mapDateOffset > 0 ) {
+        putBe32( _data, _mapDateOffset, day );
+        putBe32( _data, _mapDateOffset + 4, week );
+        putBe32( _data, _mapDateOffset + 8, month );
+    }
+    _mapInfo.worldDay = day;
+    _mapInfo.worldWeek = week;
+    _mapInfo.worldMonth = month;
+    _dirty = true;
 }
 
 std::vector<HeroRecord *> SaveFile::heroesByColor( int color )
@@ -670,6 +796,21 @@ void SaveFile::shiftHeroOffsets( HeroRecord & hero, size_t from, ptrdiff_t delta
         shift( hero.spellBookOffset );
 }
 
+void SaveFile::shiftWorldOffsets( size_t from, ptrdiff_t delta )
+{
+    if ( delta == 0 || !_worldParsed )
+        return;
+    const auto shift = [&]( size_t & off ) {
+        if ( off >= from )
+            off = static_cast<size_t>( static_cast<ptrdiff_t>( off ) + delta );
+    };
+    for ( WorldKingdom & k : _world.kingdoms )
+        shift( k.resourcesOffset );
+    shift( _world.dayOffset );
+    shift( _world.weekOffset );
+    shift( _world.monthOffset );
+}
+
 void SaveFile::resizeRegion( size_t start, size_t oldLen, const std::vector<uint8_t> & newData, HeroRecord * owner, unsigned skipOwned )
 {
     if ( start + oldLen > _raw.size() )
@@ -686,6 +827,7 @@ void SaveFile::resizeRegion( size_t start, size_t oldLen, const std::vector<uint
         const size_t from = start + oldLen;
         for ( HeroRecord & h : _heroes )
             shiftHeroOffsets( h, from, delta, &h == owner ? skipOwned : 0 );
+        shiftWorldOffsets( from, delta );
     }
     _dirty = true;
 }

@@ -561,12 +561,22 @@ The whole core lives in the `fh2core` library (no Qt; [src/savefile.cpp](src/sav
 [src/constants.cpp](src/constants.cpp), [src/gettextmo.cpp](src/gettextmo.cpp)). Recipes:
 
 - **Reading/decompressing**: `SaveFile::load(path)` — parses the header, finds the
-  zlib block (`findZlibBlock`), scans heroes and players.
+  zlib block (`findZlibBlock`), scans heroes and players. The World section
+  (tiles, castles, kingdoms, events) is parsed eagerly and cached —
+  `parseWorld()` returns the cached copy; `worldParsed()` tells whether it succeeded.
 - **Editing an army**: `SaveFile::setSlot(hero, slot, monsterId, count)` — writes
   values at the same offsets, the stream size does not change.
 - **Editing HeroBase**: `setPrimarySkill`, `setSpellPoints`, `setExperience`,
   `setArtifact`, `setSecondarySkill`, `setRace`, `setPortrait`, `setName`
   (the name — only of the same length!).
+- **Kingdom resources**: `kingdomColors()` — the colors of all kingdoms (the
+  neutral kingdom, color 0, holds the not-yet-hired heroes); `kingdomResource(color, res)`
+  and `setKingdomResource(color, res, value)` — the 7 resources (wood..gold) at
+  the same offsets (§7). The kingdom/date offsets are kept valid across
+  `resizeRegion()` (stream-growing edits like `setSpells`).
+- **World date**: `worldDay()/worldWeek()/worldMonth()` and
+  `setWorldDate(day, week, month)` — writes both the World section of the
+  stream and the map info of the file header.
 - **Saving**: `SaveFile::save()` (recompresses the stream, assembles the file).
 - **CLI without GUI**:
   `fheroes2-save-editor --add <file.sav> <hero_name> <monster_id> <count>` —

@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "constants.h"
+#include "worldparse.h"
 
 namespace fh2 {
 
@@ -157,6 +158,33 @@ public:
     std::vector<HeroRecord *> heroesByColor( int color );
     std::vector<const HeroRecord *> heroesByColor( int color ) const;
 
+    // Full sequential parse of the World section (tiles, castles, kingdoms,
+    // events, hero routes). Slower than the hero scan — call on demand.
+    // The result is cached: the first call parses, later calls return the
+    // cached copy (the parse is done eagerly in load() when possible).
+    WorldData parseWorld() const;
+
+    // Whether the World section was parsed successfully (castles, kingdoms,
+    // resources and the world date are available).
+    bool worldParsed() const { return _worldParsed; }
+
+    // Colors (PlayerColor masks) of the kingdoms found in the World section.
+    std::vector<uint8_t> kingdomColors() const;
+    // A resource value of the kingdom with the given color mask
+    // (res: 0 wood .. 6 gold). Returns 0 if not found.
+    uint32_t kingdomResource( uint8_t color, int res ) const;
+    // Sets a resource value of the kingdom with the given color mask
+    // (writes the u32 at the same offset, the stream size stays the same).
+    void setKingdomResource( uint8_t color, int res, uint32_t value );
+
+    // World date (day/week/month of the World section).
+    uint32_t worldDay() const;
+    uint32_t worldWeek() const;
+    uint32_t worldMonth() const;
+    // Sets the world date in both places where it is stored: the World
+    // section of the compressed stream and the map info of the file header.
+    void setWorldDate( uint32_t day, uint32_t week, uint32_t month );
+
     // Writes an army slot (changes only the values, the stream size stays the same).
     void setSlot( HeroRecord & hero, int slotIndex, int monsterId, int count );
     // +N black dragons: into the slot with dragons, otherwise an empty one,
@@ -208,6 +236,8 @@ private:
     void resizeRegion( size_t start, size_t oldLen, const std::vector<uint8_t> & newData, HeroRecord * owner, unsigned skipOwned = 0 );
     // Shifts all offsets of a single hero by delta (if they lie after from).
     static void shiftHeroOffsets( HeroRecord & hero, size_t from, ptrdiff_t delta, unsigned skipMask = 0 );
+    // Shifts the cached World section offsets (kingdom resources, date) by delta.
+    void shiftWorldOffsets( size_t from, ptrdiff_t delta );
 
     std::string _path;
     std::vector<uint8_t> _data; // original file
@@ -222,6 +252,11 @@ private:
     int _playersColorsMask = 0;
     int _playersCurrentColor = 0;
     bool _dirty = false;
+    // Cached World section (parsed in load(); heavy, so it is not parsed again).
+    mutable bool _worldParsed = false;
+    mutable WorldData _world;
+    // File offset of worldDay in the uncompressed file header (map info).
+    size_t _mapDateOffset = 0;
 };
 
 } // namespace fh2

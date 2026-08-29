@@ -106,6 +106,11 @@ inline constexpr const char * ICN_SPANBTN = "SPANBTN.ICN";
 inline constexpr const char * ICN_ARTIFACT = "ARTIFACT.ICN";
 inline constexpr const char * ICN_SPELLS = "SPELLS.ICN";
 inline constexpr const char * ICN_ADVBORD = "ADVBORD.ICN";
+inline constexpr const char * ICN_RESOURCE = "RESOURCE.ICN";
+inline constexpr const char * ICN_RESSMALL = "RESSMALL.ICN";
+inline constexpr const char * ICN_FLAG32 = "FLAG32.ICN";
+inline constexpr const char * ICN_SUNMOON = "SUNMOON.ICN";
+inline constexpr const char * ICN_LOCATORS = "LOCATORS.ICN";
 
 // TIL tiles. CLOF32 is a fully fogged (undiscovered) map tile:
 // 4 variants of 32×32 "starry sky", the engine picks (x + y) % 4
@@ -157,5 +162,28 @@ int spellIconIndex( int id );
 inline constexpr int ARTIFACT_MAGIC_BOOK = 82;
 // Maximum spells in a hero's book (all known ones, 1..65).
 inline constexpr int SPELL_COUNT = 65;
+
+// Kingdom resources (Funds): 0..6, stream order.
+inline constexpr int RESOURCE_COUNT = 7;
+inline constexpr int RESOURCE_WOOD = 0;
+inline constexpr int RESOURCE_MERCURY = 1;
+inline constexpr int RESOURCE_ORE = 2;
+inline constexpr int RESOURCE_SULFUR = 3;
+inline constexpr int RESOURCE_CRYSTAL = 4;
+inline constexpr int RESOURCE_GEMS = 5;
+inline constexpr int RESOURCE_GOLD = 6;
+// Resource name (English msgid, localized via the game translation).
+std::string resourceName( int res );
+// Resource icon index in RESOURCE.ICN (0..6) — same as res.
+inline int resourceIconIndex( int res ) { return res; }
+
+// Castle icon in LOCATORS.ICN by race bitmask (castle.cpp getCastleIcnIndex).
+// race — Race bitmask; castle — true for castle, false for town.
+int castleIconIndex( int race, bool castle );
+// BUILD_CASTLE bit of WorldCastle::constructedBuildings.
+inline constexpr uint32_t BUILD_CASTLE_BIT = 0x00000800;
+
+// Player flags: the first frame of each color in FLAG32.ICN (B/G/R/Y/O/P_FLAG32).
+int flagIconIndex( int colorMask );
 
 } // namespace fh2
