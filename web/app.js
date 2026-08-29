@@ -422,6 +422,17 @@
 
   // --- open / download ---
 
+  // The hero selected when the save opens: the first hero of a human kingdom
+  // (fallback — the first hired hero, then the first record).
+  function pickInitialHeroIndex() {
+    const humanColors = state.kingdoms.filter( ( k ) => k.status === "human" ).map( ( k ) => k.color );
+    const idx = state.heroes.findIndex( ( h ) => h.color !== 0 && humanColors.includes( h.color ) );
+    if ( idx >= 0 )
+      return idx;
+    const hired = state.heroes.findIndex( ( h ) => h.color !== 0 );
+    return hired >= 0 ? hired : ( state.heroes.length ? 0 : -1 );
+  }
+
   function loadHeroList() {
     state.heroes = [];
     const count = api.heroCount();
@@ -429,7 +440,7 @@
       const d = JSON.parse( api.heroDataJson( i ) );
       state.heroes.push( { name: d.name, race: d.race, raceName: d.raceName, color: d.color } );
     }
-    state.heroIndex = count > 0 ? 0 : -1;
+    state.heroIndex = pickInitialHeroIndex();
     renderHeroList();
   }
 
