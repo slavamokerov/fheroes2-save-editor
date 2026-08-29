@@ -13,6 +13,8 @@
 
 #include "gamefont.h"
 
+class QPainter;
+
 namespace fh2 {
 
 class Assets;

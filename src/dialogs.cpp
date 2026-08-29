@@ -7,6 +7,7 @@
 #include <QWheelEvent>
 
 #include <algorithm>
+#include <array>
 #include <functional>
 #include <set>
 

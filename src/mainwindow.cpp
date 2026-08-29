@@ -7,6 +7,9 @@
 #include <QDir>
 #include <QEvent>
 #include <QFileDialog>
+#ifdef FH2_WITH_POSTER
+#include "poster.h"
+#endif
 #include <QDateTime>
 #include <QFileInfo>
 #include <QKeyEvent>
@@ -77,7 +80,19 @@ void CentralWidget::setOpenEnabled( bool enabled )
     _openEnabled = enabled;
     if ( _btnSave )
         _btnSave->setEnabled( enabled );
+#ifdef FH2_WITH_POSTER
+    if ( _btnPoster )
+        _btnPoster->setEnabled( enabled );
+#endif
 }
+
+#ifdef FH2_WITH_POSTER
+void CentralWidget::setPosterEnabled( bool enabled )
+{
+    if ( _btnPoster )
+        _btnPoster->setEnabled( enabled );
+}
+#endif
 
 void CentralWidget::setInfoText( const QString & text )
 {
@@ -107,11 +122,17 @@ void CentralWidget::rebuildButtons()
     QPixmap saveRel = evilThemePixmap( *_assets, "EDITBTNS.ICN", 20 ).scaled( 33, 25, Qt::IgnoreAspectRatio, Qt::FastTransformation );
     QPixmap savePress = evilThemePixmap( *_assets, "EDITBTNS.ICN", 21 ).scaled( 33, 25, Qt::IgnoreAspectRatio, Qt::FastTransformation );
     _btnSave = new GameButton( saveRel, savePress, this );
+#ifdef FH2_WITH_POSTER
+    _btnPoster = makeGameTextButton( *_assets, *_font, uiButtonText( UiButton::ExportPoster ), this, 0, true );
+#endif
     _btnData = makeGameTextButton( *_assets, *_font, uiButtonText( UiButton::GameData ), this, 0, true );
     _btnQuit = makeGameTextButton( *_assets, *_font, uiButtonText( UiButton::Exit ), this, 0, true );
 
     connect( _btnOpen, &GameButton::clicked, this, &CentralWidget::openClicked );
     connect( _btnSave, &GameButton::clicked, this, &CentralWidget::saveClicked );
+#ifdef FH2_WITH_POSTER
+    connect( _btnPoster, &GameButton::clicked, this, &CentralWidget::posterClicked );
+#endif
     connect( _btnData, &GameButton::clicked, this, &CentralWidget::dataDirClicked );
     connect( _btnQuit, &GameButton::clicked, this, &CentralWidget::quitClicked );
     _btnSave->setEnabled( false );
@@ -142,9 +163,14 @@ void CentralWidget::setLayoutBounds()
     }
     _panelX = px;
 
-    // Left: open, save.
+    // Left: open, save, export poster.
     int x = px;
-    for ( GameButton * b : { _btnOpen, _btnSave } ) {
+    for ( GameButton * b : { _btnOpen, _btnSave
+#ifdef FH2_WITH_POSTER
+                             ,
+                             _btnPoster
+#endif
+    } ) {
         if ( !b )
             continue;
         b->setGeometry( x, y, b->width(), b->height() );
@@ -208,6 +234,9 @@ MainWindow::MainWindow( QWidget * parent )
 
     connect( _central, &CentralWidget::openClicked, this, &MainWindow::openDialog );
     connect( _central, &CentralWidget::saveClicked, this, &MainWindow::saveFile );
+#ifdef FH2_WITH_POSTER
+    connect( _central, &CentralWidget::posterClicked, this, &MainWindow::exportPoster );
+#endif
     connect( _central, &CentralWidget::dataDirClicked, this, &MainWindow::pickDataDir );
     connect( _central, &CentralWidget::quitClicked, this, &QWidget::close );
     connect( _central->heroPanel(), &HeroPanel::changed, this, &MainWindow::markDirty );
@@ -456,6 +485,54 @@ void MainWindow::warnIfGameRunning()
     Q_UNUSED( 0 )
 #endif
 }
+
+#ifdef FH2_WITH_POSTER
+void MainWindow::exportPoster()
+{
+    if ( !_saveFile || !_assets )
+        return;
+
+    // The native modal dialog is opened deferred (not inside the button click
+    // handler) — otherwise Qt/macOS may crash in a nested event loop.
+    QTimer::singleShot( 0, this, [this]() {
+        QString out = QFileDialog::getSaveFileName( this, editorText( "Export poster" ), QDir::homePath() + QStringLiteral( "/poster.png" ),
+                                                    editorText( "PNG image (*.png)" ) );
+        if ( out.isEmpty() )
+            return;
+
+        try {
+            const fh2::WorldData world = _saveFile->parseWorld();
+            fh2poster::PosterOptions options;
+            options.scale = 2.0;
+            options.withFog = false;
+            options.selectedColor = 0;
+            const std::vector<int> human = _saveFile->humanColors();
+            if ( !human.empty() ) {
+                options.withFog = true;
+                options.selectedColor = human[0];
+            }
+
+            QApplication::setOverrideCursor( Qt::WaitCursor );
+            const QImage poster = fh2poster::renderPoster( *_saveFile, world, *_assets, options );
+            QApplication::restoreOverrideCursor();
+
+            if ( poster.isNull() ) {
+                showError( editorText( "Poster rendering failed" ) );
+                return;
+            }
+            if ( !poster.save( out ) ) {
+                showError( editorText( "Poster rendering failed" ) );
+                return;
+            }
+            _central->setInfoText( editorText( "Poster saved to %1" ).arg( QFileInfo( out ).fileName() ) );
+        }
+        catch ( const SaveError & e ) {
+            QApplication::restoreOverrideCursor();
+            showError( QString::fromStdString( e.what() ) );
+        }
+    } );
+}
+#endif
 
 void MainWindow::saveFile()
 {

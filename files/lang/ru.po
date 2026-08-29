@@ -94,3 +94,15 @@ msgstr "Средняя"
 msgid "Ultra Fast"
 msgstr "Сверхбыстрая"
 
+
+msgid "EXPORT POSTER..."
+msgstr "ЭКСПОРТ ПОСТЕРА..."
+
+msgid "Export poster"
+msgstr "Экспорт постера"
+
+msgid "Poster saved to %1"
+msgstr "Постер сохранён в %1"
+
+msgid "Poster rendering failed"
+msgstr "Не удалось отрисовать постер"

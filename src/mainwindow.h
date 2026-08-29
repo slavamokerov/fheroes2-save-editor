@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <vector>
 
@@ -26,12 +27,16 @@ public:
     void setMapText( const QString & text );
     void setInfoText( const QString & text );
     void setOpenEnabled( bool enabled );
+#ifdef FH2_WITH_POSTER
+    void setPosterEnabled( bool enabled );
+#endif
     HeroPanel * heroPanel() { return _heroPanel; }
     void setLayoutBounds();
 
 Q_SIGNALS:
     void openClicked();
     void saveClicked();
+    void posterClicked();
     void dataDirClicked();
     void quitClicked();
 
@@ -49,6 +54,9 @@ private:
     bool _openEnabled = false;
     GameButton * _btnOpen = nullptr;
     GameButton * _btnSave = nullptr;
+#ifdef FH2_WITH_POSTER
+    GameButton * _btnPoster = nullptr;
+#endif
     GameButton * _btnData = nullptr;
     GameButton * _btnQuit = nullptr;
     HeroPanel * _heroPanel = nullptr;
@@ -76,6 +84,9 @@ public:
 private Q_SLOTS:
     void openDialog();
     void saveFile();
+#ifdef FH2_WITH_POSTER
+    void exportPoster();
+#endif
     void pickDataDir();
 
 private:
