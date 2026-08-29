@@ -121,9 +121,32 @@ with this project.
 - **Web version** — the same editor compiled to WebAssembly: everything above
   is editable in the browser, just without the game graphics. The edited file
   is downloaded as a new file instead of overwriting the opened one.
+- **Kingdom resources (web)** — a kingdom switch (your kingdoms, allies,
+  enemies) and the resource panel: castle/town counters, gold and the six
+  resources — all editable in the browser.
+- **Quick action «+5 Black Dragons» (web)** — a one-click button: pick a save,
+  the editor adds 5 Black Dragons to the human player's first hero and
+  immediately downloads the result as `<name>-5dragons.sav`.
 - **Command line** — `fheroes2-save-editor --add <file.sav> <hero_name> <monster_id> <count>`
   adds a troop to a hero without opening the interface (see
   [Command line](#command-line)).
+
+## Roadmap
+
+Features open for contributions — see the issues labeled
+[`help wanted`](https://github.com/slavamokerov/fheroes2-save-editor/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22):
+
+- **Desktop: kingdom resources editing** — the core is ready
+  (`SaveFile::kingdomResource`/`setKingdomResource`), the UI is missing
+  ([#2](https://github.com/slavamokerov/fheroes2-save-editor/issues/2)).
+- **Desktop: castle editing** — garrison, buildings, captain, recruits
+  ([#3](https://github.com/slavamokerov/fheroes2-save-editor/issues/3)).
+- **Web: castle editing** ([#4](https://github.com/slavamokerov/fheroes2-save-editor/issues/4)).
+
+More planned features (label
+[`backlog`](https://github.com/slavamokerov/fheroes2-save-editor/issues?q=is%3Aissue+is%3Aopen+label%3Abacklog)):
+world date, hero movement points, daily events, win/loss conditions, the
+ultimate artifact, kingdom recruits.
 
 ## Command line
 
@@ -333,10 +356,11 @@ the file from disk and makes a `.bak` backup before the first save.
 
 **What's the difference between the web and the desktop version?**
 
-Both edit exactly the same things. The web version has no in-game graphics —
-the same fields on a plain page. The desktop version looks like the hero
-screen from the game (portraits, sprites, the spell book) and reads
-`HEROES2.AGG` from your fheroes2 data folder.
+Both edit the heroes the same way. The web version has no in-game graphics —
+the same fields on a plain page — and additionally edits the kingdom
+resources. The desktop version looks like the hero screen from the game
+(portraits, sprites, the spell book) and reads `HEROES2.AGG` from your
+fheroes2 data folder.
 
 **Do I need the game files?**
 

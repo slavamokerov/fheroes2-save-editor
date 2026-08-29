@@ -58,3 +58,11 @@ The save format is documented in
 
 If something is unclear, open an
 [issue](https://github.com/slavamokerov/fheroes2-save-editor/issues).
+
+## Want to contribute?
+
+Check the issues labeled
+[`help wanted`](https://github.com/slavamokerov/fheroes2-save-editor/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
+(features open for implementation) and
+[`good first issue`](https://github.com/slavamokerov/fheroes2-save-editor/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
+The [README roadmap](README.md#roadmap) lists the bigger picture.
