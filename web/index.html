@@ -46,10 +46,12 @@
     "downloadUrl": "https://github.com/slavamokerov/fheroes2-save-editor/releases",
     "license": "https://github.com/slavamokerov/fheroes2-save-editor/blob/main/LICENSE",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "softwareVersion": "1.0",
+    "softwareVersion": "1.1.0",
     "featureList": [
       "Edit hero armies, primary and secondary skills, artifacts and spells",
       "Change experience, spell points, portraits and hero names",
+      "Edit kingdom resources — gold, wood, mercury and more (web)",
+      "One-click +5 Black Dragons quick action (web)",
       "Web version runs entirely in the browser and downloads the edited file",
       "Native builds for macOS, Windows and Linux",
       "Automatic .bak backup before saving (desktop version)"
@@ -72,7 +74,7 @@
       {
         "@type": "Question",
         "name": "What's the difference between the web and the desktop version?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Both edit exactly the same things. The web version has no in-game graphics — the same fields on a plain page. The desktop version looks like the hero screen from the game and reads HEROES2.AGG from your fheroes2 data folder." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Both edit the heroes the same way. The web version has no in-game graphics — the same fields on a plain page — and additionally edits the kingdom resources. The desktop version looks like the hero screen from the game and reads HEROES2.AGG from your fheroes2 data folder." }
       },
       {
         "@type": "Question",
@@ -113,7 +115,7 @@
   }
   </script>
 
-  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="icon" type="image/png" href="icon.png">
   <link rel="preload" href="style.css" as="style">
   <link rel="preload" href="fh2core.js" as="script">
   <link rel="stylesheet" href="style.css">
@@ -140,11 +142,14 @@
           <input type="file" id="file-input" accept=".sav,.savc,.savm,.savh" hidden>
           <button id="btn-open" class="btn btn-primary" disabled>Open Save…</button>
           <button id="btn-download" class="btn btn-secondary" disabled>Download Save</button>
+          <button id="btn-dragons" class="btn btn-secondary" disabled>+5 Black Dragons</button>
+          <p class="hint" id="btn-dragons-hint">Adds 5 Black Dragons to the human player's main hero and immediately downloads the edited save.</p>
           <span id="status" class="status"></span>
         </div>
         <div id="map-line" class="map-line hidden"></div>
         <div id="main" class="editor-main hidden">
           <aside id="hero-list" class="hero-list"></aside>
+          <div id="kingdom-panel" class="kingdom-panel hidden"></div>
           <section id="hero-panel" class="hero-panel"></section>
         </div>
       </div>
@@ -202,7 +207,7 @@
       <p>Open a save, edit your heroes, save it back. The web editor runs entirely in your browser and downloads the result as a new file; the desktop editor reads the file from disk and makes a <code>.bak</code> backup before the first save.</p>
 
       <h3>What's the difference between the web and the desktop version?</h3>
-      <p>Both edit exactly the same things. The web version has no in-game graphics — the same fields on a plain page. The desktop version looks like the hero screen from the game (portraits, sprites, the spell book) and reads <code>HEROES2.AGG</code> from your fheroes2 data folder.</p>
+      <p>Both edit the heroes the same way. The web version has no in-game graphics — the same fields on a plain page — and additionally edits the kingdom resources (gold, wood and the rest). The desktop version looks like the hero screen from the game (portraits, sprites, the spell book) and reads <code>HEROES2.AGG</code> from your fheroes2 data folder.</p>
 
       <h3>Do I need the game files?</h3>
       <p>Web — no, nothing to install or configure. Desktop — yes, the editor reads <code>HEROES2.AGG</code> from the fheroes2 data folder; no game files are distributed with this project.</p>
@@ -231,7 +236,7 @@
         The project is hosted on <a href="https://github.com/slavamokerov/fheroes2-save-editor">GitHub</a>.
         Licensed under <a href="https://github.com/slavamokerov/fheroes2-save-editor/blob/main/LICENSE">GPL-2.0</a>.
       </p>
-      <p class="credits">Heroes of Might and Magic II © Ubisoft. The site design is modeled after the <a href="https://ihhub.github.io/fheroes2/">fheroes2</a> website. App icon — “Equestrian” from the <a href="https://sergeychikin.ru/365/">Chikin 365</a> icon set by <a href="https://sergeychikin.ru/">Sergey Chikin</a>.</p>
+      <p class="credits">Heroes of Might and Magic II © Ubisoft. The site design is modeled after the <a href="https://ihhub.github.io/fheroes2/">fheroes2</a> website.</p>
     </footer>
   </div>
 

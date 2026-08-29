@@ -33,7 +33,7 @@ em++ -O2 \
 cp "$ROOT/web/index.html" "$ROOT/web/style.css" "$ROOT/web/app.js" "$OUT/"
 cp "$ROOT/web/robots.txt" "$ROOT/web/sitemap.xml" "$OUT/"
 cp "$ROOT/web/og-image.png" "$OUT/og-image.png"
-cp "$ROOT/packaging/icon.svg" "$OUT/icon.svg"
+cp "$ROOT/packaging/icon.png" "$OUT/icon.png"
 cp -R "$ROOT/web/fonts" "$OUT/fonts"
 mkdir -p "$OUT/screenshots"
 cp "$ROOT/screenshots/demo.gif" "$ROOT/screenshots/spellbook.png" "$ROOT/screenshots/count-ghosts.png" \

@@ -10,10 +10,12 @@
     fileInput: $( "#file-input" ),
     btnOpen: $( "#btn-open" ),
     btnDownload: $( "#btn-download" ),
+    btnDragons: $( "#btn-dragons" ),
     status: $( "#status" ),
     main: $( "#main" ),
     heroList: $( "#hero-list" ),
     heroPanel: $( "#hero-panel" ),
+    kingdomPanel: $( "#kingdom-panel" ),
     mapLine: $( "#map-line" ),
   };
 
@@ -27,6 +29,14 @@
     32: "#a55cc0",
   };
   const RACES = [ 1, 2, 4, 8, 16, 32 ]; // Knight..Necromancer (race masks)
+  const RESOURCE_NAMES = [ "Wood", "Mercury", "Ore", "Sulfur", "Crystal", "Gems", "Gold" ];
+  // Hero list groups, in display order.
+  const HERO_GROUPS = [
+    { key: "human", title: "Your Kingdoms" },
+    { key: "ally", title: "Allies" },
+    { key: "enemy", title: "Enemies" },
+    { key: "neutral", title: "Not hired" },
+  ];
 
   let api = null;
   const state = {
@@ -34,6 +44,9 @@
     dirty: false,
     heroIndex: -1,
     heroes: [], // cached list: {name, race, raceName, color}
+    quickDragons: false, // the "+5 Black Dragons" one-shot flow
+    kingdoms: [], // cached list from kingdomsJson(): {color, status, playerName, castles, towns, resources}
+    kingdomColor: 0, // selected kingdom (0 — none; resources hidden)
   };
   const ref = { monsters: [], skills: [], artifacts: [], spells: [], primaryNames: [], levelNames: [] };
 
@@ -72,15 +85,46 @@
 
   // --- rendering ---
 
+  function heroGroupOf( hero ) {
+    if ( hero.color === 0 )
+      return "neutral";
+    const kingdom = state.kingdoms.find( ( k ) => k.color === hero.color );
+    return kingdom ? kingdom.status : "enemy";
+  }
+
   function renderHeroList() {
-    const items = state.heroes
-      .map( ( h, i ) => `
-        <button class="hero-item${ i === state.heroIndex ? " active" : "" }" data-i="${ i }">
+    // Heroes are grouped by their kingdom's status: your kingdoms → allies →
+    // enemies → not hired (neutral). The group header selects the kingdom
+    // for the resources block.
+    const byGroup = new Map();
+    for ( const h of state.heroes )
+      ( byGroup.get( heroGroupOf( h ) ) || byGroup.set( heroGroupOf( h ), [] ).get( heroGroupOf( h ) ) ).push( h );
+    for ( const list of byGroup.values() )
+      list.sort( ( a, b ) => ( RACES.indexOf( a.color ) - RACES.indexOf( b.color ) ) || a.name.localeCompare( b.name ) );
+
+    let html = `<div class="list-title">Heroes (${ state.heroes.length })</div>`;
+    for ( const group of HERO_GROUPS ) {
+      const heroes = byGroup.get( group.key );
+      if ( !heroes || !heroes.length )
+        continue;
+      const kingdom = state.kingdoms.find( ( k ) => k.color === heroes[0].color );
+      const label = group.key === "neutral"
+        ? group.title
+        : `${ kingdom ? kingdom.playerName || `Kingdom (${ group.title })` : group.title } (${ heroes.length })`;
+      const clickable = group.key !== "neutral";
+      html += `<button class="hero-group-title${ clickable && heroes[0].color === state.kingdomColor ? " active" : "" }"${ clickable ? ` data-color="${ heroes[0].color }"` : "" }>
+        <span class="color-dot" style="background:${ COLOR_CSS[heroes[0].color] || "#555" }"></span>${ esc( label ) }
+      </button>`;
+      html += heroes.map( ( h, i ) => {
+        const idx = state.heroes.indexOf( h );
+        return `
+        <button class="hero-item${ idx === state.heroIndex ? " active" : "" }" data-i="${ idx }">
           <span class="color-dot" style="background:${ COLOR_CSS[h.color] || "#555" }"></span>${ esc( h.name ) }
           <span class="race">${ esc( h.raceName ) }</span>
-        </button>` )
-      .join( "" );
-    els.heroList.innerHTML = `<div class="list-title">Heroes (${ state.heroes.length })</div>${ items }`;
+        </button>`;
+      } ).join( "" );
+    }
+    els.heroList.innerHTML = html;
     els.heroList.querySelectorAll( ".hero-item" ).forEach( ( b ) => {
       b.addEventListener( "click", () => {
         state.heroIndex = Number( b.dataset.i );
@@ -88,6 +132,67 @@
         renderHero();
       } );
     } );
+    els.heroList.querySelectorAll( ".hero-group-title" ).forEach( ( b ) => {
+      b.addEventListener( "click", () => {
+        selectKingdom( Number( b.dataset.color ) );
+      } );
+    } );
+  }
+
+  function renderKingdomPanel() {
+    if ( !state.kingdoms.length ) {
+      els.kingdomPanel.classList.add( "hidden" );
+      return;
+    }
+    els.kingdomPanel.classList.remove( "hidden" );
+
+    const statusOrder = { human: 0, ally: 1, enemy: 2 };
+    const sorted = [ ...state.kingdoms ].sort( ( a, b ) => ( statusOrder[a.status] - statusOrder[b.status] ) || ( RACES.indexOf( a.color ) - RACES.indexOf( b.color ) ) );
+    const statusLabel = { human: "Human player", ally: "Ally", enemy: "Enemy (AI)" };
+    const selected = state.kingdoms.find( ( k ) => k.color === state.kingdomColor ) || sorted[0];
+
+    const buttons = sorted.map( ( k ) => `
+      <button class="kingdom-btn${ k.color === selected.color ? " active" : "" }" data-color="${ k.color }"
+        style="background:${ COLOR_CSS[k.color] || "#555" }"
+        title="${ esc( k.playerName ? `${ statusLabel[k.status] }: ${ k.playerName }` : statusLabel[k.status] ) }"></button>` ).join( "" );
+
+    const resRows = selected.resources.map( ( value, res ) => `
+      <div class="res-row">
+        <span class="res-label">${ esc( RESOURCE_NAMES[res] ) }</span>
+        <input type="number" min="0" max="999999999" value="${ value }" data-res="${ res }">
+      </div>` ).join( "" );
+
+    els.kingdomPanel.innerHTML = `
+      <div class="list-title">Kingdom Resources</div>
+      <div class="kingdom-switch">${ buttons }</div>
+      <p class="kingdom-name">${ esc( selected.playerName || statusLabel[selected.status] ) } — ${ selected.castles } castle(s), ${ selected.towns } town(s)</p>
+      ${ resRows }`;
+
+    els.kingdomPanel.querySelectorAll( ".kingdom-btn" ).forEach( ( b ) => {
+      b.addEventListener( "click", () => selectKingdom( Number( b.dataset.color ) ) );
+    } );
+    els.kingdomPanel.querySelectorAll( "input[data-res]" ).forEach( ( input ) => {
+      input.addEventListener( "change", () => {
+        const err = api.setKingdomResource( selected.color, Number( input.dataset.res ), Number( input.value ) );
+        if ( err ) {
+          setStatus( err, "error" );
+          renderKingdomPanel();
+          return;
+        }
+        state.kingdoms = JSON.parse( api.kingdomsJson() );
+        state.dirty = true;
+        renderKingdomPanel();
+        setStatus( `${ RESOURCE_NAMES[Number( input.dataset.res )] } of the kingdom set.`, "ok" );
+      } );
+    } );
+  }
+
+  function selectKingdom( color ) {
+    if ( !state.kingdoms.some( ( k ) => k.color === color ) )
+      return;
+    state.kingdomColor = color;
+    renderKingdomPanel();
+    renderHeroList();
   }
 
   function renderHero() {
@@ -344,11 +449,15 @@
       }
       state.fileName = file.name;
       state.dirty = false;
+      state.kingdoms = JSON.parse( api.kingdomsJson() );
+      const human = state.kingdoms.find( ( k ) => k.status === "human" );
+      state.kingdomColor = ( human || state.kingdoms[0] || { color: 0 } ).color;
       els.btnDownload.disabled = false;
       els.main.classList.remove( "hidden" );
       els.mapLine.classList.remove( "hidden" );
       loadHeroList();
       renderMapLine();
+      renderKingdomPanel();
       renderHero();
       setStatus( `Opened ${ file.name } (${ buf.length.toLocaleString() } bytes).`, "ok" );
     }
@@ -369,6 +478,39 @@
     a.remove();
     setTimeout( () => URL.revokeObjectURL( url ), 2000 );
     setStatus( `Downloaded ${ a.download } (${ bytes.length.toLocaleString() } bytes).`, "ok" );
+  }
+
+  // The "+5 Black Dragons" one-shot flow: open a save, add 5 Black Dragons to
+  // the human player's first hero and immediately download the edited file.
+  async function quickAddDragons( file ) {
+    try {
+      const buf = new Uint8Array( await file.arrayBuffer() );
+      const err = api.openSave( file.name, buf );
+      if ( err ) {
+        setStatus( err, "error" );
+        return;
+      }
+      const result = JSON.parse( api.quickAddDragons() );
+      if ( !result.ok ) {
+        setStatus( result.error || "Failed to add dragons.", "error" );
+        return;
+      }
+      state.fileName = file.name.replace( /(\.sav[a-z]*)$/i, "-5dragons$1" ) || `${ file.name }-5dragons`;
+      const bytes = api.saveBytes();
+      const blob = new Blob( [ bytes ], { type: "application/octet-stream" } );
+      const url = URL.createObjectURL( blob );
+      const a = document.createElement( "a" );
+      a.href = url;
+      a.download = state.fileName;
+      document.body.appendChild( a );
+      a.click();
+      a.remove();
+      setTimeout( () => URL.revokeObjectURL( url ), 2000 );
+      setStatus( `Added 5 Black Dragons to ${ result.hero || "the hero" } and downloaded ${ a.download }.`, "ok" );
+    }
+    catch ( e ) {
+      setStatus( String( e ), "error" );
+    }
   }
 
   // --- init ---
@@ -409,11 +551,23 @@
     els.btnOpen.disabled = false;
     els.btnOpen.addEventListener( "click", () => els.fileInput.click() );
     els.fileInput.addEventListener( "change", () => {
-      if ( els.fileInput.files.length )
-        openFile( els.fileInput.files[0] );
+      if ( els.fileInput.files.length ) {
+        if ( state.quickDragons ) {
+          quickAddDragons( els.fileInput.files[0] );
+          state.quickDragons = false;
+        }
+        else {
+          openFile( els.fileInput.files[0] );
+        }
+      }
       els.fileInput.value = "";
     } );
     els.btnDownload.addEventListener( "click", download );
+    els.btnDragons.disabled = false;
+    els.btnDragons.addEventListener( "click", () => {
+      state.quickDragons = true;
+      els.fileInput.click();
+    } );
     setStatus( "Ready. Open an fheroes2 save file.", "" );
   }
 

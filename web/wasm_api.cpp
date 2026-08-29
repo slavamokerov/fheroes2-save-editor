@@ -208,6 +208,40 @@ std::string openSave( const std::string & name, const emscripten::val & data )
     }
 }
 
+// The "+5 Black Dragons" quick action: adds 5 Black Dragons to the first
+// hero of the first human player (or the first colored hero as a fallback).
+// Returns a JSON object: {"ok":true,"hero":"..."} or
+// {"ok":false,"error":"..."}.
+std::string quickAddDragons()
+{
+    try {
+        fh2::SaveFile & save = sv();
+        fh2::HeroRecord * target = nullptr;
+        const std::vector<int> human = save.humanColors();
+        if ( !human.empty() ) {
+            auto heroes = save.heroesByColor( human[0] );
+            if ( !heroes.empty() )
+                target = heroes[0];
+        }
+        if ( !target ) {
+            for ( fh2::HeroRecord & h : save.heroes() ) {
+                if ( h.color != 0 ) {
+                    target = &h;
+                    break;
+                }
+            }
+        }
+        if ( !target )
+            return "{\"ok\":false,\"error\":\"The save has no heroes with an assigned color.\"}";
+
+        save.addBlackDragons( *target, 5 );
+        return "{\"ok\":true,\"hero\":" + jsonString( cp1251ToUtf8( target->name ) ) + "}";
+    }
+    catch ( const std::exception & e ) {
+        return "{\"ok\":false,\"error\":" + jsonString( e.what() ) + "}";
+    }
+}
+
 void closeSave()
 {
     g_save.reset();
@@ -233,6 +267,95 @@ std::string mapInfoJson()
 int heroCount()
 {
     return static_cast<int>( sv().heroes().size() );
+}
+
+// --- kingdoms / resources ---
+
+// "human" | "ally" | "enemy" — like the desktop side panel used to classify
+// the kingdoms relative to the human players.
+const char * kingdomStatus( int color )
+{
+    for ( const fh2::PlayerInfo & p : sv().players() ) {
+        if ( p.color == color && p.isHuman() )
+            return "human";
+    }
+    for ( const fh2::PlayerInfo & p : sv().players() ) {
+        if ( p.isHuman() && ( p.friends & color ) != 0 )
+            return "ally";
+    }
+    return "enemy";
+}
+
+// All playable kingdoms (the neutral kingdom with color 0 is skipped — it
+// holds the not-yet-hired heroes and has no resources). Returns [] when the
+// World section was not recognized.
+std::string kingdomsJson()
+{
+    try {
+        const fh2::SaveFile & save = sv();
+        if ( !save.worldParsed() )
+            return "[]";
+        const fh2::WorldData world = save.parseWorld();
+
+        std::string out = "[";
+        bool first = true;
+        for ( uint8_t color : save.kingdomColors() ) {
+            if ( color == 0 )
+                continue;
+
+            uint32_t castles = 0;
+            uint32_t towns = 0;
+            for ( const fh2::WorldCastle & c : world.castles ) {
+                if ( c.color != color )
+                    continue;
+                if ( ( c.constructedBuildings & fh2::BUILD_CASTLE_BIT ) != 0 )
+                    ++castles;
+                else
+                    ++towns;
+            }
+
+            std::string playerName;
+            for ( const fh2::PlayerInfo & p : save.players() ) {
+                if ( p.color == color && !p.name.empty() ) {
+                    playerName = p.name;
+                    break;
+                }
+            }
+
+            if ( !first )
+                out += ",";
+            first = false;
+            out += "{\"color\":" + jsonInt( color );
+            out += ",\"status\":" + jsonString( kingdomStatus( color ) );
+            out += ",\"playerName\":" + jsonString( cp1251ToUtf8( playerName ) );
+            out += ",\"castles\":" + jsonInt( castles );
+            out += ",\"towns\":" + jsonInt( towns );
+            out += ",\"resources\":[";
+            for ( int res = 0; res < 7; ++res ) {
+                if ( res )
+                    out += ",";
+                out += jsonInt( save.kingdomResource( color, res ) );
+            }
+            out += "]}";
+        }
+        out += "]";
+        return out;
+    }
+    catch ( const std::exception & ) {
+        return "[]";
+    }
+}
+
+// Sets a resource value of a kingdom. Returns an error message or "".
+std::string setKingdomResource( int color, int res, int value )
+{
+    try {
+        sv().setKingdomResource( static_cast<uint8_t>( color ), res, static_cast<uint32_t>( value ) );
+        return {};
+    }
+    catch ( const std::exception & e ) {
+        return e.what();
+    }
 }
 
 std::string heroName( int index )
@@ -473,6 +596,9 @@ std::string colorName( int mask )
 EMSCRIPTEN_BINDINGS( fh2editor )
 {
     emscripten::function( "openSave", &openSave );
+    emscripten::function( "quickAddDragons", &quickAddDragons );
+    emscripten::function( "kingdomsJson", &kingdomsJson );
+    emscripten::function( "setKingdomResource", &setKingdomResource );
     emscripten::function( "closeSave", &closeSave );
     emscripten::function( "mapInfoJson", &mapInfoJson );
     emscripten::function( "heroCount", &heroCount );

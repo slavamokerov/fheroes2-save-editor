@@ -338,6 +338,13 @@ footer .credits { font-size: 0.8em; opacity: 0.8; }
 }
 .editor-toolbar .btn { font-size: 1em; }
 
+.editor-toolbar .hint {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--muted, #999);
+  font-size: 0.8em;
+}
+
 .status { color: var(--highlight); font-size: 0.95em; max-width: 480px; }
 .status.error { color: var(--danger); }
 .status.ok { color: var(--ok); }
@@ -396,6 +403,73 @@ footer .credits { font-size: 0.8em; opacity: 0.8; }
   border: 1px solid #000;
 }
 .hero-item .race { display: block; color: var(--highlight); font-size: 0.85em; padding-left: 16px; }
+
+.hero-group-title {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--header);
+  font-family: "Lancelot", serif;
+  font-size: 0.98em;
+  padding: 8px 4px 3px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.hero-group-title:first-of-type { margin-top: 0; }
+.hero-group-title .color-dot { margin-right: 7px; }
+.hero-group-title.active { color: var(--highlight); }
+
+.kingdom-panel {
+  width: 240px;
+  flex: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 8px;
+  background: var(--page);
+}
+.kingdom-panel .list-title {
+  color: var(--header);
+  font-family: "Lancelot", serif;
+  margin: 2px 4px 8px;
+  font-size: 1.05em;
+}
+.kingdom-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.kingdom-btn {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  cursor: pointer;
+  padding: 0;
+}
+.kingdom-btn.active { box-shadow: 0 0 0 2px var(--highlight); }
+.kingdom-name { color: var(--text); font-size: 0.9em; margin: 0 0 8px; }
+.res-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+}
+.res-row .res-label { color: var(--text); flex: none; }
+.res-row .res-value { color: var(--highlight); }
+.res-row input {
+  width: 90px;
+  padding: 3px 6px;
+  font: inherit;
+  color: var(--text);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
 
 .hero-panel {
   flex: 1;
