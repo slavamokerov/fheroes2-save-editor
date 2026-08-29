@@ -407,8 +407,6 @@ Open an [issue](https://github.com/slavamokerov/fheroes2-save-editor/issues).
   geometry, status-bar texts).
 - Heroes of Might and Magic II © Ubisoft — all graphics are extracted from the
   game's own archives at runtime and are not distributed here.
-- App icon — “Equestrian” from the [Chikin 365](https://sergeychikin.ru/365/)
-  icon set by [Sergey Chikin](https://sergeychikin.ru/).
 
 ## License
 

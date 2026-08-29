@@ -84,7 +84,7 @@
       {
         "@type": "Question",
         "name": "Where are my fheroes2 saves?",
-        "acceptedAnswer": { "@type": "Answer", "text": "macOS: ~/Library/Application Support/fheroes2/files/save; Windows: %LOCALAPPDATA%\\fheroes2\\files\\save; Linux: ~/.local/share/fheroes2/files/save." }
+        "acceptedAnswer": { "@type": "Answer", "text": "macOS: ~/Library/Application Support/fheroes2/files/save\nWindows: %LOCALAPPDATA%\\fheroes2\\files\\save\nLinux: ~/.local/share/fheroes2/files/save." }
       },
       {
         "@type": "Question",
@@ -142,10 +142,9 @@
           <input type="file" id="file-input" accept=".sav,.savc,.savm,.savh" hidden>
           <button id="btn-open" class="btn btn-primary" disabled>Open Save…</button>
           <button id="btn-download" class="btn btn-secondary" disabled>Download Save</button>
-          <button id="btn-dragons" class="btn btn-secondary" disabled>+5 Black Dragons</button>
-          <p class="hint" id="btn-dragons-hint">Adds 5 Black Dragons to the human player's main hero and immediately downloads the edited save.</p>
           <span id="status" class="status"></span>
         </div>
+        <p class="dragons-note">Or just add <button id="btn-dragons" class="btn btn-secondary" disabled>+5 black dragons</button> to the human player's main hero and immediately download the edited save.</p>
         <div id="map-line" class="map-line hidden"></div>
         <div id="main" class="editor-main hidden">
           <aside id="hero-list" class="hero-list"></aside>
@@ -155,7 +154,7 @@
       </div>
 
       <h2 id="download">Download</h2>
-      <p>Prebuilt desktop builds for every platform:</p>
+      <p>Prebuilt desktop builds:</p>
 
       <div class="download-buttons">
         <a class="btn dl-btn dl-mac" href="https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-macos-arm64.dmg">Download for macOS (Apple Silicon)</a>
@@ -213,7 +212,11 @@
       <p>Web — no, nothing to install or configure. Desktop — yes, the editor reads <code>HEROES2.AGG</code> from the fheroes2 data folder; no game files are distributed with this project.</p>
 
       <h3>Where are my fheroes2 saves?</h3>
-      <p>macOS — <code>~/Library/Application Support/fheroes2/files/save</code>; Windows — <code>%LOCALAPPDATA%\fheroes2\files\save</code>; Linux — <code>~/.local/share/fheroes2/files/save</code>.</p>
+      <ul>
+        <li>macOS — <code>~/Library/Application Support/fheroes2/files/save</code></li>
+        <li>Windows — <code>%LOCALAPPDATA%\fheroes2\files\save</code></li>
+        <li>Linux — <code>~/.local/share/fheroes2/files/save</code></li>
+      </ul>
 
       <h3>Which save formats are supported?</h3>
       <p><code>*.sav</code>, <code>*.savc</code>, <code>*.savm</code>, <code>*.savh</code> (fheroes2 save versions 10032–10034). Saves of the original Heroes of Might and Magic II are not supported.</p>

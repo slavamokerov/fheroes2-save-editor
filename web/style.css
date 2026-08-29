@@ -338,11 +338,16 @@ footer .credits { font-size: 0.8em; opacity: 0.8; }
 }
 .editor-toolbar .btn { font-size: 1em; }
 
-.editor-toolbar .hint {
-  flex-basis: 100%;
-  margin: 0;
-  color: var(--muted, #999);
-  font-size: 0.8em;
+.dragons-note {
+  margin: 0 0 0.8em;
+  color: var(--text);
+  font-size: 0.95em;
+}
+.dragons-note .btn {
+  display: inline-block;
+  padding: 0.1em 0.55em;
+  font-size: 0.9em;
+  vertical-align: baseline;
 }
 
 .status { color: var(--highlight); font-size: 0.95em; max-width: 480px; }
