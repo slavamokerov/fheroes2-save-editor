@@ -157,9 +157,9 @@ Source: `src/fheroes2/maps/maps_fileinfo.cpp` — `operator<<(OStreamBase&, cons
 | 4 | width | u16 | map width |
 | 5 | height | u16 | map height |
 | 6 | difficulty | u8 | |
-| 7 | kingdommax | u8 | number of kingdoms/players |
-| 8 | races[] | u8 × kingdommax | race of each slot |
-| 9 | unions[] | u8 × kingdommax | unions PlayerColorsSet |
+| 7 | kingdommax | u8 | number of kingdoms/players; fheroes2 always writes `maxNumOfPlayers` = 6 |
+| 8 | races[] | u8 × 6 | race of each slot (always all 6 records) |
+| 9 | unions[] | u8 × 6 | unions PlayerColorsSet (always all 6 records) |
 | 10 | kingdomColors | u8 | bitmask of used colors (see PlayerColor) |
 | 11 | colorsAvailableForHumans | u8 | |
 | 12 | colorsAvailableForComp | u8 | |
@@ -176,10 +176,11 @@ Source: `src/fheroes2/maps/maps_fileinfo.cpp` — `operator<<(OStreamBase&, cons
 | 23 | worldDay | u32 | day at the time of saving |
 | 24 | worldWeek | u32 | week |
 | 25 | worldMonth | u32 | month |
-| 26 | mainLanguage | enum (i32) | `fheroes2::SupportedLanguage` (only for version ≥ 10025) |
+| 26 | mainLanguage | u8 | `fheroes2::SupportedLanguage` — `enum class : uint8_t` (only for version ≥ 10025) |
 | 27 | creatorNotes | string | only for version ≥ 10033 |
 
-Note: `maxNumOfPlayers = 6`, but only `kingdommax` records of races/unions are written to the file.
+Note: the writer always stores all `maxNumOfPlayers = 6` records of races/unions and puts 6 into `kingdommax`
+(`static_cast<uint8_t>(maxNumOfPlayers)` in maps_fileinfo.cpp); the reader reads only `kingdommax` of them.
 
 ### 3.3 gameType
 
@@ -216,14 +217,14 @@ Field order:
 |---|---|---|
 | 1 | width | u32 (in newer versions; in older < 10011 — u16) |
 | 2 | height | u32 |
-| 3 | vec_tiles | vector<Maps::Tile> — u32 count + tiles (each tile is complex; count = width×height) |
+| 3 | vec_tiles | vector<Maps::Tile> — u32 count + tiles (count = width×height; tile layout in [§5.1](#51-tile-record-mapstile)) |
 | 4 | vec_heroes | AllHeroes — **all heroes of the game** ([§6](#6-heroes-the-most-important-section-for-an-army-editor)) |
-| 5 | vec_castles | vector<Castle*> — castles |
-| 6 | vec_kingdoms | Kingdoms ([§7](#7-kingdom)) |
+| 5 | vec_castles | vector<Castle*> — u32 count + i32 `Castle::GetIndex()` of each: a tile index (y·width+x), not a castle number; on load the tile must have `_mainObjectType` = OBJ_CASTLE, otherwise the save is rejected as corrupted |
+| 6 | vec_kingdoms | Kingdoms ([§7](#7-kingdom)) — u32 count (=7, always) + 7 Kingdom records |
 | 7 | _customRumors | vector<string> |
 | 8 | vec_eventsday | list<EventDate> |
 | 9 | map_captureobj | map<i32, CapturedObject> — captured objects (mines etc.) |
-| 10 | _ultimateArtifact | Artifact (i32 id + i32 ext = 8 bytes) |
+| 10 | _ultimateArtifact | UltimateArtifact — **21 bytes**: Artifact (i32 id + i32 ext) + `_index` (i32, tile index) + `_isFound` (u8) + `_offset` (Point, 2×i32) |
 | 11 | _day | u32 |
 | 12 | _week | u32 |
 | 13 | _month | u32 |
@@ -234,6 +235,33 @@ Field order:
 
 AllHeroes: `u32 count` (= HEROES_COUNT = 73) + 73 Heroes records back-to-back ([§6](#6-heroes-the-most-important-section-for-an-army-editor)).
 This is exactly the section where hero armies live.
+
+### 5.1 Tile record (Maps::Tile)
+
+Source: `Maps::operator<<` in `src/fheroes2/maps/maps_tiles.cpp`. Serialization order:
+
+| # | Field | Type | Size |
+|---|---|---|---|
+| 1 | _index | i32 | 4 |
+| 2 | _terrainImageIndex | u16 | 2 |
+| 3 | _terrainFlags | u8 | 1 |
+| 4 | _tilePassabilityDirections | u16 | 2 |
+| 5 | _mainObjectPart | ObjectPart | 7 |
+| 6 | _mainObjectType | u16 (`MP2::MapObjectType`) | 2 |
+| 7 | _fogColors | u8 PlayerColorsSet | 1 |
+| 8 | _metadata | `std::array<uint32_t, 3>` — u32 count (=3, fixed!) + 3×u32 | 16 |
+| 9 | _occupantHeroId | u8 | 1 |
+| 10 | _isTileMarkedAsRoad | bool (u8) | 1 |
+| 11 | _groundObjectPart | `std::list<ObjectPart>` — u32 count + n×7 | 4 + 7n |
+| 12 | _topObjectPart | `std::list<ObjectPart>` — u32 count + n×7 | 4 + 7n |
+| 13 | _boatOwnerColor | u8 PlayerColor | 1 |
+
+`ObjectPart` (7 bytes): `layerType` (u8, ObjectLayerType) + `_uid` (u32, object uid) +
+`icnType` (u8, `MP2::ObjectIcnType`) + `icnIndex` (u8).
+
+An **empty tile** — no object parts, no occupant — is exactly **46 bytes**
+(the metadata count is always 3, contributing 16 bytes; the empty lists contribute 4 bytes each).
+Tiles with objects grow by 7 bytes per ObjectPart entry. Tiles take ~90% of the uncompressed stream.
 
 ## 6. Heroes — the most important section for an army editor
 
@@ -364,6 +392,12 @@ flowchart TD
 - A hero's `_id` is the ID from the Heroes list ([§12.3](#123-hero-id-int32-heroes-enum-heroesh)), `_portrait` is the portrait ID
   (matches _id if the portrait was not changed).
 
+- AllHeroes is positional: the record sitting at position *p* is exactly the hero with id *p* —
+  position 0 holds the UNKNOWN record, positions 1..72 the real heroes (`AllHeroes::Get(heroId)`
+  accesses `_heroes[heroId]`). When writing a Kingdoms section, keep that in mind:
+  `Kingdom.heroes` stores **hero ids** ([§7](#7-kingdom)), valid only in 1..72 — an id of 0
+  (UNKNOWN) fails the load.
+
 ## 7. Kingdom
 
 Source: `src/fheroes2/kingdom/kingdom.cpp`. Field order:
@@ -373,10 +407,10 @@ Source: `src/fheroes2/kingdom/kingdom.cpp`. Field order:
 | 1 | modes | u32 |
 | 2 | _color | u8 PlayerColor (in versions < 10031 it was i32) |
 | 3 | resource | Funds/Resource — 7 resources |
-| 4 | lost_town_days | i32 |
-| 5 | castles | vector<i32> — castle indices |
-| 6 | heroes | vector<i32> — **Hero IDs of the kingdom's active heroes** |
-| 7 | recruits | Recruits (list available for hiring) |
+| 4 | lost_town_days | i32 — must be > 0: with 0 every kingdom loses on the first new day (when building a save, use 8 = `GetLostTownDays() + 1`) |
+| 5 | castles | vector<i32> — **tile indices** of the kingdom's castles (`Castle::GetIndex()` = y·width+x); each tile must hold an OBJ_CASTLE, otherwise the save is rejected |
+| 6 | heroes | vector<i32> — **Hero IDs of the kingdom's active heroes**; valid ids are 1..72, 0 (UNKNOWN) fails the load |
+| 7 | recruits | Recruits — 2 × (i32 hero id + u32 surrender day); empty slot = id 0 (UNKNOWN), **never −1** |
 | 8 | visit_object | list<IndexObject> |
 | 9 | puzzle_maps | Puzzle (the obelisk puzzle map) |
 | 10 | _visitedTentsColors | i32 |
@@ -384,14 +418,31 @@ Source: `src/fheroes2/kingdom/kingdom.cpp`. Field order:
 | 12 | _topHeroInKingdomView | i32 |
 | 13 | _monstersUnderVision | (only ≥ 10034) |
 
-Kingdoms = `u32 count` + Kingdom records.
+Kingdoms = `u32 count` + Kingdom records. The count is **always 7**: `Kingdoms` is
+`std::array<Kingdom, maxNumOfPlayers + 1>` — slots 0..5 hold BLUE..PURPLE kingdoms
+(slot = color index), slot 6 is the neutral kingdom (color NONE) which stores the
+not-yet-hired heroes. A count different from 7 fails the load.
 
 ## 8. Castle (briefly)
 
 Serialized in `vec_castles` (vector<Castle*>). Format in `src/fheroes2/castle/castle.cpp`
-(`operator<<`). Contains the owner, buildings (bitmask/array), the garrison army
-(Army — same format as [§6.3](#63-army)), the captain (HeroBase), etc. Not required for a hero army
-editor; for a full editor — see the castle.cpp sources.
+(`operator<<`), field order:
+
+| # | Field | Type |
+|---|---|---|
+| 1 | position | MapPosition — i16 x, i16 y (the entrance tile) |
+| 2 | modes | u32 |
+| 3 | _race | i32 (Race, bitmask) |
+| 4 | _constructedBuildings | u32 (bitmask) |
+| 5 | _disabledBuildings | u32 (bitmask) |
+| 6 | _captain | Captain (a HeroBase record) |
+| 7 | color | u8 PlayerColor |
+| 8 | _name | string |
+| 9 | _mageGuild | MageGuild (level + spells) |
+| 10 | _dwelling | u32 count + count × u32 — the count is **always exactly 6** (`std::array<uint32_t, 6>`); a different count fails the load |
+| 11 | _army | Army — same format as [§6.3](#63-army) |
+
+Not required for a hero army editor; for a full editor — see the castle.cpp sources.
 
 ## 9. Settings and Players
 
@@ -399,11 +450,25 @@ editor; for a full editor — see the castle.cpp sources.
 
 | # | Field | Type |
 |---|---|---|
-| 1 | _gameLanguage | enum (i32) SupportedLanguage |
+| 1 | _gameLanguage | **string** (e.g. "ru"; in the config it is the `lang` key) — not an enum |
 | 2 | _currentMapInfo | Maps::FileInfo (the full structure from [§3.2](#32-mapsfileinfo-serialization-order)!) |
 | 3 | _gameDifficulty | i32 |
 | 4 | game_type | i32 |
-| 5 | players | Players (class from kingdom/players.*) |
+| 5 | players | Players (system/players.cpp): u8 colors bitmask + u8 currentColor + one Player record per set bit of colors, in color order |
+
+A Player record (field order, Player::operator<<):
+
+| # | Field | Type |
+|---|---|---|
+| 1 | modes | u32 — bit flags; **ST_INGAME = 0x2000 must be set** for an active player, otherwise the game treats the player as eliminated ("...you are excluded from the game") |
+| 2 | _control | i32 (CONTROL_HUMAN / CONTROL_AI etc.) |
+| 3 | _color | u8 PlayerColor |
+| 4 | _race | i32 (Race, bitmask) |
+| 5 | _friendsColors | u8 PlayerColorsSet — must include the player's own color, otherwise all tiles count as fully fogged and the terrain is not rendered |
+| 6 | _name | string |
+| 7 | _focus | Focus: i32 focusType + i32 index — FOCUS_HEROES/FOCUS_CASTLE + tile index of the hero/castle; the camera is restored from it when loading |
+| 8 | _aiPersonality | i32 (enum AI::Personality) |
+| 9 | _handicapStatus | u8 |
 
 ## 10. GameOver::Result
 
@@ -411,7 +476,7 @@ Source: `src/fheroes2/game/game_over.cpp`:
 
 | # | Field | Type |
 |---|---|---|
-| 1 | _colors | u8 PlayerColorsSet (in versions < 10031 it was i32) |
+| 1 | _colors | u8 PlayerColorsSet (in versions < 10031 it was i32) — a **bitmask** of the players left in the result (eliminated ones are removed from the mask; 0 = nobody left) |
 | 2 | result | map/set (high score table: names and scores) |
 
 This is exactly where the "high scores" strings live (that is why near the end of the stream
@@ -530,6 +595,10 @@ Standard in-game colors: 1 (blue), 2 (green), 4 (red), 8 (yellow), 16 (orange), 
 | 10030 | 1.1.8 |
 | 10010 | 1.0.5 (LAST_SUPPORTED) |
 
+Differences between the recent versions: 10032 has no `creatorNotes` in FileInfo;
+10033 adds it ([§3.2](#32-mapsfileinfo-serialization-order)); 10034 adds
+`_monstersUnderVision` to Kingdom ([§7](#7-kingdom)).
+
 The game will refuse to load a file if the version > CURRENT or < LAST_SUPPORTED.
 In the file the version is stored twice: as a string and as a u16.
 
@@ -554,6 +623,13 @@ In the file the version is stored twice: as a string and as a u16.
 12. When replacing an army slot, keep in mind: the army speed (the slowest unit) affects the
     hero's movement points (`_movePoints`), but they are recalculated by the game on the next
     day; editing them is not required.
+13. Kingdoms are **always 7 records** (6 kingdoms + the neutral one), other counts fail the load ([§7](#7-kingdom)).
+14. `Kingdom.castles` stores **tile indices**, `Kingdom.heroes` — **hero ids 1..72** ([§7](#7-kingdom)).
+15. AllHeroes records sit at the position equal to the hero id ([§6.5](#65-important-specifics)).
+16. An empty Recruits slot is id **0** (UNKNOWN), not −1 ([§7](#7-kingdom)).
+17. Castle's `_dwelling` count must be exactly **6** ([§8](#8-castle-briefly)).
+18. Player `modes` must contain ST_INGAME (0x2000), otherwise the player is treated as eliminated ([§9](#9-settings-and-players)).
+19. A tile's `_metadata` is a fixed 3×u32 (count 3 always), not a variable list ([§5.1](#51-tile-record-mapstile)).
 
 ## 14. Practical recipes (C++)
 
