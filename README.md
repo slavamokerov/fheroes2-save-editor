@@ -377,7 +377,10 @@ with this project.
 **Which save formats are supported?**
 
 `*.sav`, `*.savc`, `*.savm`, `*.savh` (fheroes2 save versions 10032–10034).
-Saves of the original Heroes of Might and Magic II are not supported.
+Saves of the original Heroes of Might and Magic II (`.GM1`/`.GMC`/`.GXC`) are
+not supported directly — convert them with
+[homm2-to-fheroes2](https://github.com/slavamokerov/homm2-to-fheroes2),
+then edit the result here.
 
 **Why did my changes disappear?**
 
