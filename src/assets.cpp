@@ -30,28 +30,46 @@ Assets Assets::load( const std::string & dataDir )
     if ( assets._agg->open( ( dir + "/HEROES2.AGG" ).toStdString() ) ) {
         assets._valid = true;
         assets._aggX->open( ( dir + "/HEROES2X.AGG" ).toStdString() );
-
-        // KB.PAL palette: 768 bytes, 6 bits per channel → 8-bit (<< 2), as in
-        // the engine's setGamePalette + getNormalizedRGBGamePalette. Plus copies
-        // of cyclic colors: water 231..233,235 → 246..249; lava 214..217 → 250..253.
-        std::vector<uint8_t> kbPal = assets._agg->read( "KB.PAL" );
-        if ( kbPal.empty() )
-            kbPal = assets._aggX->read( "KB.PAL" );
-        if ( kbPal.size() == 768 ) {
-            for ( size_t i = 0; i < 256; ++i ) {
-                const uint8_t r = static_cast<uint8_t>( kbPal[i * 3] << 2 );
-                const uint8_t g = static_cast<uint8_t>( kbPal[i * 3 + 1] << 2 );
-                const uint8_t b = static_cast<uint8_t>( kbPal[i * 3 + 2] << 2 );
-                assets._palette[i] = qRgb( r, g, b );
-            }
-            for ( int i = 0; i < 3; ++i )
-                assets._palette[246 + i] = assets._palette[231 + i];
-            assets._palette[249] = assets._palette[235];
-            for ( int i = 0; i < 4; ++i )
-                assets._palette[250 + i] = assets._palette[214 + i];
-        }
+        assets.loadPalette();
     }
     return assets;
+}
+
+Assets Assets::loadFromBytes( const std::vector<uint8_t> & agg, const std::vector<uint8_t> & aggX )
+{
+    Assets assets;
+    assets._agg = std::make_unique<AggContainer>();
+    assets._aggX = std::make_unique<AggContainer>();
+    if ( assets._agg->open( agg ) ) {
+        assets._valid = true;
+        assets._aggX->open( aggX );
+        assets.loadPalette();
+    }
+    return assets;
+}
+
+bool Assets::loadPalette()
+{
+    // KB.PAL palette: 768 bytes, 6 bits per channel → 8-bit (<< 2), as in
+    // the engine's setGamePalette + getNormalizedRGBGamePalette. Plus copies
+    // of cyclic colors: water 231..233,235 → 246..249; lava 214..217 → 250..253.
+    std::vector<uint8_t> kbPal = _agg->read( "KB.PAL" );
+    if ( kbPal.empty() )
+        kbPal = _aggX->read( "KB.PAL" );
+    if ( kbPal.size() != 768 )
+        return false;
+    for ( size_t i = 0; i < 256; ++i ) {
+        const uint8_t r = static_cast<uint8_t>( kbPal[i * 3] << 2 );
+        const uint8_t g = static_cast<uint8_t>( kbPal[i * 3 + 1] << 2 );
+        const uint8_t b = static_cast<uint8_t>( kbPal[i * 3 + 2] << 2 );
+        _palette[i] = qRgb( r, g, b );
+    }
+    for ( int i = 0; i < 3; ++i )
+        _palette[246 + i] = _palette[231 + i];
+    _palette[249] = _palette[235];
+    for ( int i = 0; i < 4; ++i )
+        _palette[250 + i] = _palette[214 + i];
+    return true;
 }
 
 std::string Assets::defaultDataDir()

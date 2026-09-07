@@ -30,6 +30,8 @@ class Assets
 public:
     // dataDir — folder with HEROES2.AGG (+HEROES2X.AGG)
     static Assets load( const std::string & dataDir );
+    // Loads from in-memory AGG buffers (the WASM/web path — user-picked files).
+    static Assets loadFromBytes( const std::vector<uint8_t> & agg, const std::vector<uint8_t> & aggX );
 
     QPixmap monsterPixmap( int monsterId, double scale = 1.0 ) const;
     QPixmap portraitPixmap( int heroId, double scale = 1.0 ) const;
@@ -55,6 +57,7 @@ public:
     static std::string defaultDataDir();
 
 private:
+    bool loadPalette();
     bool _valid = false;
     std::unique_ptr<AggContainer> _agg;   // HEROES2.AGG
     std::unique_ptr<AggContainer> _aggX;  // HEROES2X.AGG (expansion)

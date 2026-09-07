@@ -11,7 +11,7 @@ namespace fh2 {
 // Version of the shared core (fh2core). External consumers (the
 // fheroes2-screenshot project) check this number at build time to detect an
 // out-of-sync vendored copy. Increment on any public API change.
-inline constexpr int FH2CORE_VERSION = 2;
+inline constexpr int FH2CORE_VERSION = 3;
 
 struct WorldParseError : std::runtime_error {
     explicit WorldParseError( const std::string & msg )

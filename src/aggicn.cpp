@@ -63,6 +63,19 @@ bool AggContainer::open( const std::string & path )
     if ( static_cast<std::streamoff>( f.gcount() ) != fileSize )
         return false;
 
+    return parseIndex();
+}
+
+bool AggContainer::open( const std::vector<uint8_t> & data )
+{
+    if ( data.empty() )
+        return false;
+    _data = data;
+    return parseIndex();
+}
+
+bool AggContainer::parseIndex()
+{
     const size_t size = _data.size();
     const size_t count = readLE16( _data.data() );
     constexpr size_t fileRecordSize = 12;

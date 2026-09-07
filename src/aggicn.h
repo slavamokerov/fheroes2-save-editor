@@ -33,11 +33,15 @@ class AggContainer
 {
 public:
     bool open( const std::string & path );
+    // Opens an AGG from an in-memory buffer (the WASM/web path — a file picked
+    // by the user is read into memory and passed here).
+    bool open( const std::vector<uint8_t> & data );
     bool isGood() const { return !_files.empty(); }
     // Contents of a file from AGG or an empty vector if the file is missing.
     std::vector<uint8_t> read( const std::string & name ) const;
 
 private:
+    bool parseIndex();
     std::map<std::string, std::pair<uint32_t, uint32_t>, std::less<>> _files; // name → (offset, size)
     std::vector<uint8_t> _data;
 };
