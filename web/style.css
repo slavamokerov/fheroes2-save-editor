@@ -160,19 +160,16 @@ header h1 {
   padding: 0;
   text-shadow: none;
   border: none;
+  color: var(--header);
+  position: relative;
+  display: inline-block;
   transform-style: preserve-3d;
   transform: perspective(1000px) rotateX(3deg);
   transition: transform 0.3s ease;
 }
 header h1:hover { transform: perspective(1000px) rotateX(0deg) translateY(-3px); }
-header h1 a {
-  color: var(--header);
-  position: relative;
-  display: inline-block;
-  transform-style: preserve-3d;
-}
-header h1 a:before {
-  content: attr(data-text);
+header h1:before {
+  content: "fheroes2 Save Editor";
   position: absolute;
   left: 0;
   top: 0;
@@ -180,8 +177,8 @@ header h1 a:before {
   transform: translateZ(-20px);
   filter: blur(2px);
 }
-header h1 a:after {
-  content: attr(data-text);
+header h1:after {
+  content: "fheroes2 Save Editor";
   position: absolute;
   left: 0;
   top: 0;

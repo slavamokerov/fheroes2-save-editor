@@ -532,7 +532,7 @@
     const applyTheme = ( theme ) => {
       document.documentElement.setAttribute( "data-theme", theme );
       const dark = theme === "dark";
-      themeLabel.textContent = dark ? "☀️ Light Mode" : "🌙 Dark Mode";
+      themeLabel.textContent = dark ? "😇 Good" : "😈 Evil";
       themeToggle.setAttribute( "aria-pressed", String( dark ) );
     };
     applyTheme( localStorage.getItem( "fh2theme" ) || "dark" );
