@@ -45,8 +45,22 @@ The save format is documented in
   stream size (see the invariants in the README and the format doc).
 - UI is a 1:1 port of fheroes2's map editor hero screen; game look and feel
   beats convenience.
-- Don't commit personal files: `tests/`, `SESSION_NOTES.md`, `FH2_SAVE_FORMAT_DEV.md`,
-  `AGENTS.md` are developer-local (`.gitignore`).
+- Don't commit local or personal files; they are developer-local (`.gitignore`).
+
+## Reporting issues
+
+Before opening an issue, check the [FAQ](README.md#faq) and the save-format
+[documentation](FH2_SAVE_FORMAT.md). When you do, pick the matching template from
+the [issues page](https://github.com/slavamokerov/fheroes2-save-editor/issues):
+
+- [Bug report](https://github.com/slavamokerov/fheroes2-save-editor/issues/new?template=bug_report.md) —
+  a crash or a wrong value. Include the editor version (desktop or web), OS, the
+  fheroes2 version and save format, and attach the `.sav` (or a `.bak`) and
+  screenshots if you can.
+- [Feature request](https://github.com/slavamokerov/fheroes2-save-editor/issues/new?template=feature_request.md) —
+  the problem, the proposed solution and the alternatives you considered.
+- [Question](https://github.com/slavamokerov/fheroes2-save-editor/issues/new?template=question.md) —
+  how to do something, plus what you've already tried.
 
 ## Pull requests
 
@@ -55,6 +69,8 @@ The save format is documented in
   with the README FAQ.
 - CI (GitHub Actions) builds all three desktop platforms and the web editor —
   make sure it's green.
+- The [pull request template](https://github.com/slavamokerov/fheroes2-save-editor/blob/main/.github/PULL_REQUEST_TEMPLATE.md)
+  checklist is prefilled — tick the boxes that apply.
 
 If something is unclear, open an
 [issue](https://github.com/slavamokerov/fheroes2-save-editor/issues).
