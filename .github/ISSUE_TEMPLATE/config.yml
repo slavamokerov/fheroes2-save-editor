@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Security issues (private)
+    url: https://github.com/slavamokerov/fheroes2-save-editor/security/advisories/new
+    about: Report something that could be exploited (malformed-save crashes, memory bugs, etc.) privately.
+  - name: Supported save formats and how to build
+    url: https://github.com/slavamokerov/fheroes2-save-editor#faq
+    about: Check the FAQ and Building-from-source sections before opening an issue.
+  - name: Save format documentation
+    url: https://github.com/slavamokerov/fheroes2-save-editor/blob/main/FH2_SAVE_FORMAT.md
+    about: Technical reference for how the editor reads and edits save files.
