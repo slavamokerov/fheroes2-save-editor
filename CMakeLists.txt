@@ -81,9 +81,9 @@ add_executable(fheroes2-save-editor
 
 target_link_libraries(fheroes2-save-editor PRIVATE Qt6::Widgets fh2core fh2resources)
 
-# === Optional poster integration (fheroes2-screenshot's fh2poster library) ===
+# === Optional poster integration (homm2-screenshot's fh2poster library) ===
 # The "EXPORT POSTER..." toolbar button. Requires the sibling project
-# ~/Projects/fheroes2-screenshot; its fh2poster library reuses this project's
+# ~/Projects/homm2-screenshot; its fh2poster library reuses this project's
 # fh2core/fh2resources targets (the shared core, see AGENTS.md).
 #
 # OFF by default: the poster export is a development feature. Release builds
@@ -91,8 +91,8 @@ target_link_libraries(fheroes2-save-editor PRIVATE Qt6::Widgets fh2core fh2resou
 set(FH2_WITH_POSTER "off" CACHE STRING "Build with the poster export: on | off")
 set_property(CACHE FH2_WITH_POSTER PROPERTY STRINGS on off)
 
-set(FH2_POSTER_DIR "${CMAKE_CURRENT_LIST_DIR}/../fheroes2-screenshot/libs/fh2poster"
-    CACHE PATH "Path to the fheroes2-screenshot fh2poster library")
+set(FH2_POSTER_DIR "${CMAKE_CURRENT_LIST_DIR}/../homm2-screenshot/libs/fh2poster"
+    CACHE PATH "Path to the homm2-screenshot fh2poster library")
 
 if(FH2_WITH_POSTER STREQUAL "on")
     if(NOT EXISTS "${FH2_POSTER_DIR}/CMakeLists.txt")
