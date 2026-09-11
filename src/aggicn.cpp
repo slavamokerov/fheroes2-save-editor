@@ -308,15 +308,18 @@ IcnSprite decodeIcnSprite( const std::vector<uint8_t> & body, int index, const s
     // the palette step strength: k = 1.15 − 0.17·t, alpha = 255·(1 − k).
     // They used to be drawn as OPAQUE black — hence the black slabs instead of
     // shadows on frames (BUYBUILD/SURDRBKG/WINLOSE) and dirt around letters.
+    // Alpha values are measured from the engine's transformTable (image.cpp:43)
+    // against the KB.PAL palette: k = out_luma / in_luma averaged over the
+    // palette, alpha = 255 * (1 - k) for darkening and 255 * (k - 1) for
+    // lightening. Transform 2 is the strongest darkening, 6 the strongest
+    // lightening (see makeShadow: "The strongest shadow is in table ID 2").
     const auto transformPixel = []( uint8_t tf ) -> QRgb {
-        if ( tf >= 2 && tf <= 5 ) {
-            const int alpha = static_cast<int>( 255.0 * ( 0.17 * tf - 0.15 ) + 0.5 );
-            return qRgba( 0, 0, 0, std::min( 255, std::max( 0, alpha ) ) );
-        }
-        if ( tf >= 6 && tf <= 9 ) {
-            const int alpha = static_cast<int>( 255.0 * ( 0.17 * ( tf - 4 ) - 0.15 ) + 0.5 );
-            return qRgba( 255, 255, 255, std::min( 255, std::max( 0, alpha ) ) );
-        }
+        static const int darkAlpha[4] = { 100, 74, 46, 26 };    // tf 2..5
+        static const int lightAlpha[4] = { 255, 223, 140, 84 }; // tf 6..9
+        if ( tf >= 2 && tf <= 5 )
+            return qRgba( 0, 0, 0, darkAlpha[tf - 2] );
+        if ( tf >= 6 && tf <= 9 )
+            return qRgba( 255, 255, 255, lightAlpha[tf - 6] );
         return qRgba( 0, 0, 0, 0 );
     };
 
