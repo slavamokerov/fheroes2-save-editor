@@ -117,7 +117,7 @@ jobs:
           export APPIMAGE_EXTRACT_AND_RUN=1
           ./linuxdeploy-x86_64.AppImage --appdir AppDir --plugin qt --output appimage
           # appimagetool derives the file name from the desktop entry Name.
-          mv fheroes2_Save_Editor-x86_64.AppImage fheroes2-save-editor-linux-x64.AppImage
+          mv fheroes2_Save_Editor-x86_64.AppImage fheroes2-save-editor-x86_64.AppImage
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v6
@@ -126,7 +126,7 @@ jobs:
           path: |
             *.dmg
             *.zip
-            fheroes2-save-editor-linux-x64.AppImage
+            fheroes2-save-editor-x86_64.AppImage
           if-no-files-found: error
 
       - name: Create GitHub release
@@ -135,5 +135,5 @@ jobs:
           files: |
             *.dmg
             *.zip
-            fheroes2-save-editor-linux-x64.AppImage
+            fheroes2-save-editor-x86_64.AppImage
           generate_release_notes: true

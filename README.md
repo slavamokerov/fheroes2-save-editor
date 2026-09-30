@@ -56,9 +56,9 @@ Prebuilt desktop binaries are attached to [GitHub Releases](https://github.com/s
 `.zip` with the portable build; unpack it and run `fheroes2-save-editor.exe`.
 SmartScreen may warn because the app is unsigned.
 
-[![Download for Linux](https://img.shields.io/badge/Linux%20x64%20(AppImage)-Download-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-linux-x64.AppImage)  
+[![Download for Linux](https://img.shields.io/badge/Linux%20x64%20(AppImage)-Download-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/slavamokerov/fheroes2-save-editor/releases/latest/download/fheroes2-save-editor-x86_64.AppImage)  
 `.AppImage` (x86-64, built on Ubuntu 22.04 for wide glibc compatibility):
-`chmod +x fheroes2-save-editor-linux-x64.AppImage`, then run it.
+`chmod +x fheroes2-save-editor-x86_64.AppImage`, then run it.
 
 The buttons link straight to the latest release assets; older versions are on
 the [Releases](https://github.com/slavamokerov/fheroes2-save-editor/releases) page.
